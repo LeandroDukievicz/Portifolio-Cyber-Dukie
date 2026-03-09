@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Dock from "./components/Dock";
 
 export default function Page() {
   return (
@@ -11,7 +10,6 @@ export default function Page() {
         priority
         className="object-cover"
       />
-      <Dock />
     </main>
   );
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Link from "next/link";
-import { AiOutlineHome } from "react-icons/ai";
+import { IoHomeSharp } from "react-icons/io5";
 import { BsPerson } from "react-icons/bs";
 import { MdOutlineDesignServices } from "react-icons/md";
 import { GoProject } from "react-icons/go";
@@ -11,7 +11,7 @@ import { MdOutlineContactMail } from "react-icons/md";
 import { TbBrandBlogger } from "react-icons/tb";
 
 const NAV_ITEMS = [
-  { label: "Home",     href: "/",        icon: AiOutlineHome           },
+  { label: "Home",     href: "/",        icon: IoHomeSharp             },
   { label: "Sobre",    href: "/sobre",    icon: BsPerson                },
   { label: "Skills",   href: "/skills",   icon: MdOutlineDesignServices },
   { label: "Projetos", href: "/projetos", icon: GoProject               },

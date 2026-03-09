@@ -1,15 +1,9 @@
-import Image from "next/image";
+import BackgroundImage from "../components/BackgroundImage";
 
 export default function Contato() {
   return (
     <main className="relative w-screen h-screen overflow-hidden">
-      <Image
-        src="/images/contact.webp"
-        alt="background contato"
-        fill
-        priority
-        className="object-cover"
-      />
+      <BackgroundImage src="/images/contact.webp" alt="background contato" />
     </main>
   );
 }

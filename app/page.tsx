@@ -9,6 +9,7 @@ export default function Page() {
         fill
         priority
         className="object-cover"
+        suppressHydrationWarning
       />
     </main>
   );

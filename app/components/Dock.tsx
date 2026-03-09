@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Link from "next/link";
-import { IoHomeSharp } from "react-icons/io5";
+import { IoHomeOutline } from "react-icons/io5";
 import { BsPerson } from "react-icons/bs";
 import { MdOutlineDesignServices } from "react-icons/md";
 import { GoProject } from "react-icons/go";
@@ -11,7 +11,7 @@ import { MdOutlineContactMail } from "react-icons/md";
 import { TbBrandBlogger } from "react-icons/tb";
 
 const NAV_ITEMS = [
-  { label: "Home",     href: "/",        icon: IoHomeSharp             },
+  { label: "Home",     href: "/",        icon: IoHomeOutline           },
   { label: "Sobre",    href: "/sobre",    icon: BsPerson                },
   { label: "Skills",   href: "/skills",   icon: MdOutlineDesignServices },
   { label: "Projetos", href: "/projetos", icon: GoProject               },
@@ -73,14 +73,6 @@ export default function Dock() {
 
   return (
     <div className="fixed bottom-[50px] left-1/2 -translate-x-1/2 flex justify-center z-50">
-      <svg width="0" height="0" style={{ position: "absolute" }} suppressHydrationWarning>
-        <defs>
-          <linearGradient id="iconGrad" x1="0%" y1="0%" x2="0%" y2="100%" suppressHydrationWarning>
-            <stop offset="0%" stopColor="#ffffff" suppressHydrationWarning />
-            <stop offset="100%" stopColor="#d5d5d5" suppressHydrationWarning />
-          </linearGradient>
-        </defs>
-      </svg>
       <ul
         ref={dockRef}
         className="
@@ -99,9 +91,7 @@ export default function Dock() {
             className="w-14 h-14 mx-1"
           >
             <Link href={item.href} className="flex flex-col items-center justify-center gap-1 w-full h-full">
-              <span className="dock-icon" suppressHydrationWarning>
-                <item.icon size={28} suppressHydrationWarning />
-              </span>
+              <item.icon size={28} className="text-white" suppressHydrationWarning />
               <span className="text-white text-[10px] font-medium">{item.label}</span>
             </Link>
           </li>

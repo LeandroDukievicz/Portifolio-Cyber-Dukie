@@ -10,6 +10,7 @@ html {
 .dock-icon svg polyline,
 .dock-icon svg line,
 .dock-icon svg polygon {
-  fill: url(#iconGrad);
+  fill: none;
   stroke: url(#iconGrad);
+  stroke-width: 1.5px;
 }

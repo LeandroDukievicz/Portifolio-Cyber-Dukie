@@ -3,14 +3,3 @@
 html {
   height: 100%;
 }
-
-.dock-icon svg path,
-.dock-icon svg rect,
-.dock-icon svg circle,
-.dock-icon svg polyline,
-.dock-icon svg line,
-.dock-icon svg polygon {
-  fill: url(#iconGrad);
-  stroke: url(#iconGrad);
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
-}

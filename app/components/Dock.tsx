@@ -73,14 +73,6 @@ export default function Dock() {
 
   return (
     <div className="fixed bottom-[50px] left-1/2 -translate-x-1/2 flex justify-center z-50">
-      <svg width="0" height="0" style={{ position: "absolute" }} suppressHydrationWarning>
-        <defs>
-          <linearGradient id="iconGrad" x1="0%" y1="0%" x2="0%" y2="100%" suppressHydrationWarning>
-            <stop offset="0%" stopColor="#ffffff" suppressHydrationWarning />
-            <stop offset="100%" stopColor="#7b8a84" suppressHydrationWarning />
-          </linearGradient>
-        </defs>
-      </svg>
       <ul
         ref={dockRef}
         className="
@@ -99,9 +91,7 @@ export default function Dock() {
             className="w-14 h-14 mx-1"
           >
             <Link href={item.href} className="flex flex-col items-center justify-center gap-1 w-full h-full">
-              <span className="dock-icon" suppressHydrationWarning>
-                <item.icon size={28} suppressHydrationWarning />
-              </span>
+              <item.icon size={28} className="text-white" suppressHydrationWarning />
               <span className="text-white text-[10px] font-medium">{item.label}</span>
             </Link>
           </li>

@@ -8,7 +8,7 @@ import { BsPerson } from "react-icons/bs";
 import { MdOutlineDesignServices } from "react-icons/md";
 import { GoProject } from "react-icons/go";
 import { MdOutlineContactMail } from "react-icons/md";
-import { TbBrandBlogger } from "react-icons/tb";
+import { FaBlogger } from "react-icons/fa";
 
 const NAV_ITEMS = [
   { label: "Home",     href: "/",        icon: IoHomeOutline           },
@@ -16,7 +16,7 @@ const NAV_ITEMS = [
   { label: "Skills",   href: "/skills",   icon: MdOutlineDesignServices },
   { label: "Projetos", href: "/projetos", icon: GoProject               },
   { label: "Contato",  href: "/contato",  icon: MdOutlineContactMail    },
-  { label: "Blog",     href: "/blog",     icon: TbBrandBlogger          },
+  { label: "Blog",     href: "/blog",     icon: FaBlogger               },
 ];
 
 const MIN = 56;

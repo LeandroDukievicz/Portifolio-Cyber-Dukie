@@ -91,7 +91,7 @@ export default function Dock() {
             className="w-14 h-14 mx-1"
           >
             <Link href={item.href} className="flex flex-col items-center justify-center gap-1 w-full h-full">
-              <item.icon size={28} className="text-white" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6))" }} suppressHydrationWarning />
+              <item.icon size={28} style={{ color: "#808080", filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6))" }} suppressHydrationWarning />
               <span className="text-white text-[10px] font-medium">{item.label}</span>
             </Link>
           </li>

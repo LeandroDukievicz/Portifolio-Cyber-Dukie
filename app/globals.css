@@ -4,13 +4,3 @@ html {
   height: 100%;
 }
 
-.dock-icon svg path,
-.dock-icon svg rect,
-.dock-icon svg circle,
-.dock-icon svg polyline,
-.dock-icon svg line,
-.dock-icon svg polygon {
-  fill: none;
-  stroke: url(#iconGrad);
-  stroke-width: 1.5px;
-}

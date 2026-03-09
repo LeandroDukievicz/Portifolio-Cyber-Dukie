@@ -66,12 +66,12 @@ export default function Dock() {
   }, []);
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 flex justify-center z-50">
+    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 flex justify-center z-50">
       <ul
         ref={dockRef}
         className="
           inline-flex items-end justify-center
-          rounded-tl-xl rounded-tr-xl
+          rounded-xl
           px-4 py-2 m-0 list-none
           bg-white/10 backdrop-blur-md
           border border-white/20

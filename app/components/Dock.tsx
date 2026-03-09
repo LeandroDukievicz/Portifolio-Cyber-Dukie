@@ -66,7 +66,7 @@ export default function Dock() {
   }, []);
 
   return (
-    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 flex justify-center z-50">
+    <div className="fixed bottom-[50px] left-1/2 -translate-x-1/2 flex justify-center z-50">
       <ul
         ref={dockRef}
         className="

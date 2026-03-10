@@ -13,3 +13,27 @@ html[data-blog-theme="light"] {
   --dock-text-color: #555555;
 }
 
+@keyframes cyberpunkFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.cyberpunk-bg {
+  background: linear-gradient(
+    135deg,
+    #03111F,
+    #0D0221,
+    #BD00FF,
+    #FF00FF,
+    #FF2D78,
+    #0052F5,
+    #00EAFF,
+    #1A0033,
+    #FF00FF,
+    #03111F
+  );
+  background-size: 600% 600%;
+  animation: cyberpunkFlow 12s ease infinite;
+}
+

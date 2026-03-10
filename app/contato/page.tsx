@@ -1,9 +1,9 @@
-import BackgroundImage from "../components/BackgroundImage";
+import CyberpunkBackground from "../components/CyberpunkBackground";
 
 export default function Contato() {
   return (
-    <main className="relative w-screen h-screen overflow-hidden">
-      <BackgroundImage src="/images/contact.webp" alt="background contato" />
+    <main className="w-screen h-screen overflow-hidden">
+      <CyberpunkBackground />
     </main>
   );
 }

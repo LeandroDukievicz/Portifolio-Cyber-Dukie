@@ -52,18 +52,16 @@
 .switcher {
   position: fixed;
   z-index: 50;
-  top: 40px;
-  left: 50%;
-  translate: -50%;
+  top: 24px;
+  right: 24px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  width: 244px;
-  max-width: 244px;
-  height: 70px;
+  gap: 4px;
+  width: 122px;
+  max-width: 122px;
+  height: 35px;
   box-sizing: border-box;
-  padding: 8px 12px 10px;
-  margin: 0 auto;
+  padding: 4px 6px 5px;
   border: none;
   border-radius: 99em;
   background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
@@ -125,8 +123,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 16px;
-  width: 68px;
+  padding: 0 8px;
+  width: 34px;
   height: 100%;
   box-sizing: border-box;
   border-radius: 99em;
@@ -156,11 +154,11 @@
 .switcher::after {
   content: "";
   position: absolute;
-  left: 4px;
-  top: 4px;
+  left: 2px;
+  top: 2px;
   display: block;
-  width: 84px;
-  height: calc(100% - 10px);
+  width: 42px;
+  height: calc(100% - 5px);
   border-radius: 99em;
   background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
   z-index: -1;
@@ -185,7 +183,7 @@
 }
 
 .switcher:has(input[data-option="2"]:checked)::after {
-  translate: 76px 0;
+  translate: 38px 0;
   transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
     box-shadow 400ms cubic-bezier(1, 0, 0.4, 1),
     translate 400ms cubic-bezier(1, 0, 0.4, 1);
@@ -201,7 +199,7 @@
 }
 
 .switcher:has(input[data-option="3"]:checked)::after {
-  translate: 152px 0;
+  translate: 76px 0;
   transform-origin: left;
   transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
     box-shadow 400ms cubic-bezier(1, 0, 0.4, 1),

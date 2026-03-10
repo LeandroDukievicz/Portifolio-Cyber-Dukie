@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./blog.module.css";
 
 type Theme = "light" | "dark" | "dim";
@@ -13,6 +13,11 @@ const themeToOption = { light: "1", dark: "2", dim: "3" } as const;
 export default function LiquidGlassBlog() {
   const [theme, setTheme] = useState<Theme>("light");
   const [prevOption, setPrevOption] = useState<string>("1");
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-blog-theme", theme);
+    return () => document.documentElement.removeAttribute("data-blog-theme");
+  }, [theme]);
 
   const handleChange = (newTheme: Theme) => {
     setPrevOption(themeToOption[theme]);

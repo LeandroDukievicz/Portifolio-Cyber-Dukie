@@ -2,5 +2,14 @@
 
 html {
   height: 100%;
+  --dock-icon-color: #ffffff;
+  --dock-icon-filter: drop-shadow(0 0 6px rgba(0, 234, 255, 0.6));
+  --dock-text-color: #ffffff;
+}
+
+html[data-blog-theme="light"] {
+  --dock-icon-color: #555555;
+  --dock-icon-filter: none;
+  --dock-text-color: #555555;
 }
 

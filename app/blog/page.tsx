@@ -1,7 +1,5 @@
-export default function Blog() {
-  return (
-    <main>
-      <h1>Blog</h1>
-    </main>
-  );
+import LiquidGlassBlog from "./LiquidGlassBlog";
+
+export default function BlogPage() {
+  return <LiquidGlassBlog />;
 }

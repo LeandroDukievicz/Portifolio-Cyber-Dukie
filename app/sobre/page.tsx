@@ -1,9 +1,9 @@
-import BackgroundImage from "../components/BackgroundImage";
+import CyberpunkBackground from "../components/CyberpunkBackground";
 
 export default function Sobre() {
   return (
-    <main className="relative w-screen h-screen overflow-hidden">
-      <BackgroundImage src="/images/about.webp" alt="background sobre" />
+    <main className="w-screen h-screen overflow-hidden">
+      <CyberpunkBackground />
     </main>
   );
 }

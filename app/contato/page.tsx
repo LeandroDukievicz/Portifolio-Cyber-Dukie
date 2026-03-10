@@ -1,7 +1,9 @@
+import CyberpunkBackground from "../components/CyberpunkBackground";
+
 export default function Contato() {
   return (
-    <main>
-      <h1>Contato</h1>
+    <main className="w-screen h-screen overflow-hidden">
+      <CyberpunkBackground />
     </main>
   );
 }

@@ -1,7 +1,9 @@
+import CyberpunkBackground from "../components/CyberpunkBackground";
+
 export default function Projetos() {
   return (
-    <main>
-      <h1>Projetos</h1>
+    <main className="w-screen h-screen overflow-hidden">
+      <CyberpunkBackground />
     </main>
   );
 }

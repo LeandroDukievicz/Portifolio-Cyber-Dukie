@@ -91,8 +91,8 @@ export default function Dock() {
             className="w-14 h-14 mx-1"
           >
             <Link href={item.href} className="flex flex-col items-center justify-center gap-1 w-full h-full">
-              <item.icon size={28} style={{ color: "#ffffff", filter: "drop-shadow(0 0 6px rgba(0, 234, 255, 0.6))" }} suppressHydrationWarning />
-              <span className="text-white text-[10px] font-medium">{item.label}</span>
+              <item.icon size={28} style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
+              <span className="text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{item.label}</span>
             </Link>
           </li>
         ))}

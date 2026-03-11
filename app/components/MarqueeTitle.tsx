@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-
-const TITLE = "Bem vindo ao meu portifólio | Leandro Dukievicz | Dev Front End \u00a0\u00a0\u00a0";
+import { useLanguage } from "../context/LanguageContext";
 
 const COLOR = "#ffffff";
 
@@ -57,8 +56,10 @@ function setFavicon(href: string) {
 }
 
 export default function MarqueeTitle() {
+  const { t } = useLanguage();
+
   useEffect(() => {
-    // Marquee title
+    const TITLE = t.marquee;
     let titleIndex = 0;
     const titleInterval = setInterval(() => {
       document.title = TITLE.slice(titleIndex) + TITLE.slice(0, titleIndex);
@@ -77,7 +78,7 @@ export default function MarqueeTitle() {
       clearInterval(titleInterval);
       clearInterval(faviconInterval);
     };
-  }, []);
+  }, [t.marquee]);
 
   return null;
 }

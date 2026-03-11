@@ -86,7 +86,7 @@ export default function Dock() {
       <ul
         ref={dockRef}
         className="
-          w-full grid grid-cols-4
+          w-full grid grid-cols-4 sm:grid-cols-7
           md:w-auto md:grid-cols-none md:inline-flex md:items-end md:justify-center
           rounded-xl px-2 py-2 md:px-4 md:py-3 m-0 list-none
           bg-white/10 backdrop-blur-md
@@ -98,7 +98,7 @@ export default function Dock() {
           <li
             key={item.labelKey}
             ref={(el) => { if (el) itemsRef.current[i] = el; }}
-            className="h-14 md:w-[67px] md:h-[67px] md:mx-1"
+            className="h-14 sm:h-16 md:w-[67px] md:h-[67px] md:mx-1"
           >
             {item.kind === "link" ? (
               <Link href={item.href} className={innerClass}>

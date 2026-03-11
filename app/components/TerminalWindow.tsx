@@ -50,8 +50,9 @@ export default function TerminalWindow() {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // 557px = dock width (7 items × 75px + 32px padding)
-  const W = isLarge ? 860 : 557;
-  const H = isLarge ? 620 : 340;
+  const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
+  const W  = Math.min(isLarge ? 860 : 557, vw - 16);
+  const H  = isLarge ? 620 : 340;
 
   // Custom resize state
   const [customSize, setCustomSize] = useState<{ w: number; h: number } | null>(null);
@@ -289,8 +290,8 @@ export default function TerminalWindow() {
               backdropFilter: "blur(20px)",
               border: "1px solid rgba(255,0,255,0.35)",
               borderRadius: 16,
-              padding: "40px 48px",
-              maxWidth: 480,
+              padding: "clamp(20px, 5vw, 48px) clamp(16px, 6vw, 48px)",
+              maxWidth: "min(480px, calc(100vw - 32px))",
               textAlign: "center",
               boxShadow: "0 0 60px rgba(255,0,255,0.15), 0 24px 60px rgba(0,0,0,0.5)",
               fontFamily: "'JetBrains Mono','Fira Code','Courier New',monospace",

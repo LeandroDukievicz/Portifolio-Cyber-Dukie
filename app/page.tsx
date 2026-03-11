@@ -17,9 +17,9 @@ export default function Page() {
       <div className="absolute inset-0 flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-7 gap-8 lg:gap-0">
 
         {/* Left — nome */}
-        <div className="flex flex-col gap-4 items-start ml-[200px] -mt-[100px]">
+        <div className="flex flex-col gap-4 items-start mx-4 sm:mx-8 md:mx-16 lg:ml-[3vw] xl:ml-[4vw] 2xl:ml-[0px] lg:mr-0 mt-4 lg:-mt-[100px] w-full lg:w-auto min-w-0">
           <h1
-            className="text-[3.15rem] md:text-[4.2rem] lg:text-[6.3rem] font-extrabold leading-tight"
+            className="text-[3.15rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6.3rem] font-extrabold leading-tight"
             style={{
               background: "linear-gradient(160deg, #ffffff 0%, #e2e2e2 40%, #a8a8a8 100%)",
               WebkitBackgroundClip: "text",
@@ -63,7 +63,7 @@ export default function Page() {
           </p>
 
           {/* CTAs */}
-          <div className="flex justify-between w-full mt-2">
+          <div className="flex flex-col sm:flex-row justify-between w-full mt-2 gap-3 sm:gap-0">
             {/* Contrate-me */}
             <div className="cta-btn-wrap">
               <a href="/contato" className="cta-btn cta-btn-primary">
@@ -83,8 +83,8 @@ export default function Page() {
         </div>
 
         {/* Right — foto hexagonal com parallax */}
-        <div className="hidden lg:flex items-start justify-center mr-[100px] -mt-[100px]">
-          <div className="scale-90 xl:scale-120 origin-center">
+        <div className="hidden lg:flex items-start justify-center flex-shrink-0 lg:mr-[3vw] xl:mr-[4vw] 2xl:mr-[0px] lg:-mt-[100px]">
+          <div className="scale-90 2xl:scale-120 origin-center">
             <HeroPhoto size={476} />
           </div>
         </div>

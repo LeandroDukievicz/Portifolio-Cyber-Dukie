@@ -64,7 +64,7 @@ export default function MenuBar() {
 
       {/* Right — clock */}
       {time && (
-        <span className="text-white/90" style={{ fontSize: "12px" }}>{time}</span>
+        <span className="hidden sm:inline text-white/90" style={{ fontSize: "12px" }}>{time}</span>
       )}
     </div>
   );

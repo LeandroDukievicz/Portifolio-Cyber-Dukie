@@ -22,11 +22,15 @@ html[data-blog-theme="light"] {
   to { stroke-dashoffset: -288; }
 }
 
-@keyframes hex-glow-pulse {
-  0%   { filter: drop-shadow(0 0 6px #00EAFF) drop-shadow(0 0 14px #00EAFF); }
-  33%  { filter: drop-shadow(0 0 8px #BD00FF) drop-shadow(0 0 18px #BD00FF); }
-  66%  { filter: drop-shadow(0 0 8px #FF2D78) drop-shadow(0 0 18px #FF2D78); }
-  100% { filter: drop-shadow(0 0 6px #00EAFF) drop-shadow(0 0 14px #00EAFF); }
+@keyframes hex-color-pulse {
+  0%   { stroke: #00EAFF; }
+  33%  { stroke: #BD00FF; }
+  66%  { stroke: #FF2D78; }
+  100% { stroke: #00EAFF; }
+}
+
+.hex-border {
+  animation: hex-color-pulse 4s ease-in-out infinite;
 }
 
 /* ========== CTA BUTTONS ========== */

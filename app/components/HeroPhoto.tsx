@@ -18,6 +18,7 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
   const isHoveringRef = useRef(false);
   const hoverTRef     = useRef(0);
   const cursorRef     = useRef<HTMLDivElement>(null);
+  const borderSvgRef  = useRef<SVGSVGElement>(null);
 
   // Parallax
   useEffect(() => {
@@ -83,12 +84,14 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
 
   const handleMouseEnter = () => {
     isHoveringRef.current = true;
-    if (cursorRef.current) cursorRef.current.style.opacity = "1";
+    if (cursorRef.current)   cursorRef.current.style.opacity = "1";
+    if (borderSvgRef.current) borderSvgRef.current.style.filter = "url(#rgb-glitch)";
   };
 
   const handleMouseLeave = () => {
     isHoveringRef.current = false;
-    if (cursorRef.current) cursorRef.current.style.opacity = "0";
+    if (cursorRef.current)   cursorRef.current.style.opacity = "0";
+    if (borderSvgRef.current) borderSvgRef.current.style.filter = "none";
   };
 
   return (
@@ -171,29 +174,17 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
 
       {/* SVG borders */}
       <svg
+        ref={borderSvgRef}
         viewBox="0 0 100 100"
         style={{
           position: "absolute", inset: 0,
           width: "100%", height: "100%",
           overflow: "visible",
-          animation: "hex-glow-pulse 4s ease-in-out infinite",
           pointerEvents: "none",
         }}
       >
-        <defs>
-          <linearGradient id="hex-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"   stopColor="#00EAFF" />
-            <stop offset="50%"  stopColor="#BD00FF" />
-            <stop offset="100%" stopColor="#FF2D78" />
-          </linearGradient>
-        </defs>
-
-        <path d={HEX_PATH} fill="none" stroke="url(#hex-grad)" strokeWidth="2.5" opacity="0.4" style={{ filter: "blur(3px)" }} />
-        <path d={HEX_PATH} fill="none" stroke="url(#hex-grad)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-
-        <path d={HEX_PATH} fill="none" stroke="url(#hex-grad)" strokeWidth="2.5" opacity="0.4"
-          transform="translate(50,50) scale(1.101) translate(-50,-50)" style={{ filter: "blur(3px)" }} />
-        <path d={HEX_PATH} fill="none" stroke="url(#hex-grad)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"
+        <path className="hex-border" d={HEX_PATH} fill="none" strokeWidth="0.25" strokeLinecap="round" strokeLinejoin="round" />
+        <path className="hex-border" d={HEX_PATH} fill="none" strokeWidth="0.5" strokeLinecap="round" strokeLinejoin="round"
           transform="translate(50,50) scale(1.101) translate(-50,-50)" />
       </svg>
     </div>

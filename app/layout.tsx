@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Dock from "./components/Dock";
 import MarqueeTitle from "./components/MarqueeTitle";
+import MenuBar from "./components/MenuBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#03111F] w-full h-full`}
         suppressHydrationWarning
       >
+        <MenuBar />
         {children}
         <Dock />
         <MarqueeTitle />

@@ -5,6 +5,8 @@ import Dock from "./components/Dock";
 import MarqueeTitle from "./components/MarqueeTitle";
 import MenuBar from "./components/MenuBar";
 import VisitorGreeting from "./components/VisitorGreeting";
+import TerminalWindow from "./components/TerminalWindow";
+import { TerminalProvider } from "./context/TerminalContext";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -29,11 +31,14 @@ export default function RootLayout({
         style={{ fontFamily: "var(--font-roboto), sans-serif" }}
         suppressHydrationWarning
       >
-        <MenuBar />
-        <VisitorGreeting />
-        {children}
-        <Dock />
-        <MarqueeTitle />
+        <TerminalProvider>
+          <MenuBar />
+          <VisitorGreeting />
+          {children}
+          <TerminalWindow />
+          <Dock />
+          <MarqueeTitle />
+        </TerminalProvider>
       </body>
     </html>
   );

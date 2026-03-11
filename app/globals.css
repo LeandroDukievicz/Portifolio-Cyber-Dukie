@@ -13,3 +13,19 @@ html[data-blog-theme="light"] {
   --dock-text-color: #555555;
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
+}
+
+@keyframes hex-dash {
+  to { stroke-dashoffset: -288; }
+}
+
+@keyframes hex-glow-pulse {
+  0%   { filter: drop-shadow(0 0 6px #00EAFF) drop-shadow(0 0 14px #00EAFF); }
+  33%  { filter: drop-shadow(0 0 8px #BD00FF) drop-shadow(0 0 18px #BD00FF); }
+  66%  { filter: drop-shadow(0 0 8px #FF2D78) drop-shadow(0 0 18px #FF2D78); }
+  100% { filter: drop-shadow(0 0 6px #00EAFF) drop-shadow(0 0 14px #00EAFF); }
+}
+

@@ -15,7 +15,7 @@ export default function Page() {
       <div className="absolute inset-0 flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-7 gap-8 lg:gap-0">
 
         {/* Left — nome */}
-        <div className="flex flex-col gap-4 items-start ml-[200px]">
+        <div className="flex flex-col gap-4 items-start ml-[200px] -mt-[100px]">
           <h1
             className="text-[3.15rem] md:text-[4.2rem] lg:text-[6.3rem] font-extrabold leading-tight"
             style={{

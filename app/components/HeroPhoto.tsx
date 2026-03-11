@@ -17,6 +17,7 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
   const blueOffRef    = useRef<SVGFEOffsetElement>(null);
   const isHoveringRef = useRef(false);
   const hoverTRef     = useRef(0);
+  const cursorRef     = useRef<HTMLDivElement>(null);
 
   // Parallax
   useEffect(() => {
@@ -48,21 +49,18 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
     const tick = () => {
       t += 0.018;
 
-      // Smooth hover transition
       if (isHoveringRef.current) hoverTRef.current = Math.min(1, hoverTRef.current + 0.04);
       else                        hoverTRef.current = Math.max(0, hoverTRef.current - 0.025);
       const h = hoverTRef.current;
 
-      // Intensity: sutil em repouso, dramático no hover
-      const base   = 1.5;
-      const peak   = 18;
+      const base      = 1.5;
+      const peak      = 18;
       const intensity = base + h * (peak - base);
 
-      // Canais R e B pulsam com fases independentes
-      const rx = Math.sin(t * 0.71)  * intensity;
-      const ry = Math.sin(t * 1.37)  * intensity * 0.25;
-      const bx = Math.sin(t * 0.93 + 2.1) * -intensity;
-      const by = Math.cos(t * 1.13 + 1.0) * intensity * 0.25;
+      const rx = Math.sin(t * 0.71)         * intensity;
+      const ry = Math.sin(t * 1.37)         * intensity * 0.25;
+      const bx = Math.sin(t * 0.93 + 2.1)  * -intensity;
+      const by = Math.cos(t * 1.13 + 1.0)  * intensity * 0.25;
 
       redOffRef.current?.setAttribute("dx",  rx.toFixed(2));
       redOffRef.current?.setAttribute("dy",  ry.toFixed(2));
@@ -76,6 +74,23 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || !cursorRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    cursorRef.current.style.left = `${e.clientX - rect.left}px`;
+    cursorRef.current.style.top  = `${e.clientY - rect.top}px`;
+  };
+
+  const handleMouseEnter = () => {
+    isHoveringRef.current = true;
+    if (cursorRef.current) cursorRef.current.style.opacity = "1";
+  };
+
+  const handleMouseLeave = () => {
+    isHoveringRef.current = false;
+    if (cursorRef.current) cursorRef.current.style.opacity = "0";
+  };
+
   return (
     <div
       ref={containerRef}
@@ -85,26 +100,45 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
       <svg style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}>
         <defs>
           <filter id="rgb-glitch" x="-25%" y="-25%" width="150%" height="150%">
-            {/* Canal R */}
             <feColorMatrix in="SourceGraphic" type="matrix"
               values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r"/>
             <feOffset ref={redOffRef} in="r" dx="0" dy="0" result="r-off"/>
 
-            {/* Canal G — fixo no centro */}
             <feColorMatrix in="SourceGraphic" type="matrix"
               values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" result="g"/>
 
-            {/* Canal B */}
             <feColorMatrix in="SourceGraphic" type="matrix"
               values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" result="b"/>
             <feOffset ref={blueOffRef} in="b" dx="0" dy="0" result="b-off"/>
 
-            {/* Combinação aditiva via screen blend */}
             <feBlend in="r-off" in2="g"     mode="screen" result="rg"/>
             <feBlend in="rg"    in2="b-off" mode="screen"/>
           </filter>
         </defs>
       </svg>
+
+      {/* Cursor customizado — aparece só no hover, glitch sincronizado */}
+      <div
+        ref={cursorRef}
+        style={{
+          position: "absolute",
+          pointerEvents: "none",
+          zIndex: 20,
+          opacity: 0,
+          transition: "opacity 0.15s ease",
+          filter: "url(#rgb-glitch)",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <svg width="44" height="44" viewBox="-22 -22 44 44" fill="none">
+          <circle cx="0" cy="0" r="14" stroke="#00EAFF" strokeWidth="1.5" opacity="0.9" />
+          <line x1="-22" y1="0" x2="-8"  y2="0" stroke="#00EAFF" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="8"   y1="0" x2="22"  y2="0" stroke="#00EAFF" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="0" y1="-22" x2="0" y2="-8"  stroke="#00EAFF" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="0" y1="8"   x2="0" y2="22"  stroke="#00EAFF" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="0" cy="0" r="2" fill="#00EAFF" />
+        </svg>
+      </div>
 
       {/* Imagem com clip hexagonal + filtro RGB */}
       <div
@@ -117,9 +151,11 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
           backdropFilter: "blur(16px) saturate(180%)",
           WebkitBackdropFilter: "blur(16px) saturate(180%)",
           filter: "url(#rgb-glitch)",
+          cursor: "none",
         }}
-        onMouseEnter={() => { isHoveringRef.current = true; }}
-        onMouseLeave={() => { isHoveringRef.current = false; }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
       >
         <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
           <Image
@@ -152,15 +188,11 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
           </linearGradient>
         </defs>
 
-        {/* Glow — borda interna */}
         <path d={HEX_PATH} fill="none" stroke="url(#hex-grad)" strokeWidth="2.5" opacity="0.4" style={{ filter: "blur(3px)" }} />
-        {/* Borda interna */}
         <path d={HEX_PATH} fill="none" stroke="url(#hex-grad)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
 
-        {/* Glow — borda externa */}
         <path d={HEX_PATH} fill="none" stroke="url(#hex-grad)" strokeWidth="2.5" opacity="0.4"
           transform="translate(50,50) scale(1.101) translate(-50,-50)" style={{ filter: "blur(3px)" }} />
-        {/* Borda externa */}
         <path d={HEX_PATH} fill="none" stroke="url(#hex-grad)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"
           transform="translate(50,50) scale(1.101) translate(-50,-50)" />
       </svg>

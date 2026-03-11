@@ -49,25 +49,13 @@ function downloadCV() {
   document.body.removeChild(a);
 }
 
-async function fireConfetti() {
-  const confetti = (await import("canvas-confetti")).default;
-  const colors = ["#00EAFF", "#FF00FF", "#FF2D78", "#ffffff", "#00ff88"];
-  confetti({ particleCount: 120, spread: 80, origin: { x: 0.5, y: 0.55 }, colors });
-  setTimeout(() => {
-    confetti({ particleCount: 70, angle: 60,  spread: 55, origin: { x: 0, y: 0.6 }, colors });
-    confetti({ particleCount: 70, angle: 120, spread: 55, origin: { x: 1, y: 0.6 }, colors });
-  }, 150);
-}
-
 export default function TerminalWindow() {
   const router                        = useRouter();
-  const { isOpen, isMinimized, isLarge, close, minimize, toggleLarge } = useTerminal();
+  const { isOpen, isMinimized, isLarge, close, minimize, toggleLarge, hireModal, toast, triggerHireFlow, closeHireModal } = useTerminal();
   const [lines, setLines]             = useState<Line[]>([]);
   const [typingText, setTypingText]   = useState("");
   const [booting, setBooting]         = useState(true);
   const [currentInput, setInput]      = useState("");
-  const [toast, setToast]             = useState<string | null>(null);
-  const [hireModal, setHireModal]     = useState(false);
   const inputRef  = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -128,13 +116,6 @@ export default function TerminalWindow() {
   useEffect(() => {
     if (!isMinimized) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [lines, typingText, isMinimized]);
-
-  // Toast auto-dismiss
-  useEffect(() => {
-    if (!toast) return;
-    const t = setTimeout(() => setToast(null), 4500);
-    return () => clearTimeout(t);
-  }, [toast]);
 
   // Re-focus input when window reopens
   useEffect(() => {
@@ -198,10 +179,7 @@ export default function TerminalWindow() {
       addLines([{ kind: "output", text: "Verificando credenciais..." }]);
       setTimeout(() => {
         addLines([{ kind: "output", text: "✔ Acesso concedido. Baixando currículo..." }]);
-        downloadCV();
-        fireConfetti();
-        setToast("Permissão garantida !!");
-        setTimeout(() => setHireModal(true), 1200);
+        triggerHireFlow();
       }, 600);
     } else if (cmd === "help") {
       addLines(HELP_LINES.map(t => ({ kind: "info" as const, text: t })));
@@ -233,7 +211,7 @@ export default function TerminalWindow() {
     <>
     {hireModal && (
       <div
-        onClick={() => setHireModal(false)}
+        onClick={() => closeHireModal()}
         style={{
           position: "fixed", inset: 0, zIndex: 9999,
           display: "flex", alignItems: "center", justifyContent: "center",
@@ -281,7 +259,7 @@ export default function TerminalWindow() {
           </p>
 
           <button
-            onClick={() => setHireModal(false)}
+            onClick={() => closeHireModal()}
             style={{
               background: "linear-gradient(90deg, #BD00FF, #FF00FF)",
               border: "none", borderRadius: 8,

@@ -19,8 +19,8 @@ const NAV_ITEMS = [
   { label: "Blog",     href: "/blog",     icon: FaBlogger               },
 ];
 
-const MIN = 56;
-const MAX = 120;
+const MIN = 67;
+const MAX = 144;
 const BOUND = MIN * Math.PI;
 
 export default function Dock() {
@@ -32,8 +32,12 @@ export default function Dock() {
     const icons = itemsRef.current;
     if (!dock || icons.length === 0) return;
 
-    gsap.set(icons, { transformOrigin: "50% 120%", height: 56 });
-    gsap.set(dock,  { position: "relative", height: 80 });
+    // GSAP só no desktop
+    const mq = window.matchMedia("(min-width: 768px)");
+    if (!mq.matches) return;
+
+    gsap.set(icons, { transformOrigin: "50% 120%", height: 67 });
+    gsap.set(dock,  { position: "relative", height: 96 });
 
     function updateIcons(pointer: number) {
       icons.forEach((icon, i) => {
@@ -72,13 +76,13 @@ export default function Dock() {
   }, []);
 
   return (
-    <div className="fixed bottom-[50px] left-1/2 -translate-x-1/2 flex justify-center z-50">
+    <div className="fixed bottom-4 inset-x-4 md:inset-x-auto md:bottom-[70px] md:left-1/2 md:-translate-x-1/2 flex justify-center z-50">
       <ul
         ref={dockRef}
         className="
-          inline-flex items-end justify-center
-          rounded-xl
-          px-4 py-3 m-0 list-none
+          w-full grid grid-cols-3
+          md:w-auto md:grid-cols-none md:inline-flex md:items-end md:justify-center
+          rounded-xl px-2 py-2 md:px-4 md:py-3 m-0 list-none
           bg-white/10 backdrop-blur-md
           border border-white/20
           shadow-[0_-4px_30px_rgba(0,0,0,0.3)]
@@ -88,10 +92,12 @@ export default function Dock() {
           <li
             key={item.href}
             ref={(el) => { if (el) itemsRef.current[i] = el; }}
-            className="w-14 h-14 mx-1"
+            className="h-14 md:w-[67px] md:h-[67px] md:mx-1"
           >
             <Link href={item.href} className="flex flex-col items-center justify-center gap-1 w-full h-full">
-              <item.icon size={28} style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
+              <span className="text-[26px] md:text-[34px]">
+                <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
+              </span>
               <span className="text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{item.label}</span>
             </Link>
           </li>

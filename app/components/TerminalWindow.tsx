@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, useLayoutEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useTerminal } from "../context/TerminalContext";
 import { useLanguage } from "../context/LanguageContext";
 
@@ -34,8 +34,9 @@ const CURSORS: Record<ResizeDir, string> = {
 };
 
 export default function TerminalWindow() {
-  const router = useRouter();
-  const { isOpen, isMinimized, isLarge, close, minimize, toggleLarge, hireModal, toast, triggerHireFlow, closeHireModal } = useTerminal();
+  const router   = useRouter();
+  const pathname = usePathname();
+  const { isOpen, isMinimized, isLarge, open, close, minimize, toggleLarge, hireModal, toast, triggerHireFlow, closeHireModal } = useTerminal();
   const { t, lang } = useLanguage();
   const tt = t.terminal;
 
@@ -43,6 +44,8 @@ export default function TerminalWindow() {
   const [typingText, setTypingText] = useState("");
   const [booting, setBooting]       = useState(true);
   const [currentInput, setInput]    = useState("");
+  const [isAutoClosing, setIsAutoClosing] = useState(false);
+  const prevPathname = useRef(pathname);
   const inputRef  = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -141,6 +144,22 @@ export default function TerminalWindow() {
       window.removeEventListener("mouseup",   onUp);
     };
   }, []);
+
+  // Auto open on home, auto-close with macOS animation on other routes
+  useEffect(() => {
+    if (prevPathname.current === pathname) return;
+    prevPathname.current = pathname;
+
+    if (pathname === "/") {
+      open();
+    } else if (isOpen) {
+      setIsAutoClosing(true);
+      setTimeout(() => {
+        close();
+        setIsAutoClosing(false);
+      }, 280);
+    }
+  }, [pathname, isOpen, open, close]);
 
   // Auto-scroll
   useEffect(() => {
@@ -336,7 +355,12 @@ export default function TerminalWindow() {
         display: "flex", flexDirection: "column",
         fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
         fontSize: 14,
-        transition: "none",
+        transformOrigin: "center center",
+        transform: isAutoClosing ? "scale(0.05)" : "scale(1)",
+        opacity: isAutoClosing ? 0 : 1,
+        transition: isAutoClosing
+          ? "transform 0.28s cubic-bezier(0.4, 0, 1, 1), opacity 0.22s ease"
+          : "none",
       }}>
         {/* Title bar */}
         <div

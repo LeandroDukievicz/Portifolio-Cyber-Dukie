@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTerminal } from "../context/TerminalContext";
+import { useLanguage } from "../context/LanguageContext";
 
 interface Line {
   kind: "input" | "output" | "error" | "info" | "blank";
@@ -12,33 +13,6 @@ interface Line {
 const CHAR_DELAY      = 48;
 const AFTER_INPUT_MS  = 180;
 const AFTER_OUTPUT_MS = 480;
-
-const BOOT: { kind: "input" | "output"; text: string }[] = [
-  { kind: "input",  text: "whoami" },
-  { kind: "output", text: "Leandro Dukievicz" },
-  { kind: "input",  text: "cat sobre.txt" },
-  { kind: "output", text: "Front End - Transformando cafeína em interfaces desde 2021" },
-  { kind: "input",  text: "ls skills/" },
-  { kind: "output", text: "React  Next.js  TypeScript  Figma  Node  ..." },
-  { kind: "input",  text: "./status.sh" },
-  { kind: "output", text: "● Disponível para projetos" },
-];
-
-const HELP_LINES = [
-  "Comandos disponíveis:",
-  "  home         → página inicial",
-  "  cv           → baixar currículo",
-  "  sobre        → página sobre mim",
-  "  skills       → minhas habilidades",
-  "  projetos     → meus projetos",
-  "  contato      → entrar em contato",
-  "  blog         → meu blog",
-  "  hacker       → ativar tema hacker [em breve]",
-  "  sudo hire-me → 👀",
-  "  clear        → limpar terminal",
-  "  exit / sair  → fechar terminal",
-  "  help         → mostrar esta ajuda",
-];
 
 function downloadCV() {
   const a = document.createElement("a");
@@ -50,12 +24,15 @@ function downloadCV() {
 }
 
 export default function TerminalWindow() {
-  const router                        = useRouter();
+  const router = useRouter();
   const { isOpen, isMinimized, isLarge, close, minimize, toggleLarge, hireModal, toast, triggerHireFlow, closeHireModal } = useTerminal();
-  const [lines, setLines]             = useState<Line[]>([]);
-  const [typingText, setTypingText]   = useState("");
-  const [booting, setBooting]         = useState(true);
-  const [currentInput, setInput]      = useState("");
+  const { t, lang } = useLanguage();
+  const tt = t.terminal;
+
+  const [lines, setLines]           = useState<Line[]>([]);
+  const [typingText, setTypingText] = useState("");
+  const [booting, setBooting]       = useState(true);
+  const [currentInput, setInput]    = useState("");
   const inputRef  = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -63,22 +40,20 @@ export default function TerminalWindow() {
   const H = isLarge ? 620 : 340;
 
   // Drag state
-  const [pos, setPos]   = useState({ x: 0, y: 0 });
-  const dragging        = useRef(false);
-  const dragOffset      = useRef({ x: 0, y: 0 });
-  const windowRef       = useRef<HTMLDivElement>(null);
-  const HRef            = useRef(H);
-  const isMinimizedRef  = useRef(isMinimized);
+  const [pos, setPos]  = useState({ x: 0, y: 0 });
+  const dragging       = useRef(false);
+  const dragOffset     = useRef({ x: 0, y: 0 });
+  const windowRef      = useRef<HTMLDivElement>(null);
+  const HRef           = useRef(H);
+  const isMinimizedRef = useRef(isMinimized);
 
-  useEffect(() => { HRef.current = H; },           [H]);
+  useEffect(() => { HRef.current = H; }, [H]);
   useEffect(() => { isMinimizedRef.current = isMinimized; }, [isMinimized]);
 
-  const DOCK_SAFE = 160; // altura do dock + margem
-
+  const DOCK_SAFE = 160;
   const clampY = (y: number, termH: number) =>
     Math.max(0, Math.min(y, window.innerHeight - DOCK_SAFE - termH));
 
-  // Centraliza na abertura e ao alternar tamanho — respeitando o Dock
   useLayoutEffect(() => {
     const termH = isMinimized ? 38 : H;
     setPos({
@@ -87,7 +62,7 @@ export default function TerminalWindow() {
     });
   }, [W, H, isOpen]);
 
-    const onTitleMouseDown = (e: React.MouseEvent) => {
+  const onTitleMouseDown = (e: React.MouseEvent) => {
     dragging.current   = true;
     dragOffset.current = { x: e.clientX - pos.x, y: e.clientY - pos.y };
     e.preventDefault();
@@ -123,14 +98,16 @@ export default function TerminalWindow() {
       setTimeout(() => inputRef.current?.focus(), 80);
   }, [isOpen, isMinimized, booting]);
 
-  // Boot sequence (runs once)
+  // Boot sequence — re-runs when language changes
   useEffect(() => {
     let cancelled = false;
     const sleep = (ms: number) => new Promise<void>(r => setTimeout(r, ms));
+    setLines([]);
+    setBooting(true);
 
     (async () => {
       await sleep(600);
-      for (const entry of BOOT) {
+      for (const entry of tt.boot) {
         if (cancelled) return;
         if (entry.kind === "input") {
           for (let i = 0; i <= entry.text.length; i++) {
@@ -153,7 +130,7 @@ export default function TerminalWindow() {
     })();
 
     return () => { cancelled = true; };
-  }, []);
+  }, [lang]);
 
   const addLines = useCallback((newLines: Line[]) => {
     setLines(prev => [...prev, ...newLines]);
@@ -165,38 +142,39 @@ export default function TerminalWindow() {
     if (!cmd) return;
 
     const NAV: Record<string, string> = {
-      home: "/", sobre: "/sobre", skills: "/skills",
-      projetos: "/projetos", contato: "/contato", blog: "/blog",
+      home: "/", sobre: "/sobre", about: "/sobre",
+      skills: "/skills", projetos: "/projetos", projects: "/projetos",
+      contato: "/contato", contact: "/contato", blog: "/blog",
     };
 
     if (cmd === "cv") {
-      addLines([{ kind: "output", text: "Baixando currículo..." }]);
+      addLines([{ kind: "output", text: tt.cmdDownloading }]);
       downloadCV();
     } else if (NAV[cmd]) {
-      addLines([{ kind: "output", text: `Abrindo ${cmd}...` }]);
+      addLines([{ kind: "output", text: tt.cmdOpening(cmd) }]);
       setTimeout(() => router.push(NAV[cmd]), 400);
     } else if (cmd === "sudo hire-me") {
-      addLines([{ kind: "output", text: "Verificando credenciais..." }]);
+      addLines([{ kind: "output", text: tt.cmdVerifying }]);
       setTimeout(() => {
-        addLines([{ kind: "output", text: "✔ Acesso concedido. Baixando currículo..." }]);
-        triggerHireFlow();
+        addLines([{ kind: "output", text: tt.cmdAccessGranted }]);
+        triggerHireFlow(tt.toast);
       }, 600);
     } else if (cmd === "help") {
-      addLines(HELP_LINES.map(t => ({ kind: "info" as const, text: t })));
-    } else if (cmd === "exit" || cmd === "sair") {
-      addLines([{ kind: "output", text: "Até logo!" }]);
+      addLines(tt.help.map(text => ({ kind: "info" as const, text })));
+    } else if (cmd === "exit" || cmd === "sair" || cmd === "quit") {
+      addLines([{ kind: "output", text: tt.cmdGoodbye }]);
       setTimeout(() => close(), 600);
     } else if (cmd === "clear") {
       setLines([]);
     } else if (cmd === "hacker") {
       addLines([
-        { kind: "info",   text: "⚠ Tema hacker em desenvolvimento..." },
-        { kind: "output", text: "Aguarde a próxima versão." },
+        { kind: "info",   text: tt.cmdHackerSoon },
+        { kind: "output", text: tt.cmdHackerWait },
       ]);
     } else {
-      addLines([{ kind: "error", text: `comando não encontrado: ${raw.trim()}. Digite 'help'.` }]);
+      addLines([{ kind: "error", text: tt.cmdNotFound(raw.trim()) }]);
     }
-  }, [addLines, router]);
+  }, [addLines, router, tt, triggerHireFlow, close]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -209,70 +187,67 @@ export default function TerminalWindow() {
 
   return (
     <>
-    {hireModal && (
-      <div
-        onClick={() => closeHireModal()}
-        style={{
-          position: "fixed", inset: 0, zIndex: 9999,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          background: "rgba(0,0,0,0.55)",
-          backdropFilter: "blur(6px)",
-          animation: "greeting-in 0.3s ease forwards",
-        }}
-      >
+      {hireModal && (
         <div
-          onClick={e => e.stopPropagation()}
+          onClick={() => closeHireModal()}
           style={{
-            background: "rgba(3,17,31,0.88)",
-            backdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,0,255,0.35)",
-            borderRadius: 16,
-            padding: "40px 48px",
-            maxWidth: 480,
-            textAlign: "center",
-            boxShadow: "0 0 60px rgba(255,0,255,0.15), 0 24px 60px rgba(0,0,0,0.5)",
-            fontFamily: "'JetBrains Mono','Fira Code','Courier New',monospace",
+            position: "fixed", inset: 0, zIndex: 9999,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            background: "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(6px)",
+            animation: "greeting-in 0.3s ease forwards",
           }}
         >
-          {/* Linha gradiente topo */}
-          <div style={{
-            height: 2, borderRadius: 2, marginBottom: 28,
-            background: "linear-gradient(90deg, #00EAFF, #BD00FF, #FF2D78)",
-          }} />
-
-          <p style={{ fontSize: 28, margin: "0 0 12px", lineHeight: 1 }}>🤝</p>
-
-          <h2 style={{
-            margin: "0 0 16px", fontSize: 18, fontWeight: 700,
-            color: "#fff", letterSpacing: "0.02em",
-          }}>
-            Obrigado pelo download!
-          </h2>
-
-          <p style={{
-            margin: "0 0 24px", fontSize: 13, lineHeight: 1.7,
-            color: "rgba(255,255,255,0.65)",
-          }}>
-            Fico muito feliz com seu interesse.<br />
-            Estou à inteira disposição para conversarmos<br />
-            pessoalmente — será um prazer!
-          </p>
-
-          <button
-            onClick={() => closeHireModal()}
+          <div
+            onClick={e => e.stopPropagation()}
             style={{
-              background: "linear-gradient(90deg, #BD00FF, #FF00FF)",
-              border: "none", borderRadius: 8,
-              padding: "10px 28px", cursor: "pointer",
-              color: "#fff", fontFamily: "inherit",
-              fontSize: 13, fontWeight: 600, letterSpacing: "0.05em",
+              background: "rgba(3,17,31,0.88)",
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255,0,255,0.35)",
+              borderRadius: 16,
+              padding: "40px 48px",
+              maxWidth: 480,
+              textAlign: "center",
+              boxShadow: "0 0 60px rgba(255,0,255,0.15), 0 24px 60px rgba(0,0,0,0.5)",
+              fontFamily: "'JetBrains Mono','Fira Code','Courier New',monospace",
             }}
           >
-            Fechar
-          </button>
+            <div style={{
+              height: 2, borderRadius: 2, marginBottom: 28,
+              background: "linear-gradient(90deg, #00EAFF, #BD00FF, #FF2D78)",
+            }} />
+
+            <p style={{ fontSize: 28, margin: "0 0 12px", lineHeight: 1 }}>🤝</p>
+
+            <h2 style={{
+              margin: "0 0 16px", fontSize: 18, fontWeight: 700,
+              color: "#fff", letterSpacing: "0.02em",
+            }}>
+              {tt.modalTitle}
+            </h2>
+
+            <p style={{
+              margin: "0 0 24px", fontSize: 13, lineHeight: 1.7,
+              color: "rgba(255,255,255,0.65)", whiteSpace: "pre-line",
+            }}>
+              {tt.modalMessage}
+            </p>
+
+            <button
+              onClick={() => closeHireModal()}
+              style={{
+                background: "linear-gradient(90deg, #BD00FF, #FF00FF)",
+                border: "none", borderRadius: 8,
+                padding: "10px 28px", cursor: "pointer",
+                color: "#fff", fontFamily: "inherit",
+                fontSize: 13, fontWeight: 600, letterSpacing: "0.05em",
+              }}
+            >
+              {tt.modalClose}
+            </button>
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
       {/* Toast */}
       {toast && (
@@ -309,7 +284,7 @@ export default function TerminalWindow() {
         transition: "width 0.3s ease, height 0.3s ease",
       }}>
 
-        {/* Title bar — arraste aqui */}
+        {/* Title bar */}
         <div
           onMouseDown={onTitleMouseDown}
           style={{
@@ -321,36 +296,21 @@ export default function TerminalWindow() {
             cursor: "grab",
           }}
         >
-          {/* Vermelho — fechar */}
-          <span
-            onClick={close}
-            onMouseDown={e => e.stopPropagation()}
-            title="Fechar"
-            style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", cursor: "pointer", flexShrink: 0 }}
-          />
-          {/* Amarelo — minimizar */}
-          <span
-            onClick={minimize}
-            onMouseDown={e => e.stopPropagation()}
-            title="Minimizar"
-            style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", cursor: "pointer", flexShrink: 0 }}
-          />
-          {/* Verde — dobrar tamanho */}
-          <span
-            onClick={toggleLarge}
-            onMouseDown={e => e.stopPropagation()}
-            title={isLarge ? "Tamanho normal" : "Dobrar tamanho"}
-            style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", cursor: "pointer", flexShrink: 0 }}
-          />
+          <span onClick={close} onMouseDown={e => e.stopPropagation()} title="Fechar"
+            style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", cursor: "pointer", flexShrink: 0 }} />
+          <span onClick={minimize} onMouseDown={e => e.stopPropagation()} title="Minimizar"
+            style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", cursor: "pointer", flexShrink: 0 }} />
+          <span onClick={toggleLarge} onMouseDown={e => e.stopPropagation()} title={isLarge ? "Tamanho normal" : "Dobrar tamanho"}
+            style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", cursor: "pointer", flexShrink: 0 }} />
           <span style={{
             flex: 1, textAlign: "center", fontSize: 11,
             color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em",
           }}>
-            guest@portfolio ~ zsh
+            {tt.header}
           </span>
         </div>
 
-        {/* Terminal body — oculto quando minimizado */}
+        {/* Terminal body */}
         {!isMinimized && (
           <div
             onClick={() => inputRef.current?.focus()}
@@ -391,7 +351,6 @@ export default function TerminalWindow() {
               </div>
             ))}
 
-            {/* Auto-typing */}
             {booting && (
               <div style={{ display: "flex", gap: 8 }}>
                 <span style={{ color: "#FF00FF" }}>&gt;_</span>
@@ -402,7 +361,6 @@ export default function TerminalWindow() {
               </div>
             )}
 
-            {/* Input interativo */}
             {!booting && (
               <>
                 <div style={{
@@ -410,13 +368,11 @@ export default function TerminalWindow() {
                   fontSize: 13, color: "rgba(255,255,255,0.55)",
                   letterSpacing: "0.04em",
                 }}>
-                  — digite <span style={{ color: "#FF00FF" }}>help</span> para ver todos os comandos
+                  {tt.inputHint} <span style={{ color: "#FF00FF" }}>{tt.inputHintCmd}</span> {tt.inputHintSuffix}
                 </div>
 
                 <div style={{ display: "flex", gap: 8, alignItems: "center", position: "relative" }}>
-                  <span style={{ color: "#FF00FF", flexShrink: 0 }}>
-                    &gt;_
-                  </span>
+                  <span style={{ color: "#FF00FF", flexShrink: 0 }}>&gt;_</span>
                   <input
                     ref={inputRef}
                     value={currentInput}

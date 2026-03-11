@@ -10,19 +10,20 @@ import { GoProject } from "react-icons/go";
 import { MdOutlineContactMail } from "react-icons/md";
 import { FaBlogger } from "react-icons/fa";
 import { useTerminal } from "../context/TerminalContext";
+import { useLanguage } from "../context/LanguageContext";
 
 type NavItem =
-  | { kind: "link";   label: string; href: string;    icon: React.ElementType }
-  | { kind: "button"; label: string; action: "terminal"; icon: React.ElementType };
+  | { kind: "link";   labelKey: keyof ReturnType<typeof useLanguage>["t"]["dock"]; href: string;    icon: React.ElementType }
+  | { kind: "button"; labelKey: keyof ReturnType<typeof useLanguage>["t"]["dock"]; action: "terminal"; icon: React.ElementType };
 
 const NAV_ITEMS: NavItem[] = [
-  { kind: "link",   label: "Home",     href: "/",        icon: IoHomeOutline           },
-  { kind: "link",   label: "Sobre",    href: "/sobre",    icon: BsPerson                },
-  { kind: "link",   label: "Skills",   href: "/skills",   icon: MdOutlineDesignServices },
-  { kind: "link",   label: "Projetos", href: "/projetos", icon: GoProject               },
-  { kind: "link",   label: "Contato",  href: "/contato",  icon: MdOutlineContactMail    },
-  { kind: "button", label: "Terminal", action: "terminal", icon: BsTerminal             },
-  { kind: "link",   label: "Blog",     href: "/blog",     icon: FaBlogger               },
+  { kind: "link",   labelKey: "home",     href: "/",        icon: IoHomeOutline           },
+  { kind: "link",   labelKey: "about",    href: "/sobre",    icon: BsPerson                },
+  { kind: "link",   labelKey: "skills",   href: "/skills",   icon: MdOutlineDesignServices },
+  { kind: "link",   labelKey: "projects", href: "/projetos", icon: GoProject               },
+  { kind: "link",   labelKey: "contact",  href: "/contato",  icon: MdOutlineContactMail    },
+  { kind: "button", labelKey: "terminal", action: "terminal", icon: BsTerminal             },
+  { kind: "link",   labelKey: "blog",     href: "/blog",     icon: FaBlogger               },
 ];
 
 const MIN = 67;
@@ -33,6 +34,7 @@ export default function Dock() {
   const dockRef  = useRef<HTMLUListElement>(null);
   const itemsRef = useRef<HTMLLIElement[]>([]);
   const { open } = useTerminal();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const dock  = dockRef.current;
@@ -94,7 +96,7 @@ export default function Dock() {
       >
         {NAV_ITEMS.map((item, i) => (
           <li
-            key={item.label}
+            key={item.labelKey}
             ref={(el) => { if (el) itemsRef.current[i] = el; }}
             className="h-14 md:w-[67px] md:h-[67px] md:mx-1"
           >
@@ -103,14 +105,14 @@ export default function Dock() {
                 <span className="text-[26px] md:text-[34px]">
                   <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
                 </span>
-                <span className="text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{item.label}</span>
+                <span className="text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
               </Link>
             ) : (
               <button onClick={open} className={`${innerClass} cursor-pointer bg-transparent border-none w-full`}>
                 <span className="text-[26px] md:text-[34px]">
                   <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
                 </span>
-                <span className="text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{item.label}</span>
+                <span className="text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
               </button>
             )}
           </li>

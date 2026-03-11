@@ -4,9 +4,11 @@ import CyberpunkBackground from "./components/CyberpunkBackground";
 import HeroPhoto from "./components/HeroPhoto";
 import { FaFloppyDisk } from "react-icons/fa6";
 import { useTerminal } from "./context/TerminalContext";
+import { useLanguage } from "./context/LanguageContext";
 
 export default function Page() {
   const { triggerHireFlow } = useTerminal();
+  const { t } = useLanguage();
 
   return (
     <main className="w-screen h-screen overflow-hidden relative">
@@ -43,7 +45,7 @@ export default function Page() {
             className="w-full text-center text-sm lg:text-base font-light tracking-widest uppercase"
             style={{ color: "rgba(255,255,255,0.5)" }}
           >
-            Desenvolvedor Front-End
+            {t.subtitle}
           </p>
 
           <p
@@ -57,7 +59,7 @@ export default function Page() {
                 "drop-shadow(0px 8px 16px rgba(0,0,0,0.3))",
             }}
           >
-            Sou aficcionado em Tecnologia no geral, Em constante estudo e avanço para um aperfeiçoamento contínuo em desenvolver interfaces que sejam elegantes e ao mesmo tempo fáceis, intuitivas e bem modernas, Buscando sempre entregar melhor performance, detalhes e fluidez, porque acredito que as melhores interfaces são aquelas que desaparecem para o usuário final, deixando apenas a experiência.
+            {t.bio}
           </p>
 
           {/* CTAs */}
@@ -74,12 +76,12 @@ export default function Page() {
               onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 30px #BD00FFaa")}
               onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 18px #BD00FF66")}
             >
-              Contrate-me
+              {t.ctaHire}
             </a>
 
             {/* Baixar CV */}
             <button
-              onClick={triggerHireFlow}
+              onClick={() => triggerHireFlow(t.terminal.toast)}
               className="flex items-center gap-2 px-6 py-3 font-semibold text-sm tracking-widest uppercase rounded-lg border transition-all duration-300 cursor-pointer"
               style={{
                 borderColor: "#00EAFF88",
@@ -91,14 +93,14 @@ export default function Page() {
               onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 12px #00EAFF33")}
             >
               <FaFloppyDisk size={16} />
-              Baixar CV
+              {t.ctaCV}
             </button>
           </div>
         </div>
 
         {/* Right — foto hexagonal com parallax */}
-        <div className="hidden lg:flex items-center justify-center mr-[100px]">
-          <div className="scale-75 xl:scale-100 origin-center">
+        <div className="hidden lg:flex items-start justify-center mr-[100px] -mt-[100px]">
+          <div className="scale-90 xl:scale-120 origin-center">
             <HeroPhoto size={476} />
           </div>
         </div>

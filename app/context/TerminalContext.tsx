@@ -31,7 +31,7 @@ interface TerminalCtx {
   toggleLarge: () => void;
   hireModal: boolean;
   toast: string | null;
-  triggerHireFlow: () => void;
+  triggerHireFlow: (toastMsg: string) => void;
   closeHireModal: () => void;
   clearToast: () => void;
 }
@@ -51,10 +51,10 @@ export function TerminalProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(t);
   }, [toast]);
 
-  const triggerHireFlow = () => {
+  const triggerHireFlow = (toastMsg: string) => {
     downloadCV();
     fireConfetti();
-    setToast("Permissão Autorizada !!");
+    setToast(toastMsg);
     setTimeout(() => setHireModal(true), 1200);
   };
 

@@ -1,7 +1,13 @@
+"use client";
+
 import CyberpunkBackground from "./components/CyberpunkBackground";
 import HeroPhoto from "./components/HeroPhoto";
+import { FaFloppyDisk } from "react-icons/fa6";
+import { useTerminal } from "./context/TerminalContext";
 
 export default function Page() {
+  const { triggerHireFlow } = useTerminal();
+
   return (
     <main className="w-screen h-screen overflow-hidden relative">
       <CyberpunkBackground />
@@ -53,6 +59,41 @@ export default function Page() {
           >
             Sou aficcionado em Tecnologia no geral, Em constante estudo e avanço para um aperfeiçoamento contínuo em desenvolver interfaces que sejam elegantes e ao mesmo tempo fáceis, intuitivas e bem modernas, Buscando sempre entregar melhor performance, detalhes e fluidez, porque acredito que as melhores interfaces são aquelas que desaparecem para o usuário final, deixando apenas a experiência.
           </p>
+
+          {/* CTAs */}
+          <div className="flex justify-between w-full mt-2">
+            {/* Contrate-me */}
+            <a
+              href="/contato"
+              className="px-6 py-3 font-semibold text-sm tracking-widest uppercase rounded-lg transition-all duration-300"
+              style={{
+                background: "linear-gradient(90deg, #00EAFF, #BD00FF)",
+                color: "#fff",
+                boxShadow: "0 0 18px #BD00FF66",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 30px #BD00FFaa")}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 18px #BD00FF66")}
+            >
+              Contrate-me
+            </a>
+
+            {/* Baixar CV */}
+            <button
+              onClick={triggerHireFlow}
+              className="flex items-center gap-2 px-6 py-3 font-semibold text-sm tracking-widest uppercase rounded-lg border transition-all duration-300 cursor-pointer"
+              style={{
+                borderColor: "#00EAFF88",
+                color: "#00EAFF",
+                background: "transparent",
+                boxShadow: "0 0 12px #00EAFF33",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 24px #00EAFF66")}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 12px #00EAFF33")}
+            >
+              <FaFloppyDisk size={16} />
+              Baixar CV
+            </button>
+          </div>
         </div>
 
         {/* Right — foto hexagonal com parallax */}

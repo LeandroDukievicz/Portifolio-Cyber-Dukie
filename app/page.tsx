@@ -65,36 +65,20 @@ export default function Page() {
           {/* CTAs */}
           <div className="flex justify-between w-full mt-2">
             {/* Contrate-me */}
-            <a
-              href="/contato"
-              className="px-6 py-3 font-semibold text-sm tracking-widest uppercase rounded-lg transition-all duration-300"
-              style={{
-                background: "linear-gradient(90deg, #00EAFF, #BD00FF)",
-                color: "#fff",
-                boxShadow: "0 0 18px #BD00FF66",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 30px #BD00FFaa")}
-              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 18px #BD00FF66")}
-            >
-              {t.ctaHire}
-            </a>
+            <div className="cta-btn-wrap">
+              <a href="/contato" className="cta-btn cta-btn-primary">
+                <span>{t.ctaHire}</span>
+              </a>
+              <div className="cta-btn-shadow" />
+            </div>
 
             {/* Baixar CV */}
-            <button
-              onClick={() => triggerHireFlow(t.terminal.toast)}
-              className="flex items-center gap-2 px-6 py-3 font-semibold text-sm tracking-widest uppercase rounded-lg border transition-all duration-300 cursor-pointer"
-              style={{
-                borderColor: "#00EAFF88",
-                color: "#00EAFF",
-                background: "transparent",
-                boxShadow: "0 0 12px #00EAFF33",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 0 24px #00EAFF66")}
-              onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 0 12px #00EAFF33")}
-            >
-              <FaFloppyDisk size={16} />
-              {t.ctaCV}
-            </button>
+            <div className="cta-btn-wrap">
+              <button onClick={() => triggerHireFlow(t.terminal.toast)} className="cta-btn cta-btn-secondary">
+                <span><FaFloppyDisk size={15} />{t.ctaCV}</span>
+              </button>
+              <div className="cta-btn-shadow" />
+            </div>
           </div>
         </div>
 

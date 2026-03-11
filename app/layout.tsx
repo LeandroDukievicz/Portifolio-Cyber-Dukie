@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import Dock from "./components/Dock";
 import MarqueeTitle from "./components/MarqueeTitle";
 import MenuBar from "./components/MenuBar";
+import VisitorGreeting from "./components/VisitorGreeting";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,10 +25,12 @@ export default function RootLayout({
   return (
     <html lang="pt-br" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#03111F] w-full h-full`}
+        className={`${roboto.variable} antialiased bg-[#03111F] w-full h-full`}
+        style={{ fontFamily: "var(--font-roboto), sans-serif" }}
         suppressHydrationWarning
       >
         <MenuBar />
+        <VisitorGreeting />
         {children}
         <Dock />
         <MarqueeTitle />

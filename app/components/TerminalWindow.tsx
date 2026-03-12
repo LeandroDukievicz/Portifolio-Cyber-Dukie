@@ -146,6 +146,12 @@ export default function TerminalWindow() {
     };
   }, []);
 
+  // Abre na home ao montar (refresh direto na home)
+  useEffect(() => {
+    if (pathname === "/") open();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Auto open on home, auto-close with macOS animation on other routes
   useEffect(() => {
     if (prevPathname.current === pathname) return;

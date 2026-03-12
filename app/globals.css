@@ -33,6 +33,39 @@ html[data-blog-theme="light"] {
   animation: hex-color-pulse 4s ease-in-out infinite;
 }
 
+@keyframes scanlines-drift {
+  to { background-position: 0 8px; }
+}
+
+@keyframes holo-shimmer {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+@keyframes holo-sweep {
+  0%   { top: -10%; opacity: 0.7; }
+  80%  { top: 110%; opacity: 0.7; }
+  100% { top: 110%; opacity: 0; }
+}
+
+@keyframes hud-blink {
+  0%, 80%, 100% { opacity: 0.75; }
+  88%           { opacity: 0.1;  }
+}
+
+.holo-scanlines {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 234, 255, 0.045) 3px,
+    rgba(0, 234, 255, 0.045) 4px
+  );
+  animation: scanlines-drift 0.35s linear infinite;
+}
+
+.hud-corner { animation: hud-blink 6s ease-in-out infinite; }
+
 /* ========== CTA BUTTONS ========== */
 
 @property --cta-angle-1 {

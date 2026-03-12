@@ -39,7 +39,7 @@ interface TerminalCtx {
 const Ctx = createContext<TerminalCtx | null>(null);
 
 export function TerminalProvider({ children }: { children: ReactNode }) {
-  const [isOpen,      setIsOpen]      = useState(true);
+  const [isOpen,      setIsOpen]      = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isLarge,     setIsLarge]     = useState(false);
   const [hireModal,   setHireModal]   = useState(false);

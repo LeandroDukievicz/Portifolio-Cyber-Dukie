@@ -66,6 +66,11 @@ html[data-blog-theme="light"] {
 
 .hud-corner { animation: hud-blink 6s ease-in-out infinite; }
 
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0);    opacity: 1;   }
+  50%       { transform: translateY(7px); opacity: 0.5; }
+}
+
 /* ========== CTA BUTTONS ========== */
 
 @property --cta-angle-1 {

@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 import Link from "next/link";
 import Image from "next/image";
+import { BsPerson } from "react-icons/bs";
+import { IoChevronDownOutline } from "react-icons/io5";
 
 const CLIP = "polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%)";
 
@@ -254,13 +256,268 @@ export default function Sobre() {
           </div>
 
           {/* Lado direito — conteúdo */}
-          <div style={{
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", position: "relative", overflow: "hidden" }}>
+          <div id="sobre-content" style={{
             flex: 1, overflowY: "auto",
             padding: isMobile ? "16px 20px" : "32px 40px",
             scrollbarWidth: "thin",
             scrollbarColor: "rgba(255,255,255,0.1) transparent",
           }}>
-            {/* Conteúdo será adicionado aqui */}
+            {/* Título */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+              <h2 style={{
+                margin: 0, fontSize: 20, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
+                background: "linear-gradient(90deg, #00EAFF 0%, #BD00FF 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              }}>
+                Sobre
+              </h2>
+            </div>
+
+            {/* Divider */}
+            <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #00EAFF55, #BD00FF55, transparent)", marginBottom: 20 }} />
+
+            {/* Bio */}
+            {(() => {
+              const p: React.CSSProperties = {
+                margin: "0 0 18px", fontSize: "1rem", lineHeight: 1.85,
+                color: "rgba(255,255,255,0.75)",
+                borderLeft: "2px solid rgba(0,234,255,0.3)", paddingLeft: 14,
+              };
+              const cyan = { color: "#00EAFF" };
+              const pink = { color: "#FF00FF" };
+              return (
+                <>
+                  <p style={p}>
+                    Olá, é uma grande satisfação ter a sua visita, espero que esteja gostando da experiência de navegar
+                    neste portfólio — me custou algumas boas horas para juntar e sintetizar aqui o meu gosto pessoal e
+                    transferir um pouco do que eu sou e curto, além de muitos neurônios queimados kkkkk{" "}
+                    <span style={pink}>( literalmente! )</span>
+                  </p>
+
+                  <p style={{ ...p, borderLeft: "none", paddingLeft: 0 }}>
+                    Se quiser pular direto para a timeline da formação acadêmica{" "}
+                    <a
+                      href="#timeline-section"
+                      onClick={e => {
+                        e.preventDefault();
+                        document.getElementById("timeline-section")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      style={{ color: "#00EAFF", textDecoration: "underline", cursor: "pointer" }}
+                    >
+                      ( clique aqui )
+                    </a>
+                  </p>
+
+                  <p style={p}>
+                    Eu sou realmente aficionado por tecnologia, respiro isso 24 horas por dia e além desta vocação gosto
+                    muito de tocar guitarra, violão, contrabaixo e claro um assíduo consumidor de café, amante de cinema
+                    e literatura <span style={cyan}>( principalmente ficção científica e sci-fi! )</span>.
+                  </p>
+
+                  <p style={p}>
+                    Mudar de carreira não foi uma fuga ou porque quis aproveitar o hype do momento ( se fosse eu já teria
+                    saído, ainda mais com a visão que tenho hoje ) por mais que eu gostasse do ramo de vendas ou do serviço
+                    atual, eu pensei em algo que eu realmente gostava de fazer, desde sempre fui um entusiasta de tecnologia,
+                    fazia o possível para ter gadgets tecnológicos, até que entendi que a graça mesmo era{" "}
+                    <span style={cyan}>criar algo com tecnologia!</span>
+                  </p>
+
+                  <p style={p}>
+                    Na febre dos cursos de hardware cheguei a fazer um curso destes, muito bom por sinal, foi aí que aprendi
+                    a formatar e tive meu primeiro contato com o Linux. Naquela época o Linux era tenso de instalar, não tinha
+                    GUI bonitinha para ajudar não e os drivers eram instalados todos na unha. Depois tentei trabalhar com isso,
+                    mas o mercado saturou rapidamente e começaram a cobrar valores bem baixos para formatar. Logo depois com
+                    meus 20 e poucos anos ( não lembro a idade exata ) fiz um bom curso de lógica de programação, ali eu tive
+                    o primeiro contato real com programação, aprendendo a lógica e printando o meu primeiro:{" "}
+                    <span style={pink}>"hello world"!</span>
+                  </p>
+
+                  <p style={p}>
+                    Lembro que meu primeiro trabalho (estágio) com 16 anos, a primeira coisa que comprei foi um{" "}
+                    <span style={cyan}>iPod Classic</span>, recém lançado. Lembro que paguei em suaves prestações e depois
+                    quebrei a cabeça pra entender como transferia músicas pra ele, que era totalmente diferente dos mp3 players
+                    da época. ( obs: passava horas, tardes inteiras nas lan-houses sobre o iPod. Ainda tenho ele e funciona
+                    100% mesmo depois de 22 anos de uso, com cabo original e tudo funcional!!{" "}
+                    <span style={{ color: "rgba(255,255,255,0.5)" }}>Acredita?</span> )
+                  </p>
+
+                  <p style={p}>
+                    Bom, pondo fim à nostalgia, atualmente estou em transição de carreira, a experiência que tenho em registro
+                    sempre foi no ramo de vendas e atualmente trabalho como motorista de app. Acredito que estas experiências
+                    anteriores moldaram muito a forma que encaro os problemas com uma certa visão mais ampla de negócio, tenho
+                    mais empatia ao lidar com usuários e penso um pouco como quem já esteve do outro lado da tela.
+                  </p>
+
+                  <p style={p}>
+                    Hoje, eu me esforço e me dedico para continuar caminhando de encontro a alcançar mais este objetivo,
+                    me esforçando pra manter a consistência e avançando gradativamente.
+                  </p>
+
+                  <p style={p}>
+                    Meu foco atual é o aprimoramento e desenvolvimento de aplicações web completas{" "}
+                    <span style={{ color: "rgba(255,255,255,0.45)" }}>( futuro próximo: mobile )</span>, no front-end venho
+                    estudando para criar interfaces cada vez mais ricas em detalhes, porém ao mesmo tempo fáceis de usar,
+                    intuitivas e acessíveis.
+                  </p>
+
+                  <p style={p}>
+                    Já no back-end me preocupo em criar APIs que sejam robustas e também eficientes e claro com segurança.
+                  </p>
+
+                  <p style={p}>
+                    Com dados, confesso que ainda preciso adentrar e me aprofundar mais, porém o conhecimento já adquirido
+                    me proporciona modelar bem e fazer consultas. Já utilizei bancos relacionais e não relacionais ao criar
+                    alguns projetos pessoais, justo para aprendizado!
+                  </p>
+
+                  <p style={p}>
+                    O que eu sempre tento é unir uma boa lógica, que seja legível à qualquer um que bata o olho, e gosto de
+                    expandir a criatividade. Eu me esforço pra entregar sempre algo muito bem feito, algo que seja agradável
+                    de usar — e claro nisso em questão estarei sempre melhorando, à medida que eu for me aprimorando e
+                    adquirindo experiência, isso vai melhorar em muito a qualidade!
+                  </p>
+
+                  <p style={p}>
+                    Com este portfólio quero centralizar tudo e poder mostrar meus projetos, ainda tenho muitas ideias para
+                    colocar em prática por aqui, e nesta jornada de transição posso afirmar que não tenho tanta pressa — eu
+                    tenho a certeza de que de uma forma ou de outra eu vou chegar onde almejo!{" "}
+                    <span style={cyan}>Sempre com muita consistência.</span>
+                  </p>
+
+                  <p style={p}>
+                    Se você precisa de uma pessoa esforçada, com força de vontade e persistente na sua equipe, uma pessoa
+                    que vai fazer o máximo possível para fazer jus à oportunidade concedida,{" "}
+                    <span style={pink}>estou aqui, vamos trocar uma ideia!</span>
+                  </p>
+
+                  <p style={{ ...p, marginBottom: 0 }}>
+                    Se você tem um problema real e acredita que a tecnologia pode resolver, também estou aqui. Sinta-se à
+                    vontade para me contatar, ou simplesmente para mandar um feedback ou conselho do que gostou ou do que
+                    posso melhorar! Estarei atento e à espera do seu contato!{" "}
+                    <span style={cyan}>Também estendo o convite para conversarmos pessoalmente quando quiser!! Até mais!</span>
+                  </p>
+                </>
+              );
+            })()}
+
+            {/* Spacer */}
+            <div style={{ height: 36 }} />
+
+            {/* Timeline header */}
+            <div id="timeline-section" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
+              <div style={{ height: 1, flex: 1, background: "linear-gradient(90deg, transparent, rgba(0,234,255,0.3))" }} />
+              <span style={{ fontSize: 10, letterSpacing: "0.2em", color: "rgba(0,234,255,0.6)", textTransform: "uppercase" }}>Formação Acadêmica</span>
+              <div style={{ height: 1, flex: 1, background: "linear-gradient(90deg, rgba(0,234,255,0.3), transparent)" }} />
+            </div>
+
+            {/* Timeline */}
+            <div style={{ position: "relative", paddingLeft: 28 }}>
+              {/* Linha vertical */}
+              <div style={{
+                position: "absolute", left: 7, top: 6, bottom: 6,
+                width: 1, background: "linear-gradient(180deg, #00EAFF44, #BD00FF44, #00EAFF22)",
+              }} />
+
+              {/* Item 1 */}
+              <div style={{ position: "relative", marginBottom: 28 }}>
+                <div style={{
+                  position: "absolute", left: -24, top: 5,
+                  width: 10, height: 10, borderRadius: "50%",
+                  background: "#00EAFF", boxShadow: "0 0 8px #00EAFF",
+                }} />
+                <span style={{ fontSize: "1.2rem", color: "rgba(0,234,255,0.55)", letterSpacing: "0.1em" }}>26 / JAN / 2024</span>
+                <p style={{ margin: "4px 0 0", fontSize: "1rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>
+                  <strong style={{ color: "#fff" }}>Bacharelado em Sistemas para Internet</strong><br />
+                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>Desenvolvimento Web Full Stack · Unicesumar</span>
+                </p>
+              </div>
+
+              {/* Item 2 */}
+              <div style={{ position: "relative", marginBottom: 28 }}>
+                <div style={{
+                  position: "absolute", left: -24, top: 5,
+                  width: 10, height: 10, borderRadius: "50%",
+                  background: "#BD00FF", boxShadow: "0 0 8px #BD00FF",
+                }} />
+                <span style={{ fontSize: "1.2rem", color: "rgba(189,0,255,0.65)", letterSpacing: "0.1em" }}>27 / MAR / 2025</span>
+                <p style={{ margin: "4px 0 0", fontSize: "1rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>
+                  <strong style={{ color: "#fff" }}>Pós-Graduação lato sensu</strong><br />
+                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>Desenvolvimento de Sistemas em Python · Concluído</span>
+                </p>
+              </div>
+
+              {/* Item 3 — Cursando */}
+              <div style={{ position: "relative", marginBottom: 28 }}>
+                <div style={{
+                  position: "absolute", left: -24, top: 5,
+                  width: 10, height: 10, borderRadius: "50%",
+                  background: "transparent", border: "2px solid #FF2D78",
+                  boxShadow: "0 0 8px #FF2D78",
+                  animation: "hex-color-pulse 2s ease-in-out infinite",
+                }} />
+                <span style={{ fontSize: "1.2rem", color: "rgba(255,45,120,0.7)", letterSpacing: "0.1em" }}>01 / JUN / 2025 · CURSANDO</span>
+                <p style={{ margin: "4px 0 0", fontSize: "1rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>
+                  <strong style={{ color: "#fff" }}>Pós-Graduação lato sensu</strong><br />
+                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>Negócios Digitais e Inovação</span>
+                </p>
+                <span style={{
+                  display: "inline-block", marginTop: 6, fontSize: 9, letterSpacing: "0.15em",
+                  padding: "2px 8px", borderRadius: 4,
+                  border: "1px solid rgba(255,45,120,0.5)", color: "#FF2D78",
+                  textTransform: "uppercase",
+                }}>
+                  Em andamento
+                </span>
+              </div>
+
+              {/* Item 4 — Inglês */}
+              <div style={{ position: "relative" }}>
+                <div style={{
+                  position: "absolute", left: -24, top: 5,
+                  width: 10, height: 10, borderRadius: "50%",
+                  background: "#00ff88", boxShadow: "0 0 8px #00ff88",
+                }} />
+                <span style={{ fontSize: "1.2rem", color: "rgba(0,255,136,0.65)", letterSpacing: "0.1em" }}>Idiomas</span>
+                <p style={{ margin: "4px 0 0", fontSize: "1rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>
+                  <strong style={{ color: "#fff" }}>Inglês</strong>{" "}
+                  <span style={{ color: "rgba(0,234,255,0.8)" }}>( básico · em evolução para intermediário )</span><br />
+                  <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>
+                    Com ênfase em termos técnicos e vocabulário relacionado à programação.
+                    Suficiente para comunicação efetiva no ambiente de desenvolvimento de software.
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* Spacer */}
+            <div style={{ height: 36 }} />
+
+          </div>
+
+          {/* Scroll down — fixo no rodapé do painel */}
+          <div style={{
+            flexShrink: 0, display: "flex", justifyContent: "center",
+            padding: "12px 0 14px",
+            borderTop: "1px solid rgba(255,255,255,0.05)",
+            background: "rgba(3,17,31,0.4)",
+          }}>
+            <button
+              onClick={() => document.getElementById("sobre-content")?.scrollBy({ top: 200, behavior: "smooth" })}
+              style={{
+                background: "transparent", border: "none", cursor: "pointer",
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                color: "#00EAFF", animation: "scroll-bounce 1.8s ease-in-out infinite",
+                opacity: 0.7, transition: "opacity 0.2s",
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.7"; }}
+            >
+              <span style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "inherit" }}>scroll down</span>
+              <IoChevronDownOutline size={18} />
+            </button>
+          </div>
+
           </div>
         </div>
       </div>

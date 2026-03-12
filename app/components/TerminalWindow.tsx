@@ -228,7 +228,9 @@ export default function TerminalWindow() {
       contato: "/contato", contact: "/contato", blog: "/blog",
     };
 
-    if (cmd === "cv") {
+    if (cmd === "arquitetura") {
+      addLines(tt.cmdArquitetura.map(text => ({ kind: "info" as const, text })));
+    } else if (cmd === "cv") {
       addLines([{ kind: "output", text: tt.cmdDownloading }]);
       downloadCV();
     } else if (NAV[cmd]) {

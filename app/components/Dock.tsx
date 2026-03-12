@@ -82,7 +82,7 @@ export default function Dock() {
   const innerClass = "flex flex-col items-center justify-center gap-1 w-full h-full";
 
   return (
-    <div className="fixed bottom-4 inset-x-4 md:inset-x-auto md:bottom-[70px] md:left-1/2 md:-translate-x-1/2 flex justify-center z-50">
+    <div className="fixed bottom-4 inset-x-4 md:inset-x-auto md:bottom-[70px] md:left-1/2 md:-translate-x-1/2 flex justify-center z-[150]">
       <ul
         ref={dockRef}
         className="

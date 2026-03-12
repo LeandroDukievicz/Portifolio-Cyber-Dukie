@@ -10,9 +10,19 @@ const DISP_MAP =
 
 const themeToOption = { light: "1", dark: "2", dim: "3" } as const;
 
+const STORAGE_KEY = "blog-theme";
+
 export default function LiquidGlassBlog() {
   const [theme, setTheme] = useState<Theme>("light");
   const [prevOption, setPrevOption] = useState<string>("1");
+
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
+    if (saved && (saved === "light" || saved === "dark" || saved === "dim")) {
+      setPrevOption(themeToOption[saved]);
+      setTheme(saved);
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-blog-theme", theme);
@@ -22,6 +32,7 @@ export default function LiquidGlassBlog() {
   const handleChange = (newTheme: Theme) => {
     setPrevOption(themeToOption[theme]);
     setTheme(newTheme);
+    localStorage.setItem(STORAGE_KEY, newTheme);
   };
 
   const wrapperClass = [

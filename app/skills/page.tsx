@@ -428,13 +428,16 @@ export default function Skills() {
             }}>
               {SOFT_SKILLS.map(({ Icon, label, desc, color }, i) => {
                 const isFlipped = flippedCard === i;
+                const isPrincipio = i === PRINCIPIOS_IDX;
                 return (
                   <div
                     key={label}
                     onClick={() => {
-                      if (i === PRINCIPIOS_IDX) { setShowPrincipios(true); }
-                      else { setFlippedCard(isFlipped ? null : i); }
+                      if (isPrincipio) { setShowPrincipios(true); }
+                      else if (isMobile) { setFlippedCard(isFlipped ? null : i); }
                     }}
+                    onMouseEnter={() => { if (!isPrincipio && !isMobile) setFlippedCard(i); }}
+                    onMouseLeave={() => { if (!isPrincipio && !isMobile) setFlippedCard(null); }}
                     style={{
                       perspective: 600,
                       cursor: "pointer",
@@ -444,7 +447,7 @@ export default function Skills() {
                       ...(i === SOFT_SKILLS.length - 1 ? { gridColumn: "2 / 4" } : {}),
                     }}
                   >
-                    <div className={`flip-inner${i !== PRINCIPIOS_IDX && isFlipped ? " flipped" : ""}`}>
+                    <div className={`flip-inner${!isPrincipio && isFlipped ? " flipped" : ""}`}>
                       {/* Frente */}
                       <div
                         className="flip-face"

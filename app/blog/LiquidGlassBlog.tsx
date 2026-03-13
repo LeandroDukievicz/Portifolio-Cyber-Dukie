@@ -1,7 +1,146 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./blog.module.css";
+
+function ParticleText({ text, theme }: { text: string; theme: string }) {
+  const stageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const SCRAMBLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*<>[]{}";
+    const DURATION = 900;
+    const STAGGER = 110;
+    const chars = text.split("");
+
+    // Hidden ref to measure final positions
+    const ref = document.createElement("div");
+    Object.assign(ref.style, {
+      position: "absolute",
+      visibility: "hidden",
+      pointerEvents: "none",
+      top: "16px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      whiteSpace: "nowrap",
+      display: "flex",
+    });
+    const refSpans = chars.map((ch) => {
+      const s = document.createElement("span");
+      Object.assign(s.style, {
+        fontFamily: "'Orbitron', 'Share Tech Mono', monospace",
+        fontSize: "2.5rem",
+        fontWeight: "700",
+        letterSpacing: "0.2em",
+      });
+      s.textContent = ch === " " ? "\u00A0" : ch;
+      ref.appendChild(s);
+      return s;
+    });
+    stage.appendChild(ref);
+
+    const sr = stage.getBoundingClientRect();
+    const finals = refSpans.map((s) => {
+      const r = s.getBoundingClientRect();
+      return { x: r.left - sr.left, y: r.top - sr.top };
+    });
+    stage.removeChild(ref);
+
+    const W = sr.width || 600;
+    const H = sr.height || 80;
+
+    const elements: HTMLElement[] = [];
+    const scramIntervals: ReturnType<typeof setInterval>[] = [];
+    const flightTimeouts: ReturnType<typeof setTimeout>[] = [];
+    let rafHandles: number[] = [];
+
+    chars.forEach((ch, i) => {
+      const el = document.createElement("div");
+      const flyColor = theme === "light" ? "#000000" : "#00EAFF";
+      const flyGlow  = theme === "light" ? "none" : "0 0 10px #00EAFF";
+      Object.assign(el.style, {
+        position: "absolute",
+        fontFamily: "'Orbitron', 'Share Tech Mono', monospace",
+        fontSize: "2.5rem",
+        fontWeight: "700",
+        letterSpacing: "0.2em",
+        color: flyColor,
+        textShadow: flyGlow,
+        opacity: "0",
+        pointerEvents: "none",
+        userSelect: "none",
+        left: `${Math.random() * W}px`,
+        top: `${Math.random() * H * 2 - H}px`,
+      });
+      el.textContent = ch === " " ? "\u00A0" : SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
+      stage.appendChild(el);
+      elements.push(el);
+
+      const scramInterval = setInterval(() => {
+        if (ch !== " ") el.textContent = SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
+      }, 55);
+      scramIntervals.push(scramInterval);
+
+      const timeout = setTimeout(() => {
+        clearInterval(scramInterval);
+
+        const fromX = Math.random() * W * 2 - W * 0.5;
+        const fromY = Math.random() * H * 4 - H * 2;
+        const toX = finals[i].x;
+        const toY = finals[i].y;
+
+        el.style.left = `${fromX}px`;
+        el.style.top = `${fromY}px`;
+        el.style.opacity = "1";
+
+        const t0 = performance.now();
+        function frame(now: number) {
+          const p = Math.min((now - t0) / DURATION, 1);
+          const ease = 1 - Math.pow(1 - p, 3);
+          el.style.left = `${fromX + (toX - fromX) * ease}px`;
+          el.style.top = `${fromY + (toY - fromY) * ease}px`;
+          if (p < 0.9 && ch !== " ") {
+            el.textContent = SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
+          }
+          if (p < 1) {
+            rafHandles.push(requestAnimationFrame(frame));
+          } else {
+            el.textContent = ch === " " ? "\u00A0" : ch;
+            el.style.color = theme === "light" ? "#000000" : "#ffffff";
+            el.style.textShadow = theme === "light"
+              ? "0 2px 6px rgba(0,0,0,0.2)"
+              : "0 0 8px rgba(255,255,255,0.4), 0 0 2px #00EAFF";
+          }
+        }
+        rafHandles.push(requestAnimationFrame(frame));
+      }, i * STAGGER + 300);
+
+      flightTimeouts.push(timeout);
+    });
+
+    return () => {
+      scramIntervals.forEach(clearInterval);
+      flightTimeouts.forEach(clearTimeout);
+      rafHandles.forEach(cancelAnimationFrame);
+      elements.forEach((el) => el.parentNode?.removeChild(el));
+    };
+  }, [text, theme]);
+
+  return (
+    <div
+      ref={stageRef}
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "80px",
+        overflow: "visible",
+        marginBottom: "32px",
+      }}
+    />
+  );
+}
 
 type Theme = "light" | "dark" | "dim";
 
@@ -10,9 +149,19 @@ const DISP_MAP =
 
 const themeToOption = { light: "1", dark: "2", dim: "3" } as const;
 
+const STORAGE_KEY = "blog-theme";
+
 export default function LiquidGlassBlog() {
   const [theme, setTheme] = useState<Theme>("light");
   const [prevOption, setPrevOption] = useState<string>("1");
+
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
+    if (saved && (saved === "light" || saved === "dark" || saved === "dim")) {
+      setPrevOption(themeToOption[saved]);
+      setTheme(saved);
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-blog-theme", theme);
@@ -22,6 +171,7 @@ export default function LiquidGlassBlog() {
   const handleChange = (newTheme: Theme) => {
     setPrevOption(themeToOption[theme]);
     setTheme(newTheme);
+    localStorage.setItem(STORAGE_KEY, newTheme);
   };
 
   const wrapperClass = [
@@ -170,119 +320,55 @@ export default function LiquidGlassBlog() {
         </label>
       </fieldset>
 
+      <style>{`
+        @keyframes astronaut-float {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-22px); }
+        }
+        @keyframes astronaut-color {
+          0%, 100% {
+            filter:
+              brightness(0) invert(1) sepia(1) saturate(15) hue-rotate(160deg)
+              drop-shadow(0 0 18px #00EAFF);
+          }
+          50% {
+            filter:
+              brightness(0) invert(1) sepia(1) saturate(15) hue-rotate(285deg)
+              drop-shadow(0 0 18px #FF00FF);
+          }
+        }
+      `}</style>
+
       {/* Article */}
       <article className={styles.article}>
-        <h1>Liquid glass</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui maxime
-          optio quam debitis autem, maiores odio tenetur dicta aperiam aliquam,
-          iusto nisi ipsum tempore dolore doloremque facere non culpa sint sequi
-          ducimus corporis veritatis cumque corrupti sed. Ipsa dolor quod alias
-          dicta dolores. Ducimus pariatur nostrum quo, impedit{" "}
-          <a href="#">facilis voluptatibus</a>! Non doloremque, facere neque
-          dolorem animi earum odio placeat quae voluptatem nisi nihil deleniti
-          voluptatibus harum magnam adipisci tenetur.
-        </p>
-        <figure>
+        <ParticleText text="Em Breve" theme={theme} />
+        <div style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+          padding: "40px 0",
+        }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.unsplash.com/photo-1706720094773-d91e070e4b90?q=80&w=2515&auto=format&fit=crop"
-            alt="Abstract green object on yellow background"
+            src="/images/astronautas.svg"
+            alt="Astronautas"
+            style={{
+              maxWidth: "546px",
+              width: "100%",
+              aspectRatio: "auto",
+              objectFit: "contain",
+              borderRadius: 0,
+              animation: theme === "light"
+                ? "astronaut-float 4s ease-in-out infinite"
+                : "astronaut-float 4s ease-in-out infinite, astronaut-color 3s ease-in-out infinite",
+              filter: theme === "light"
+                ? "drop-shadow(0 4px 12px rgba(0,0,0,0.25))"
+                : undefined,
+            }}
           />
-          <figcaption>
-            Photo by Neeqolah Creative Works on{" "}
-            <a href="https://unsplash.com">Unsplash</a>
-          </figcaption>
-        </figure>
-        <p>
-          Sit amet consectetur adipisicing elit. Quibusdam illum in voluptates
-          omnis reprehenderit inventore perferendis dolores, architecto
-          doloribus. Quam error qui nam quis! Dolorum, dolore saepe ipsam quae
-          aliquam tenetur dolores dolor repellendus facere a quasi soluta
-          voluptate provident earum cum. Nostrum consequuntur corporis quibusdam
-          tempora amet, animi inventore dicta voluptas nisi placeat ut illum
-          explicabo! Consequatur, accusamus.
-        </p>
-        <blockquote>
-          Et aliquam libero deserunt maxime! Perspiciatis neque deserunt sequi
-          deleniti!
-        </blockquote>
-        <p>
-          Recusandae doloribus, ullam inventore esse culpa cupiditate
-          dignissimos qui ducimus possimus ipsum reprehenderit, suscipit debitis
-          nihil sit. Animi eligendi sed molestiae. Repellat, est ut eos
-          voluptates tempora quisquam corporis mollitia, excepturi commodi cum
-          dolore asperiores eaque debitis fuga quidem! A laborum ab reiciendis
-          saepe rerum iste. Nisi quos earum ex nulla neque{" "}
-          <a href="#">tempora explicabo reiciendis</a> vitae sapiente accusamus
-          tempore consequatur nemo, placeat magni quasi corrupti nobis alias,
-          rerum ipsam fuga quisquam tenetur repellendus!
-        </p>
-        <h2>Doloremque nisi eius quis</h2>
-        <p>
-          Magnam quo voluptate vitae voluptatem expedita vel illum ut. Tempore,
-          sed? Sunt distinctio minus dolore, consequuntur eos qui eveniet error
-          rerum tempora, autem et quaerat, ea repellendus unde iure. Fuga ad
-          tempore cupiditate animi iste, eius nam beatae, aliquid quae id iusto
-          perspiciatis. Quos quis cum itaque facilis libero sequi quaerat ipsam
-          hic blanditiis doloribus modi sapiente tempora ipsum fugiat similique
-          cupiditate beatae provident eos natus doloremque alias, sed
-          praesentium.
-        </p>
-        <figure>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://images.unsplash.com/photo-1734606901283-489b25f7aa9b?q=80&w=2360&auto=format&fit=crop"
-            alt="Abstract colorful composition"
-          />
-          <figcaption>
-            Photo by Irene Demetri on{" "}
-            <a href="https://unsplash.com">Unsplash</a>
-          </figcaption>
-        </figure>
-        <p>
-          Quod iste recusandae sed labore corporis ea provident debitis hic
-          maxime placeat alias rem cumque animi explicabo laboriosam, dicta
-          molestias? Corporis quibusdam, aliquam asperiores quo officia
-          reiciendis nemo aspernatur similique voluptatibus in tempora? Laborum
-          temporibus ipsa at exercitationem ullam labore tempore neque.
-        </p>
-        <blockquote>
-          Consequatur itaque sit amet consectetur adipisicing elit.
-        </blockquote>
-        <p>
-          Ab eveniet recusandae incidunt id cumque porro? Dignissimos nostrum
-          iure possimus mollitia sed provident esse optio odio consequatur!
-          Recusandae dicta ab atque? Eveniet molestias autem accusantium vero,
-          tenetur placeat ratione voluptates nesciunt, adipisci ullam cum quae
-          eius eaque quibusdam nihil dolorem!
-        </p>
-        <p className={styles.box}>
-          Perspiciatis sapiente eum velit inventore illum accusamus eos at esse
-          mollitia debitis quae rem odit, ipsam nam. Voluptas beatae, velit
-          voluptatum dolor obcaecati a nobis consequuntur quis id eaque!
-          Sapiente nostrum rerum esse quo laborum excepturi explicabo,
-          perspiciatis dicta corporis atque?
-        </p>
-        <h2>Quod voluptas aliquid id saepe</h2>
-        <p>
-          Et minima quas amet! Debitis commodi consectetur laborum fugit
-          voluptatum qui distinctio, natus odit obcaecati. Voluptate suscipit
-          consectetur, aspernatur ratione impedit minus facilis voluptatum
-          tempora nesciunt pariatur ipsa provident qui distinctio ad quasi
-          magnam exercitationem itaque.
-        </p>
-        <p>
-          Maxime in officiis fugiat corporis cum doloremque atque, at architecto
-          dicta quod inventore corrupti facilis repellendus pariatur possimus
-          error! At aperiam aliquam fugiat eveniet sapiente soluta hic ab ipsam,
-          corrupti temporibus tempore? Velit, sed quos mollitia deleniti fugiat
-          tempora fuga reprehenderit neque tempore doloremque ducimus quasi?
-        </p>
-        <p>
-          Made with love by{" "}
-          <a href="//codepen.io/DedaloD">Den Dionigi | UX Designer</a>
-        </p>
+        </div>
       </article>
     </div>
   );

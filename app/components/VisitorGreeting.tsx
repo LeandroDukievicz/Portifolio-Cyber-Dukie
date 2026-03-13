@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "../context/LanguageContext";
 
 interface GeoData {
   city?: string;
@@ -9,19 +10,18 @@ interface GeoData {
   error?: boolean;
 }
 
-function buildGreeting(geo: GeoData): string {
-  if (geo.error || (!geo.city && !geo.country_name)) {
-    return "Olá! Seja bem-vindo ao meu portfólio.";
-  }
-  const location = geo.city ?? geo.country_name;
-  return `Olá, visitante de ${location}! Seja bem-vindo.`;
-}
-
 export default function VisitorGreeting() {
   const [visible, setVisible]   = useState(false);
   const [leaving, setLeaving]   = useState(false);
-  const [message, setMessage]   = useState("");
+  const [geo, setGeo]           = useState<GeoData | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { t } = useLanguage();
+
+  const message = geo
+    ? (geo.error || (!geo.city && !geo.country_name))
+      ? t.greeting.default
+      : t.greeting.withLocation(geo.city ?? geo.country_name ?? "")
+    : "";
 
   useEffect(() => {
     if (sessionStorage.getItem("greeted")) return;
@@ -29,8 +29,8 @@ export default function VisitorGreeting() {
     fetch("https://ipapi.co/json/")
       .then((r) => r.json())
       .catch(() => ({ error: true }))
-      .then((geo: GeoData) => {
-        setMessage(buildGreeting(geo));
+      .then((data: GeoData) => {
+        setGeo(data);
         setVisible(true);
         sessionStorage.setItem("greeted", "1");
 
@@ -104,7 +104,7 @@ export default function VisitorGreeting() {
             color: "rgba(0, 234, 255, 0.5)",
           }}
         >
-          clique para fechar
+          {t.greeting.clickToClose}
         </p>
       </div>
 

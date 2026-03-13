@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-
-const TITLE = "Bem vindo ao meu portifólio | Leandro Dukievicz | Dev Front End \u00a0\u00a0\u00a0";
+import { useLanguage } from "../context/LanguageContext";
 
 const COLOR = "#ffffff";
 
@@ -18,11 +17,7 @@ const FAVICONS = [
     "0 0 16 16",
     `<path fill="${COLOR}" d="M4.708 5.578L2.061 8.224l2.647 2.646-.708.708-3-3V7.87l3-3 .708.708zm7-.708L11 5.578l2.647 2.646L11 10.87l.708.708 3-3V7.87l-3-3zM4.908 13l.894.448 5-10L9.908 3l-5 10z"/>`
   ),
-  // FaCoffee
-  svg(
-    "0 0 640 512",
-    `<path fill="${COLOR}" d="M192 384h192c53 0 96-43 96-96h32c70.6 0 128-57.4 128-128S582.6 32 512 32H120c-13.3 0-24 10.7-24 24v232c0 53 43 96 96 96zM512 96c35.3 0 64 28.7 64 64s-28.7 64-64 64h-32V96h32zm47.7 384H48.3c-47.6 0-61-64-36-64h583.3c25 0 11.8 64-35.9 64z"/>`
-  ),
+  
   // CgCoffee
   svg(
     "0 0 24 24",
@@ -57,8 +52,10 @@ function setFavicon(href: string) {
 }
 
 export default function MarqueeTitle() {
+  const { t } = useLanguage();
+
   useEffect(() => {
-    // Marquee title
+    const TITLE = t.marquee;
     let titleIndex = 0;
     const titleInterval = setInterval(() => {
       document.title = TITLE.slice(titleIndex) + TITLE.slice(0, titleIndex);
@@ -77,7 +74,7 @@ export default function MarqueeTitle() {
       clearInterval(titleInterval);
       clearInterval(faviconInterval);
     };
-  }, []);
+  }, [t.marquee]);
 
   return null;
 }

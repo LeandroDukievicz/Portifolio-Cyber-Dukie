@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import CyberpunkBackground from "../components/CyberpunkBackground";
-import Link from "next/link";
 import { useLanguage } from "../context/LanguageContext";
 import {
   SiJavascript, SiTypescript, SiHtml5, SiCss, SiNextdotjs,
@@ -251,9 +250,7 @@ export default function Skills() {
           borderBottom: "1px solid rgba(255,255,255,0.07)",
           flexShrink: 0, userSelect: "none",
         }}>
-          <Link href="/">
-            <span title="Fechar" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", cursor: "pointer", flexShrink: 0 }} />
-          </Link>
+          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
           <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
           <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>

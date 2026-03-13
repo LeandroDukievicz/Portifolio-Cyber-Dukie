@@ -185,8 +185,6 @@ export default function Sobre() {
 
   const [visible,      setVisible]      = useState(false);
   const [isMobile,     setIsMobile]     = useState(false);
-  const [minimized,    setMinimized]    = useState(false);
-  const [fullscreen,   setFullscreen]   = useState(false);
   const [readProgress, setReadProgress] = useState(0);
   const [atBottom,     setAtBottom]     = useState(false);
 
@@ -213,10 +211,11 @@ export default function Sobre() {
 
   const windowStyle: React.CSSProperties = {
     position: "fixed",
-    top: fullscreen ? 0 : 48,
-    left: fullscreen ? 0 : (isMobile ? "2vw" : "10vw"),
-    width: fullscreen ? "100vw" : (isMobile ? "96vw" : "80vw"),
-    borderRadius: fullscreen ? 0 : 12,
+    top: 48,
+    left: isMobile ? "2vw" : "10vw",
+    width: isMobile ? "96vw" : "80vw",
+    bottom: isMobile ? 70 : 186,
+    borderRadius: 12,
     overflow: "hidden",
     background: "rgba(3,17,31,0.65)",
     backdropFilter: "blur(12px) saturate(120%)",
@@ -228,11 +227,7 @@ export default function Sobre() {
     zIndex: 100,
     opacity: visible ? 1 : 0,
     transform: visible ? "scale(1) translateY(0)" : "scale(0.96) translateY(16px)",
-    transition: "opacity 0.35s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), height 0.3s cubic-bezier(0.25, 1, 0.5, 1), top 0.3s ease, left 0.3s ease, width 0.3s ease, border-radius 0.3s ease",
-    ...(minimized
-      ? { height: 42 }
-      : { bottom: fullscreen ? 0 : (isMobile ? 70 : 186) }
-    ),
+    transition: "opacity 0.35s ease, transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)",
   };
 
   const cyan = { color: "#00EAFF" };
@@ -260,19 +255,9 @@ export default function Sobre() {
           borderBottom: "1px solid rgba(255,255,255,0.07)",
           flexShrink: 0, userSelect: "none",
         }}>
-          <Link href="/">
-            <span title="Fechar" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", cursor: "pointer", flexShrink: 0 }} />
-          </Link>
-          <span
-            title={minimized ? "Restaurar" : "Minimizar"}
-            onClick={() => setMinimized(v => !v)}
-            style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", cursor: "pointer", flexShrink: 0 }}
-          />
-          <span
-            title={fullscreen ? "Restaurar" : "Tela cheia"}
-            onClick={() => setFullscreen(v => !v)}
-            style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", cursor: "pointer", flexShrink: 0 }}
-          />
+          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
+          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
+          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
             {s.windowTitle}
           </span>

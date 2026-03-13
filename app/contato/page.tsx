@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 
@@ -52,20 +51,37 @@ const CONTACTS = [
 
 export default function Contato() {
   const [isMobile,   setIsMobile]   = useState(false);
-  const [minimized,  setMinimized]  = useState(false);
-  const [fullscreen, setFullscreen] = useState(false);
   const [hovered,    setHovered]    = useState<number | null>(null);
   const [form, setForm] = useState({ nome: "", email: "", assunto: "", mensagem: "" });
-  const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast]       = useState(false);
+  const [submitted, setSubmitted]       = useState(false);
+  const [submitting, setSubmitting]     = useState(false);
 
   const allFilled = Object.values(form).every(v => v.trim() !== "") && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!allFilled) {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
+      return;
     }
+    setSubmitting(true);
+    await fetch("https://formspree.io/f/maqpbbor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ nome: form.nome, email: form.email, assunto: form.assunto, mensagem: form.mensagem }),
+    });
+    setSubmitting(false);
+    setSubmitted(true);
+    setForm({ nome: "", email: "", assunto: "", mensagem: "" });
+    const confetti = (await import("canvas-confetti")).default;
+    const colors = ["#00EAFF", "#FF00FF", "#FF2D78", "#ffffff", "#00ff88"];
+    confetti({ particleCount: 120, spread: 80, origin: { x: 0.5, y: 0.55 }, colors });
+    setTimeout(() => {
+      confetti({ particleCount: 70, angle: 60,  spread: 55, origin: { x: 0, y: 0.6 }, colors });
+      confetti({ particleCount: 70, angle: 120, spread: 55, origin: { x: 1, y: 0.6 }, colors });
+    }, 150);
   };
 
   const inputStyle: React.CSSProperties = {
@@ -188,12 +204,11 @@ export default function Contato() {
         className="window-rise"
         style={{
           position: "fixed",
-          top:    fullscreen ? 0 : (isMobile ? "5vh"  : "calc(20vh - 100px)"),
-          bottom: fullscreen ? 0 : (minimized ? undefined : (isMobile ? "5vh" : "calc(20vh + 100px)")),
-          left:   fullscreen ? 0 : (isMobile ? "5vw"  : "20vw"),
-          width:  fullscreen ? "100vw" : (isMobile ? "90vw" : "60vw"),
-          ...(minimized ? { height: 42 } : {}),
-          borderRadius: fullscreen ? 0 : 12,
+          top:    isMobile ? "5vh"  : "calc(20vh - 100px)",
+          bottom: isMobile ? "5vh" : "calc(20vh + 100px)",
+          left:   isMobile ? "5vw"  : "20vw",
+          width:  isMobile ? "90vw" : "60vw",
+          borderRadius: 12,
           overflow: "hidden",
           background: "rgba(3,17,31,0.65)",
           backdropFilter: "blur(12px) saturate(120%)",
@@ -214,19 +229,9 @@ export default function Contato() {
           borderBottom: "1px solid rgba(255,255,255,0.07)",
           flexShrink: 0, userSelect: "none",
         }}>
-          <Link href="/">
-            <span title="Fechar" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", cursor: "pointer", flexShrink: 0 }} />
-          </Link>
-          <span
-            title={minimized ? "Restaurar" : "Minimizar"}
-            onClick={() => setMinimized(v => !v)}
-            style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", cursor: "pointer", flexShrink: 0 }}
-          />
-          <span
-            title={fullscreen ? "Restaurar" : "Tela cheia"}
-            onClick={() => setFullscreen(v => !v)}
-            style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", cursor: "pointer", flexShrink: 0 }}
-          />
+          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
+          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
+          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
             contato.md
           </span>
@@ -333,13 +338,19 @@ export default function Contato() {
               </div>
 
               {/* Botão */}
-              <div style={{ alignSelf: "flex-end" }}>
+              <div style={{ alignSelf: "flex-end", display: "flex", alignItems: "center", gap: 12 }}>
+                {submitted && (
+                  <span style={{ fontSize: "0.78rem", color: "#00EAFF", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}>
+                    ✓ Mensagem enviada!
+                  </span>
+                )}
                 <button
                   type="submit"
                   className="btn-liquid-glass"
+                  disabled={submitting}
                   style={{ opacity: allFilled ? 1 : 0.4 }}
                 >
-                  Enviar mensagem
+                  {submitting ? "Enviando..." : "Enviar mensagem"}
                 </button>
               </div>
             </form>

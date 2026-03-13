@@ -55,6 +55,175 @@ Tanto o botão **Baixar CV** quanto o comando `sudo hire-me` do terminal dispara
 
 ---
 
+## ✅ Sobre — Concluída
+
+### Janela estilo macOS
+
+A página `/sobre` é renderizada como uma janela flutuante sobre o background animado, com todos os controles macOS funcionais:
+
+- **Botão vermelho** — fecha e navega para `/`
+- **Botão amarelo** — minimiza a janela (height colapsa para 42px com transição suave)
+- **Botão verde** — alterna fullscreen (cobre todo o viewport)
+- Entrada animada: `opacity 0 → 1` + `scale(0.96) → scale(1)` + `translateY(16px) → 0`
+- Glassmorphism: `background: rgba(3,17,31,0.65)` + `backdrop-filter: blur(12px)`
+- Layout responsivo: coluna (mobile) ou linha lado-a-lado (desktop ≥ 768px)
+- Largura: `96vw` mobile / `80vw` desktop
+
+### Painel Esquerdo — Foto Holográfica + Info
+
+**Componente `HoloPhoto`** com três sistemas de animação independentes via `useEffect`:
+
+| Efeito | Técnica |
+|---|---|
+| **3D Tilt** | `requestAnimationFrame` com lerp (t=0.06) acompanhando o cursor; `perspective: 900px`, `rotateX/rotateY` até ±14° |
+| **Glitch Cromático** | Dois overlays coloridos (cyan `rgba(0,234,255,0.22)` e pink `rgba(255,0,255,0.18)`) deslocados aleatoriamente, com double-flicker opcional, disparados a cada 2,8–7,8s |
+| **Scan Sweep** | Faixa de luz ciano deslizando de `-6%` a `106%` em 1,8s linear, repetida a cada 4–8s |
+
+Outros detalhes da foto:
+- Máscara radial `ellipse 88%` dissolvendo as bordas
+- Overlay de scanlines via classe CSS `.holo-scanlines`
+- Shimmer animado com `linear-gradient` a 135° (animação `holo-shimmer 4s`)
+
+Abaixo da foto:
+- **Nome** "Leandro Dukievicz" em gradiente cyan → purple
+- **Localização** com ícone `MdLocationOn` roxo — "Maringá — PR"
+- **Status de disponibilidade** — pill verde com bolinha pulsante (animação `available-pulse 1.8s`)
+
+### Painel Direito — Conteúdo
+
+**Barra de progresso de leitura** no topo: faixa de 2px com gradiente `#00EAFF → #BD00FF → #FF2D78` que cresce conforme o scroll do conteúdo (calculado com `scrollTop / (scrollHeight - clientHeight) * 100`).
+
+**Conteúdo scrollável** com scrollbar fino personalizado:
+
+- Título com efeito de cursor piscando (`animation: cursor-blink 1s step-end infinite`)
+- Dividers com gradiente transparente → cyan/purple → transparente
+- 3 parágrafos de bio — o segundo destaca "Full Stack" em cyan via `React.Fragment` split
+- **Seção Stack** com ícones badge para cada tecnologia (React+Next.js, Node.js+Express, PostgreSQL+MySQL), cada badge com cor individual, borda e fundo semi-transparente
+
+**Seção de links de contato** com três botões:
+
+| Link | Cor | Destino |
+|---|---|---|
+| Email | `#FF2D78` | `mailto:...` |
+| GitHub | `#BD00FF` | github.com/LeandroDukievicz |
+| LinkedIn | `#00EAFF` | linkedin.com/in/leandrodukievicz |
+
+Cada botão tem hover com intensificação do fundo via `onMouseEnter/Leave`.
+
+**Timeline** com 4 itens e marcadores coloridos:
+
+| Cor do ponto | Estado | Badge |
+|---|---|---|
+| `#00EAFF` sólido | Início | `badgeStart` |
+| `#BD00FF` sólido | Concluído | `badgeCompleted` |
+| `#FF2D78` vazio + pulsante | Em andamento | `badgeInProgress` |
+| `#00ff88` sólido | Idiomas | — |
+
+Linha vertical conectando os itens com gradiente `#00EAFF44 → #BD00FF44 → #00EAFF22`.
+
+**Botão de scroll** fixo no rodapé do painel:
+- Mostra seta para baixo com animação `scroll-bounce 1.8s` enquanto há conteúdo abaixo
+- Ao atingir o fim, inverte para seta para cima (retorna ao topo com scroll suave)
+- Transição de opacidade no hover
+
+### i18n na Página Sobre
+
+Todos os textos da página (bio, títulos, labels da timeline, badges, status, botões de scroll) vêm de `t.sobre` via `useLanguage()` — suporte completo PT/EN.
+
+| Campo traduzido |
+|---|
+| `windowTitle`, `heading`, `available` |
+| `bio1`, `bio2`, `bio3`, `bio4`, `bio5`, `bio5Highlight` |
+| `stackIntro`, `stack[].label`, `stack[].desc` |
+| `timelineTitle`, `timeline[].date/title/sub/detail` |
+| `badgeStart`, `badgeCompleted`, `badgeInProgress` |
+| `scrollDown`, `scrollUp` |
+
+---
+
+## ✅ Skills — Concluída
+
+### Janela estilo macOS
+
+Mesma estrutura de janela glassmorphism das demais páginas: title bar com traffic lights (vermelho fecha e navega para `/`, amarelo e verde decorativos), `backdrop-filter: blur(12px)`, entrada animada via classe `window-rise`, responsiva (96vw mobile / 80vw desktop).
+
+### Layout — dois painéis lado a lado
+
+O conteúdo é dividido em dois painéis separados por uma divisória vertical com gradiente:
+
+- **Esquerdo** — Hard Skills
+- **Direito** — Soft Skills
+
+Em mobile os painéis empilham verticalmente.
+
+### Hard Skills
+
+**Componente `SkillCard`** — cada tecnologia é um card com:
+- Ícone colorido com a cor oficial da tecnologia
+- Label abaixo do ícone
+- Borda e fundo semi-transparentes na cor da tech (`color + "28"` / `color + "0d"`)
+- Hover: borda intensifica para `color + "66"`, fundo para `color + "1a"`, glow `box-shadow 0 0 16px`, `translateY(-2px)`
+- Entrada animada com `card-in` (opacity 0→1 + translateY 10px→0 + scale 0.95→1), com **stagger de 55ms por card** sincronizado globalmente entre grupos
+
+**Categorias e tecnologias:**
+
+| Categoria | Tecnologias |
+|---|---|
+| Linguagens | JavaScript, TypeScript, HTML5, CSS3 |
+| Boas Práticas | Web Performance, Responsive Design, SEO Web |
+| Frameworks & Libs | React, Next.js, Node.js, Express, Tailwind CSS |
+| Banco de Dados | PostgreSQL, MySQL |
+| Ferramentas | Git, GitHub, Docker, npm, yarn, pnpm, REST APIs |
+
+**Layout em grid por categoria:**
+- Linha 1: Linguagens + Boas Práticas lado a lado (flex row), grid `auto-fill minmax(82px)`
+- Divisória horizontal
+- Demais grupos (Frameworks, BD, Ferramentas) em linhas próprias, grid `auto-fill minmax(68px)`
+
+**Componente `TypeLabel`** — cada label de categoria é digitado caractere a caractere com efeito typewriter:
+- Delay de início sincronizado com o `cardIndex` do primeiro card da categoria × 55ms
+- Cursor piscante `_` enquanto digita (animação `cursor-blink 0.7s step-end`)
+
+### Soft Skills
+
+Grid fixo 4 colunas com **flip cards 3D** — cada card tem frente e verso:
+
+- **Frente**: ícone + label da soft skill
+- **Verso**: descrição da competência
+- Clique alterna o estado `flippedCard` — rotaciona 180° em Y via CSS `transform-style: preserve-3d` + `rotateY(180deg)` com transição de 0.45s
+- Apenas um card vira por vez (clicar outro reseta o anterior)
+- `backface-visibility: hidden` para esconder a face oposta
+
+**12 soft skills:**
+Resolução de problemas, Pensamento analítico, Comunicação clara, Trabalho em equipe, Aprendizado contínuo, Adaptabilidade, Organização, Atenção aos detalhes, Proatividade, Pensamento crítico, Gestão do tempo, Inteligência emocional.
+
+Cores alternadas entre `#00EAFF`, `#BD00FF` e `#FF2D78`.
+
+### Card especial — Princípios de Engenharia
+
+O último item do grid de soft skills (`TbCode` — "Princípios de Engenharia") tem comportamento diferente dos outros:
+- Ocupa **2 colunas centrais** (`gridColumn: "2 / 4"`) para destaque visual
+- Exibe "ver →" abaixo do label
+- Ao clicar **não vira** — em vez disso abre um painel sobreposto deslizando da direita (`translateX(28px) → 0` + opacity 0→1 em 0.38s)
+
+**Painel de Princípios de Engenharia:**
+- Cobre todo o content area com `position: absolute, inset: 0, zIndex: 20`
+- Fundo `rgba(3,17,31,0.97)` + blur
+- Botão "← Voltar" fecha o painel
+- 7 princípios listados com stagger de entrada `principles-in` (translateX(24px) → 0, 55ms entre itens):
+
+| # | Princípio |
+|---|---|
+| 1 | Performance primeiro |
+| 2 | Simplicidade vence complexidade |
+| 3 | Código é comunicação |
+| 4 | Experiência do usuário em primeiro lugar |
+| 5 | Escalabilidade desde o início |
+| 6 | Consistência visual e técnica |
+| 7 | Automação sempre que possível |
+
+---
+
 ## Features Globais
 
 ### Terminal macOS
@@ -97,6 +266,7 @@ Ao clicar no ícone de idioma no MenuBar, **todo o site muda de idioma**:
 | MenuBar (título do portfólio) | ✅ |
 | Greeting de boas-vindas | ✅ |
 | Marquee da aba do browser | ✅ |
+| Página Sobre (bio, timeline, badges, scroll) | ✅ |
 
 ### MenuBar
 
@@ -189,6 +359,8 @@ Acesse [http://localhost:3000](http://localhost:3000).
 | Versão | Data | Descrição |
 |---|---|---|
 | `v1.0.0` | 2026-03-11 | Home concluída — hero, terminal, i18n, CTAs, dock, glitch |
+| `v1.1.0` | 2026-03-13 | Página Sobre — janela macOS, foto holográfica, timeline, i18n |
+| `v1.2.0` | 2026-03-13 | Página Skills — hard skills com stagger, flip cards, princípios de engenharia |
 
 ---
 

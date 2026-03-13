@@ -49,7 +49,7 @@ export default function Page() {
           </p>
 
           <p
-            className="max-w-md text-[1.1rem] font-light leading-relaxed"
+            className="max-w-md text-[1.1rem] font-light leading-relaxed text-justify"
             style={{
               background: "linear-gradient(160deg, #ffffff 0%, #e2e2e2 40%, #a8a8a8 100%)",
               WebkitBackgroundClip: "text",

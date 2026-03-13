@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 import Link from "next/link";
+import { useLanguage } from "../context/LanguageContext";
 import {
   SiJavascript, SiTypescript, SiHtml5, SiCss, SiNextdotjs,
   SiExpress, SiPostgresql, SiMysql, SiTailwindcss, SiGit,
@@ -177,6 +178,8 @@ const PRINCIPLES = [
 const PRINCIPIOS_IDX = SOFT_SKILLS.length - 1;
 
 export default function Skills() {
+  const { t } = useLanguage();
+  const s = t.skills;
   const [isMobile, setIsMobile] = useState(false);
   const [flippedCard, setFlippedCard] = useState<number | null>(null);
   const [showPrincipios, setShowPrincipios] = useState(false);
@@ -254,7 +257,7 @@ export default function Skills() {
           <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
           <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
-            skills.txt — Leandro Dukievicz
+            {s.windowTitle}
           </span>
         </div>
 
@@ -288,21 +291,21 @@ export default function Skills() {
                 onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,234,255,0.15)")}
                 onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,234,255,0.08)")}
               >
-                ← Voltar
+                {s.back}
               </button>
               <h2 style={{
                 margin: 0, fontSize: "1rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
                 background: "linear-gradient(90deg, #00EAFF 0%, #BD00FF 100%)",
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
               }}>
-                Princípios de Engenharia
+                {s.principlesTitle}
               </h2>
             </div>
             <div style={{ height: 1, background: "linear-gradient(90deg, #00EAFF55, #BD00FF55, transparent)", marginBottom: 14, flexShrink: 0 }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {PRINCIPLES.map(({ num, title, desc }, i) => (
+              {PRINCIPLES.map(({ num }, i) => (
                 <div
-                  key={title}
+                  key={i}
                   style={{
                     display: "flex", gap: 10, alignItems: "flex-start",
                     animation: showPrincipios ? `principles-in 0.35s ease ${i * 55}ms both` : "none",
@@ -310,10 +313,10 @@ export default function Skills() {
                 >
                   <div>
                     <span style={{ fontSize: "1.2rem", fontWeight: 700, color: "rgba(255,255,255,0.9)", letterSpacing: "0.04em" }}>
-                      {title}
+                      {s.principles[i].title}
                     </span>
                     <p style={{ margin: "2px 0 0", fontSize: "1.2rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>
-                      {desc}
+                      {s.principles[i].desc}
                     </p>
                   </div>
                 </div>
@@ -329,7 +332,7 @@ export default function Skills() {
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
               flexShrink: 0,
             }}>
-              Hard Skills
+              {s.hardSkills}
             </h2>
             <div style={{ height: 1, background: "linear-gradient(90deg, #00EAFF55, #BD00FF55, transparent)", marginTop: 5, marginBottom: 8, flexShrink: 0 }} />
 
@@ -346,14 +349,14 @@ export default function Skills() {
             }}>
               {/* Primeira linha — Linguagens + Boas Práticas lado a lado */}
               <div style={{ display: "flex", gap: 12 }}>
-                {GROUPS.slice(0, 2).map(({ category, items, startIndex }) => (
+                {GROUPS.slice(0, 2).map(({ category, items, startIndex }, gi) => (
                   <div key={category} style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                       <span style={{
                         fontSize: "0.72rem", letterSpacing: "0.1em", textTransform: "uppercase",
                         color: "rgba(0,234,255,0.55)", minWidth: 0, whiteSpace: "nowrap",
                       }}>
-                        <TypeLabel text={category} startDelay={startIndex * CARD_DELAY_MS} />
+                        <TypeLabel text={s.categories[gi]} startDelay={startIndex * CARD_DELAY_MS} />
                       </span>
                       <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, rgba(0,234,255,0.15), transparent)" }} />
                     </div>
@@ -374,14 +377,14 @@ export default function Skills() {
               <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)", flexShrink: 0 }} />
 
               {/* Demais grupos */}
-              {GROUPS.slice(2).map(({ category, items, startIndex }) => (
+              {GROUPS.slice(2).map(({ category, items, startIndex }, gi) => (
                 <div key={category}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                     <span style={{
                       fontSize: "0.72rem", letterSpacing: "0.1em", textTransform: "uppercase",
                       color: "rgba(0,234,255,0.55)", minWidth: 0,
                     }}>
-                      <TypeLabel text={category} startDelay={startIndex * CARD_DELAY_MS} />
+                      <TypeLabel text={s.categories[gi + 2]} startDelay={startIndex * CARD_DELAY_MS} />
                     </span>
                     <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, rgba(0,234,255,0.15), transparent)" }} />
                   </div>
@@ -415,7 +418,7 @@ export default function Skills() {
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
               flexShrink: 0,
             }}>
-              Soft Skills
+              {s.softSkills}
             </h2>
             <div style={{ height: 1, background: "linear-gradient(90deg, #BD00FF55, #FF2D7855, transparent)", marginTop: 6, marginBottom: 8, flexShrink: 0 }} />
 
@@ -426,12 +429,12 @@ export default function Skills() {
               gridTemplateColumns: "repeat(4, 1fr)",
               gap: 5,
             }}>
-              {SOFT_SKILLS.map(({ Icon, label, desc, color }, i) => {
+              {SOFT_SKILLS.map(({ Icon, color }, i) => {
                 const isFlipped = flippedCard === i;
                 const isPrincipio = i === PRINCIPIOS_IDX;
                 return (
                   <div
-                    key={label}
+                    key={i}
                     onClick={() => {
                       if (isPrincipio) { setShowPrincipios(true); }
                       else if (isMobile) { setFlippedCard(isFlipped ? null : i); }
@@ -462,11 +465,11 @@ export default function Skills() {
                           lineHeight: 1.25, letterSpacing: "0.02em",
                           textAlign: "center",
                         }}>
-                          {label}
+                          {s.softSkillsData[i].label}
                         </span>
-                        {i === PRINCIPIOS_IDX && (
+                        {isPrincipio && (
                           <span style={{ fontSize: "0.65rem", color: `${color}88`, letterSpacing: "0.06em", marginTop: 2 }}>
-                            ver →
+                            {s.principlesHint}
                           </span>
                         )}
                       </div>
@@ -484,7 +487,7 @@ export default function Skills() {
                           color: "rgba(255,255,255,0.85)",
                           lineHeight: 1.45, textAlign: "center",
                         }}>
-                          {desc}
+                          {s.softSkillsData[i].desc}
                         </p>
                       </div>
                     </div>

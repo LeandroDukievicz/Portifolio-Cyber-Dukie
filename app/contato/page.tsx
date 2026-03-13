@@ -2,12 +2,59 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import CyberpunkBackground from "../components/CyberpunkBackground";
+
+const CONTACTS = [
+  {
+    name: "WhatsApp",
+    image: "/images/whats.webp",
+    href: "https://wa.me/SEU_NUMERO",
+    color: "#25D366",
+    label: "+55 (44) 9 0000-0000",
+  },
+  {
+    name: "LinkedIn",
+    image: "/images/linkedin.webp",
+    href: "https://linkedin.com/in/SEU_PERFIL",
+    color: "#0A66C2",
+    label: "linkedin.com/in/SEU_PERFIL",
+  },
+  {
+    name: "GitHub",
+    image: "/images/github.webp",
+    href: "https://github.com/SEU_USUARIO",
+    color: "#ffffff",
+    label: "github.com/SEU_USUARIO",
+  },
+  {
+    name: "Gmail",
+    image: "/images/gmail.webp",
+    href: "mailto:SEU@gmail.com",
+    color: "#EA4335",
+    label: "SEU@gmail.com",
+  },
+  {
+    name: "Apple Mail",
+    image: "/images/applemail.webp",
+    href: "mailto:SEU@icloud.com",
+    color: "#1a8cff",
+    label: "SEU@icloud.com",
+  },
+  {
+    name: "Telegram",
+    image: "/images/telegram.webp",
+    href: "https://t.me/SEU_USUARIO",
+    color: "#2AABEE",
+    label: "@SEU_USUARIO",
+  },
+];
 
 export default function Contato() {
   const [isMobile,   setIsMobile]   = useState(false);
   const [minimized,  setMinimized]  = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [hovered,    setHovered]    = useState<number | null>(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -20,12 +67,19 @@ export default function Contato() {
     <main className="w-screen h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
+      <style>{`
+        @keyframes contact-in {
+          from { opacity: 0; transform: translateY(14px) scale(0.95); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
+
       <div
         className="window-rise"
         style={{
           position: "fixed",
-          top:    fullscreen ? 0 : (isMobile ? "5vh"  : "20vh"),
-          bottom: fullscreen ? 0 : (minimized ? undefined : (isMobile ? "5vh" : "20vh")),
+          top:    fullscreen ? 0 : (isMobile ? "5vh"  : "calc(20vh - 100px)"),
+          bottom: fullscreen ? 0 : (minimized ? undefined : (isMobile ? "5vh" : "calc(20vh + 100px)")),
           left:   fullscreen ? 0 : (isMobile ? "5vw"  : "20vw"),
           width:  fullscreen ? "100vw" : (isMobile ? "90vw" : "60vw"),
           ...(minimized ? { height: 42 } : {}),
@@ -69,7 +123,52 @@ export default function Contato() {
         </div>
 
         {/* Content */}
-        <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? "24px 20px" : "40px 48px" }}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "row", overflow: "hidden" }}>
+
+          {/* Coluna lateral esquerda — ícones 2x3 */}
+          <div style={{
+            width: "40%",
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            alignContent: "center",
+            justifyItems: "center",
+            gap: isMobile ? 16 : 28,
+            padding: "24px",
+            borderRight: "1px solid rgba(255,255,255,0.06)",
+          }}>
+            {CONTACTS.map(({ name, image, href, color }, i) => (
+              <a
+                key={name}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={name}
+                onMouseEnter={() => setHovered(i)}
+                onMouseLeave={() => setHovered(null)}
+                style={{
+                  display: "flex",
+                  opacity: 0,
+                  animation: "contact-in 0.35s ease forwards",
+                  animationDelay: `${i * 60}ms`,
+                  transform: hovered === i ? "scale(1.1)" : "scale(1)",
+                  filter: hovered === i ? `drop-shadow(0 0 10px ${color}99)` : "none",
+                  transition: "transform 0.2s ease, filter 0.2s ease",
+                }}
+              >
+                <Image
+                  src={image}
+                  alt={name}
+                  width={isMobile ? 36 : 48}
+                  height={isMobile ? 36 : 48}
+                  style={{ borderRadius: 10 }}
+                />
+              </a>
+            ))}
+          </div>
+
+          {/* Área direita — conteúdo futuro */}
+          <div style={{ flex: 1 }} />
+
         </div>
 
       </div>

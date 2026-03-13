@@ -113,6 +113,13 @@ export default function Projetos() {
     >
       <CyberpunkBackground />
 
+      <style>{`
+        @keyframes dot-progress {
+          from { transform: scaleX(0); }
+          to   { transform: scaleX(1); }
+        }
+      `}</style>
+
       <div style={{
         position: "absolute",
         inset: 0,
@@ -176,22 +183,42 @@ export default function Projetos() {
         </div>
 
         {/* Dots */}
-        <div style={{ display: "flex", gap: 10 }}>
-          {Array.from({ length: TOTAL_CARDS }).map((_, i) => (
-            <div
-              key={i}
-              onClick={() => go(i)}
-              style={{
-                width: i === current ? 24 : 10,
-                height: 10,
-                borderRadius: 999,
-                background: i === current ? "#00EAFF" : "rgba(0,234,255,0.2)",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                boxShadow: i === current ? "0 0 8px rgba(0,234,255,0.5)" : "none",
-              }}
-            />
-          ))}
+        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          {Array.from({ length: TOTAL_CARDS }).map((_, i) => {
+            const isActive = i === current;
+            return (
+              <div
+                key={i}
+                onClick={() => go(i)}
+                style={{
+                  position: "relative",
+                  width: isActive ? 36 : 10,
+                  height: 10,
+                  borderRadius: 999,
+                  background: "rgba(0,234,255,0.2)",
+                  cursor: "pointer",
+                  transition: "width 0.3s ease",
+                  overflow: "hidden",
+                  boxShadow: isActive ? "0 0 8px rgba(0,234,255,0.3)" : "none",
+                }}
+              >
+                {isActive && (
+                  <div
+                    key={current}
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "#00EAFF",
+                      borderRadius: 999,
+                      transformOrigin: "left",
+                      animation: `dot-progress ${AUTO_INTERVAL}ms linear forwards`,
+                      animationPlayState: paused ? "paused" : "running",
+                    }}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
 
       </div>

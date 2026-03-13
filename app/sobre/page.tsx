@@ -8,6 +8,7 @@ import { IoChevronDownOutline, IoChevronUpOutline } from "react-icons/io5";
 import { MdOutlineEmail, MdLocationOn } from "react-icons/md";
 import { FaGithub, FaLinkedin, FaReact, FaNodeJs } from "react-icons/fa";
 import { SiNextdotjs, SiExpress, SiPostgresql, SiMysql } from "react-icons/si";
+import { useLanguage } from "../context/LanguageContext";
 
 
 function HoloPhoto() {
@@ -19,7 +20,6 @@ function HoloPhoto() {
   const target     = useRef({ x: 0, y: 0 });
   const current    = useRef({ x: 0, y: 0 });
 
-  // Smooth tilt via lerp
   useEffect(() => {
     let raf: number;
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -36,7 +36,6 @@ function HoloPhoto() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  // Occasional glitch burst
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
     const doGlitch = () => {
@@ -78,7 +77,6 @@ function HoloPhoto() {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Sweep scan
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
     const doSweep = () => {
@@ -126,7 +124,7 @@ function HoloPhoto() {
             style={{
               width: "100%", height: "100%",
               objectFit: "contain",
-                            maskImage: "radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%)",
+              maskImage: "radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%)",
               WebkitMaskImage: "radial-gradient(ellipse 88% 88% at 50% 50%, black 55%, transparent 100%)",
             }}
             priority
@@ -160,17 +158,41 @@ function HoloPhoto() {
   );
 }
 
+const STACK_ICONS = [
+  {
+    icons: [
+      { Icon: FaReact,     color: "#61DAFB", title: "React"   },
+      { Icon: SiNextdotjs, color: "#ffffff", title: "Next.js" },
+    ],
+  },
+  {
+    icons: [
+      { Icon: FaNodeJs,  color: "#8CC84B", title: "Node.js" },
+      { Icon: SiExpress, color: "#aaaaaa", title: "Express" },
+    ],
+  },
+  {
+    icons: [
+      { Icon: SiPostgresql, color: "#336791", title: "PostgreSQL" },
+      { Icon: SiMysql,      color: "#4479A1", title: "MySQL"      },
+    ],
+  },
+];
+
 export default function Sobre() {
-  const [visible,    setVisible]    = useState(false);
-  const [isMobile,   setIsMobile]   = useState(false);
-  const [minimized,  setMinimized]  = useState(false);
-  const [fullscreen, setFullscreen] = useState(false);
+  const { t } = useLanguage();
+  const s = t.sobre;
+
+  const [visible,      setVisible]      = useState(false);
+  const [isMobile,     setIsMobile]     = useState(false);
+  const [minimized,    setMinimized]    = useState(false);
+  const [fullscreen,   setFullscreen]   = useState(false);
   const [readProgress, setReadProgress] = useState(0);
-  const [atBottom,   setAtBottom]   = useState(false);
+  const [atBottom,     setAtBottom]     = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setVisible(true), 10);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setVisible(true), 10);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -215,39 +237,14 @@ export default function Sobre() {
 
   const cyan = { color: "#00EAFF" };
   const pink = { color: "#FF00FF" };
-  const p: React.CSSProperties = {
+  const pStyle: React.CSSProperties = {
     margin: "0 0 18px", fontSize: "1rem", lineHeight: 1.85,
     color: "rgba(255,255,255,0.75)",
     borderLeft: "2px solid rgba(0,234,255,0.3)", paddingLeft: 14,
     textAlign: "justify",
   };
 
-  const STACK = [
-    {
-      label: "Front-end",
-      desc: "com React e Next.js para interfaces escaláveis, modernas, performáticas, responsivas, pensadas para uma excelente experiência do usuário.",
-      icons: [
-        { Icon: FaReact,    color: "#61DAFB", title: "React"   },
-        { Icon: SiNextdotjs, color: "#ffffff", title: "Next.js" },
-      ],
-    },
-    {
-      label: "Back-end",
-      desc: "com Node.js / Express, para APIs robustas, eficientes e seguras.",
-      icons: [
-        { Icon: FaNodeJs,   color: "#8CC84B", title: "Node.js"  },
-        { Icon: SiExpress,  color: "#aaaaaa", title: "Express"  },
-      ],
-    },
-    {
-      label: "Dados",
-      desc: "com PostgreSQL e MySQL para modelagem e consultas em projetos reais.",
-      icons: [
-        { Icon: SiPostgresql, color: "#336791", title: "PostgreSQL" },
-        { Icon: SiMysql,      color: "#4479A1", title: "MySQL"      },
-      ],
-    },
-  ];
+  const STACK = s.stack.map((item, i) => ({ ...item, icons: STACK_ICONS[i].icons }));
 
   return (
     <main className="w-screen h-screen overflow-hidden relative">
@@ -263,27 +260,21 @@ export default function Sobre() {
           borderBottom: "1px solid rgba(255,255,255,0.07)",
           flexShrink: 0, userSelect: "none",
         }}>
-          {/* Red — fechar */}
           <Link href="/">
             <span title="Fechar" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", cursor: "pointer", flexShrink: 0 }} />
           </Link>
-
-          {/* Yellow — minimizar */}
           <span
             title={minimized ? "Restaurar" : "Minimizar"}
             onClick={() => setMinimized(v => !v)}
             style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", cursor: "pointer", flexShrink: 0 }}
           />
-
-          {/* Green — tela cheia */}
           <span
             title={fullscreen ? "Restaurar" : "Tela cheia"}
             onClick={() => setFullscreen(v => !v)}
             style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", cursor: "pointer", flexShrink: 0 }}
           />
-
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
-            sobre.txt — Leandro Dukievicz
+            {s.windowTitle}
           </span>
         </div>
 
@@ -303,12 +294,9 @@ export default function Sobre() {
             background: "rgba(0,10,20,0.3)",
             gap: 14,
           }}>
-            {/* Foto */}
             <div style={{ flex: 1, width: "100%", minHeight: 0 }}>
               <HoloPhoto />
             </div>
-
-            {/* Nome */}
             <p style={{
               margin: 0, fontSize: "1rem", fontWeight: 700, letterSpacing: "0.08em",
               background: "linear-gradient(90deg, #00EAFF 0%, #BD00FF 100%)",
@@ -317,35 +305,16 @@ export default function Sobre() {
             }}>
               Leandro Dukievicz
             </p>
-
-            {/* Localização */}
             <div style={{ display: "flex", alignItems: "center", gap: 5, color: "rgba(255,255,255,0.45)", fontSize: "0.85rem" }}>
               <MdLocationOn size={14} style={{ color: "#BD00FF", flexShrink: 0 }} />
               Maringá — PR
             </div>
-
-            {/* Disponível */}
-            <a
-              href="https://wa.me/5544991293234"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "flex", alignItems: "center", gap: 8,
-                padding: "5px 12px", borderRadius: 999,
-                border: "1px solid rgba(0,255,136,0.25)",
-                background: "rgba(0,255,136,0.07)",
-                textDecoration: "none", cursor: "pointer",
-                transition: "background 0.2s, border-color 0.2s",
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = "rgba(0,255,136,0.15)";
-                e.currentTarget.style.borderColor = "rgba(0,255,136,0.5)";
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = "rgba(0,255,136,0.07)";
-                e.currentTarget.style.borderColor = "rgba(0,255,136,0.25)";
-              }}
-            >
+            <div style={{
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "5px 12px", borderRadius: 999,
+              border: "1px solid rgba(0,255,136,0.25)",
+              background: "rgba(0,255,136,0.07)",
+            }}>
               <span style={{
                 width: 8, height: 8, borderRadius: "50%",
                 background: "#00ff88",
@@ -353,9 +322,9 @@ export default function Sobre() {
                 display: "inline-block", flexShrink: 0,
               }} />
               <span style={{ fontSize: "0.78rem", color: "rgba(0,255,136,0.85)", letterSpacing: "0.06em" }}>
-                Disponível para projetos
+                {s.available}
               </span>
-            </a>
+            </div>
           </div>
 
           {/* Lado direito — conteúdo */}
@@ -378,14 +347,14 @@ export default function Sobre() {
               scrollbarColor: "rgba(255,255,255,0.1) transparent",
             }}>
 
-              {/* Título com cursor piscando */}
+              {/* Título */}
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
                 <h2 style={{
                   margin: 0, fontSize: 20, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
                   background: "linear-gradient(90deg, #00EAFF 0%, #BD00FF 100%)",
                   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                 }}>
-                  Sobre
+                  {s.heading}
                 </h2>
                 <span style={{
                   marginLeft: 3, fontSize: 20, fontWeight: 300,
@@ -398,34 +367,26 @@ export default function Sobre() {
               <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #00EAFF55, #BD00FF55, transparent)", marginBottom: 20 }} />
 
               {/* Bio */}
-              <p style={p}>
-                Olá, é uma grande satisfação receber a sua visita, espero que esteja gostando da experiência de navegar
-                neste portfólio — me custou algumas boas horas para juntar e sintetizar aqui o meu gosto pessoal e
-                transferir um pouco do que eu sou e curto, além de muitos neurônios queimados no processo!
+              <p style={pStyle}>{s.bio1}</p>
+
+              <p style={pStyle}>
+                {s.bio2.split("Full Stack").map((part, i) =>
+                  i === 0
+                    ? <React.Fragment key={i}>{part}<span style={cyan}>Full Stack</span></React.Fragment>
+                    : <React.Fragment key={i}>{part}</React.Fragment>
+                )}
               </p>
 
-              <p style={p}>
-                Sou desenvolvedor <span style={cyan}>Full Stack</span>, porém meu foco maior é no front, atualmente em
-                transição de carreira, situado em <span style={cyan}>Maringá-PR</span>.
+              <p style={pStyle}>{s.bio3}</p>
+
+              <p style={{ ...pStyle, borderLeft: "none", paddingLeft: 0, marginBottom: 10 }}>
+                {s.stackIntro}
               </p>
 
-              <p style={p}>
-                Esta minha trilha no desenvolvimento de software com certeza não é uma linha reta, eu passei boa parte
-                da minha vida trabalhando no setor de vendas e atualmente trabalho como motorista de app. Com certeza
-                essa bagagem adquirida ao longo dos anos me ajudou e me moldou pra ser como eu sou hoje, na forma como
-                procuro encarar os problemas com uma visão de negócio um pouco mais aguçada, também tendo empatia pelo
-                usuário, pois eu já tive a perspectiva de quem está do outro lado da tela.
-              </p>
-
-              <p style={{ ...p, borderLeft: "none", paddingLeft: 0, marginBottom: 10 }}>
-                Hoje meu foco é em construir <span style={cyan}>aplicações web completas</span>:
-              </p>
-
-              {/* Stack list com ícones */}
+              {/* Stack list */}
               <div style={{ margin: "0 0 20px", paddingLeft: 14, display: "flex", flexDirection: "column", gap: 12 }}>
                 {STACK.map(({ label, desc, icons }) => (
                   <div key={label} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                    {/* Ícones das tecnologias */}
                     <div style={{ display: "flex", gap: 4, flexShrink: 0, marginTop: 3 }}>
                       {icons.map(({ Icon, color, title }) => (
                         <span
@@ -452,16 +413,11 @@ export default function Sobre() {
               {/* Separador */}
               <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)", margin: "4px 0 20px" }} />
 
-              <p style={p}>
-                Além do código, gosto de tocar guitarra, violão, contrabaixo nas horas vagas, e claro, um assíduo
-                consumidor de café, cinema e literatura{" "}
-                <span style={cyan}>( principalmente ficção científica e sci-fi )</span>, assim continuo alimentando
-                a minha criatividade!
-              </p>
+              <p style={pStyle}>{s.bio4}</p>
 
-              <p style={{ ...p, marginBottom: 20 }}>
-                Se você precisa de uma pessoa persistente e que aprende rápido para a sua equipe,{" "}
-                <span style={pink}>vamos trocar uma ideia!</span>
+              <p style={{ ...pStyle, marginBottom: 20 }}>
+                {s.bio5}{" "}
+                <span style={pink}>{s.bio5Highlight}</span>
               </p>
 
               {/* Links de contato */}
@@ -482,7 +438,6 @@ export default function Sobre() {
                   <MdOutlineEmail size={16} />
                   Email
                 </a>
-
                 <a
                   href="https://github.com/LeandroDukievicz"
                   target="_blank"
@@ -501,7 +456,6 @@ export default function Sobre() {
                   <FaGithub size={15} />
                   GitHub
                 </a>
-
                 <a
                   href="https://www.linkedin.com/in/leandrodukievicz/"
                   target="_blank"
@@ -522,19 +476,17 @@ export default function Sobre() {
                 </a>
               </div>
 
-              {/* Spacer */}
               <div style={{ height: 36 }} />
 
               {/* Timeline header */}
               <div id="timeline-section" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 24 }}>
                 <div style={{ height: 1, flex: 1, background: "linear-gradient(90deg, transparent, rgba(0,234,255,0.3))" }} />
-                <span style={{ fontSize: "1.1rem", letterSpacing: "0.2em", color: "rgba(0,234,255,0.6)", textTransform: "uppercase" }}>Formação Acadêmica</span>
+                <span style={{ fontSize: "1.1rem", letterSpacing: "0.2em", color: "rgba(0,234,255,0.6)", textTransform: "uppercase" }}>{s.timelineTitle}</span>
                 <div style={{ height: 1, flex: 1, background: "linear-gradient(90deg, rgba(0,234,255,0.3), transparent)" }} />
               </div>
 
               {/* Timeline */}
               <div style={{ position: "relative", paddingLeft: 28 }}>
-                {/* Linha vertical */}
                 <div style={{
                   position: "absolute", left: 7, top: 6, bottom: 6,
                   width: 1, background: "linear-gradient(180deg, #00EAFF44, #BD00FF44, #00EAFF22)",
@@ -548,15 +500,15 @@ export default function Sobre() {
                     background: "#00EAFF", boxShadow: "0 0 8px #00EAFF",
                   }} />
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: "1.2rem", color: "rgba(0,234,255,0.55)", letterSpacing: "0.1em" }}>26 / JAN / 2024</span>
+                    <span style={{ fontSize: "1.2rem", color: "rgba(0,234,255,0.55)", letterSpacing: "0.1em" }}>{s.timeline[0].date}</span>
                     <span style={{
                       fontSize: 9, letterSpacing: "0.12em", padding: "2px 7px", borderRadius: 4,
                       border: "1px solid rgba(0,234,255,0.4)", color: "#00EAFF", textTransform: "uppercase",
-                    }}>Início</span>
+                    }}>{s.badgeStart}</span>
                   </div>
                   <p style={{ margin: "4px 0 0", fontSize: "1rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>
-                    <strong style={{ color: "#fff" }}>Bacharelado em Sistemas para Internet</strong><br />
-                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>Desenvolvimento Web Full Stack · Unicesumar</span>
+                    <strong style={{ color: "#fff" }}>{s.timeline[0].title}</strong><br />
+                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>{s.timeline[0].sub}</span>
                   </p>
                 </div>
 
@@ -568,19 +520,19 @@ export default function Sobre() {
                     background: "#BD00FF", boxShadow: "0 0 8px #BD00FF",
                   }} />
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: "1.2rem", color: "rgba(189,0,255,0.65)", letterSpacing: "0.1em" }}>27 / MAR / 2025</span>
+                    <span style={{ fontSize: "1.2rem", color: "rgba(189,0,255,0.65)", letterSpacing: "0.1em" }}>{s.timeline[1].date}</span>
                     <span style={{
                       fontSize: 9, letterSpacing: "0.12em", padding: "2px 7px", borderRadius: 4,
                       border: "1px solid rgba(189,0,255,0.4)", color: "#BD00FF", textTransform: "uppercase",
-                    }}>Conclusão</span>
+                    }}>{s.badgeCompleted}</span>
                   </div>
                   <p style={{ margin: "4px 0 0", fontSize: "1rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>
-                    <strong style={{ color: "#fff" }}>Pós-Graduação lato sensu</strong><br />
-                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>Desenvolvimento de Sistemas em Python · Concluído</span>
+                    <strong style={{ color: "#fff" }}>{s.timeline[1].title}</strong><br />
+                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>{s.timeline[1].sub}</span>
                   </p>
                 </div>
 
-                {/* Item 3 — Cursando */}
+                {/* Item 3 — Em andamento */}
                 <div style={{ position: "relative", marginBottom: 28 }}>
                   <div style={{
                     position: "absolute", left: -24, top: 5,
@@ -590,57 +542,41 @@ export default function Sobre() {
                     animation: "hex-color-pulse 2s ease-in-out infinite",
                   }} />
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: "1.2rem", color: "rgba(255,45,120,0.7)", letterSpacing: "0.1em" }}>01 / JUN / 2025</span>
+                    <span style={{ fontSize: "1.2rem", color: "rgba(255,45,120,0.7)", letterSpacing: "0.1em" }}>{s.timeline[2].date}</span>
                     <span style={{
                       fontSize: 9, letterSpacing: "0.12em", padding: "2px 7px", borderRadius: 4,
                       border: "1px solid rgba(255,45,120,0.5)", color: "#FF2D78", textTransform: "uppercase",
-                    }}>Em andamento</span>
+                    }}>{s.badgeInProgress}</span>
                   </div>
                   <p style={{ margin: "4px 0 0", fontSize: "1rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>
-                    <strong style={{ color: "#fff" }}>Pós-Graduação lato sensu</strong><br />
-                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>Negócios Digitais e Inovação</span>
+                    <strong style={{ color: "#fff" }}>{s.timeline[2].title}</strong><br />
+                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>{s.timeline[2].sub}</span>
                   </p>
-                  {/* Barra de progresso */}
-                  <div style={{ marginTop: 10 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                      <span style={{ fontSize: 9, letterSpacing: "0.1em", color: "rgba(255,45,120,0.6)", textTransform: "uppercase" }}>Progresso</span>
-                      <span style={{ fontSize: 9, color: "#FF2D78" }}>50%</span>
-                    </div>
-                    <div style={{ height: 4, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
-                      <div style={{
-                        height: "100%", width: "50%", borderRadius: 999,
-                        background: "linear-gradient(90deg, #FF2D78, #BD00FF)",
-                        boxShadow: "0 0 8px #FF2D7866",
-                      }} />
-                    </div>
-                  </div>
                 </div>
 
-                {/* Item 4 — Inglês */}
+                {/* Item 4 — Idiomas */}
                 <div style={{ position: "relative" }}>
                   <div style={{
                     position: "absolute", left: -24, top: 5,
                     width: 10, height: 10, borderRadius: "50%",
                     background: "#00ff88", boxShadow: "0 0 8px #00ff88",
                   }} />
-                  <span style={{ fontSize: "1.2rem", color: "rgba(0,255,136,0.65)", letterSpacing: "0.1em" }}>Idiomas</span>
+                  <span style={{ fontSize: "1.2rem", color: "rgba(0,255,136,0.65)", letterSpacing: "0.1em" }}>{s.timeline[3].date}</span>
                   <p style={{ margin: "4px 0 0", fontSize: "1rem", color: "rgba(255,255,255,0.85)", lineHeight: 1.6 }}>
-                    <strong style={{ color: "#fff" }}>Inglês</strong>{" "}
-                    <span style={{ color: "rgba(0,234,255,0.8)" }}>( básico · em evolução para intermediário )</span><br />
+                    <strong style={{ color: "#fff" }}>{s.timeline[3].title}</strong>{" "}
+                    <span style={{ color: "rgba(0,234,255,0.8)" }}>{s.timeline[3].sub}</span><br />
                     <span style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem" }}>
-                      Com ênfase em termos técnicos e vocabulário relacionado à programação.
-                      Suficiente para comunicação efetiva no ambiente de desenvolvimento de software.
+                      {s.timeline[3].detail}
                     </span>
                   </p>
                 </div>
               </div>
 
-              {/* Spacer */}
               <div style={{ height: 36 }} />
 
             </div>
 
-            {/* Scroll button — dinâmico */}
+            {/* Scroll button */}
             <div style={{
               flexShrink: 0, display: "flex", justifyContent: "center",
               padding: "12px 0 14px",
@@ -670,11 +606,11 @@ export default function Sobre() {
                 {atBottom ? (
                   <>
                     <IoChevronUpOutline size={18} />
-                    <span style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "inherit" }}>scroll up</span>
+                    <span style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "inherit" }}>{s.scrollUp}</span>
                   </>
                 ) : (
                   <>
-                    <span style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "inherit" }}>scroll down</span>
+                    <span style={{ fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "inherit" }}>{s.scrollDown}</span>
                     <IoChevronDownOutline size={18} />
                   </>
                 )}

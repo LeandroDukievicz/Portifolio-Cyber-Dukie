@@ -113,13 +113,13 @@ function SkillCard({ Icon, label, color, cardIndex }: {
     <div
       style={{
         display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-        gap: 4, padding: "6px 4px", borderRadius: 8,
+        gap: 5, padding: "8px 5px", borderRadius: 8,
         border: `1px solid ${color}28`, background: `${color}0d`, cursor: "default",
         opacity: 0,
         animation: "card-in 0.35s ease forwards",
         animationDelay: `${cardIndex * CARD_DELAY_MS}ms`,
         transition: "border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.2s",
-        minHeight: 54,
+        minHeight: 70,
       }}
       onMouseEnter={e => {
         const el = e.currentTarget as HTMLDivElement;
@@ -136,9 +136,9 @@ function SkillCard({ Icon, label, color, cardIndex }: {
         el.style.transform = "translateY(0)";
       }}
     >
-      <Icon size={17} style={{ color, flexShrink: 0 }} />
+      <Icon size={22} style={{ color, flexShrink: 0 }} />
       <span style={{
-        fontSize: "0.72rem", letterSpacing: "0.02em",
+        fontSize: "0.94rem", letterSpacing: "0.02em",
         color: "rgba(255,255,255,0.65)",
         textAlign: "center", lineHeight: 1.25, wordBreak: "break-word",
       }}>
@@ -359,8 +359,8 @@ export default function Skills() {
                     </div>
                     <div style={{
                       display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, minmax(82px, 1fr))",
-                      gap: 6,
+                      gridTemplateColumns: "repeat(auto-fill, minmax(107px, 1fr))",
+                      gap: 8,
                     }}>
                       {items.map(({ Icon, label, color, cardIndex }) => (
                         <SkillCard key={label} Icon={Icon} label={label} color={color} cardIndex={cardIndex} />
@@ -387,8 +387,8 @@ export default function Skills() {
                   </div>
                   <div style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(68px, 1fr))",
-                    gap: 5,
+                    gridTemplateColumns: "repeat(auto-fill, minmax(88px, 1fr))",
+                    gap: 7,
                   }}>
                     {items.map(({ Icon, label, color, cardIndex }) => (
                       <SkillCard key={label} Icon={Icon} label={label} color={color} cardIndex={cardIndex} />

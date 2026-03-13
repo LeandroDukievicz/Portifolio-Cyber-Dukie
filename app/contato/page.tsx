@@ -8,10 +8,17 @@ import CyberpunkBackground from "../components/CyberpunkBackground";
 const CONTACTS = [
   {
     name: "WhatsApp",
-    image: "/images/whats.webp",
+    image: "/images/whatsapp.webp",
     href: "https://wa.me/SEU_NUMERO",
     color: "#25D366",
     label: "+55 (44) 9 0000-0000",
+  },
+  {
+    name: "Telegram",
+    image: "/images/telegram.webp",
+    href: "https://t.me/SEU_USUARIO",
+    color: "#2AABEE",
+    label: "@SEU_USUARIO",
   },
   {
     name: "LinkedIn",
@@ -36,17 +43,10 @@ const CONTACTS = [
   },
   {
     name: "Apple Mail",
-    image: "/images/applemail.webp",
+    image: "/images/mail-apple.webp",
     href: "mailto:SEU@icloud.com",
     color: "#1a8cff",
     label: "SEU@icloud.com",
-  },
-  {
-    name: "Telegram",
-    image: "/images/telegram.webp",
-    href: "https://t.me/SEU_USUARIO",
-    color: "#2AABEE",
-    label: "@SEU_USUARIO",
   },
 ];
 
@@ -69,8 +69,8 @@ export default function Contato() {
 
       <style>{`
         @keyframes contact-in {
-          from { opacity: 0; transform: translateY(14px) scale(0.95); }
-          to   { opacity: 1; transform: translateY(0) scale(1); }
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
 
@@ -132,37 +132,42 @@ export default function Contato() {
             gridTemplateColumns: "1fr 1fr",
             alignContent: "center",
             justifyItems: "center",
-            gap: isMobile ? 16 : 28,
+            gap: isMobile ? 21 : 36,
             padding: "24px",
             borderRight: "1px solid rgba(255,255,255,0.06)",
           }}>
             {CONTACTS.map(({ name, image, href, color }, i) => (
-              <a
+              <div
                 key={name}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={name}
-                onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered(null)}
                 style={{
-                  display: "flex",
                   opacity: 0,
                   animation: "contact-in 0.35s ease forwards",
                   animationDelay: `${i * 60}ms`,
-                  transform: hovered === i ? "scale(1.1)" : "scale(1)",
-                  filter: hovered === i ? `drop-shadow(0 0 10px ${color}99)` : "none",
-                  transition: "transform 0.2s ease, filter 0.2s ease",
                 }}
               >
-                <Image
-                  src={image}
-                  alt={name}
-                  width={isMobile ? 36 : 48}
-                  height={isMobile ? 36 : 48}
-                  style={{ borderRadius: 10 }}
-                />
-              </a>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={name}
+                  onMouseEnter={() => setHovered(i)}
+                  onMouseLeave={() => setHovered(null)}
+                  style={{
+                    display: "flex",
+                    transform: hovered === i ? "scale(1.1)" : "scale(1)",
+                    filter: hovered === i ? `drop-shadow(0 0 10px ${color}99)` : "none",
+                    transition: "transform 0.25s ease, filter 0.25s ease",
+                  }}
+                >
+                  <Image
+                    src={image}
+                    alt={name}
+                    width={50}
+                    height={50}
+                    style={{ borderRadius: 10 }}
+                  />
+                </a>
+              </div>
             ))}
           </div>
 

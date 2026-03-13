@@ -8,7 +8,7 @@ export const translations = {
   pt: {
     portfolioTitle: "Portfólio v1.0.0",
     subtitle: "Desenvolvedor Front-End",
-    bio: "Sou aficcionado em Tecnologia no geral, Em constante estudo e avanço para um aperfeiçoamento contínuo em desenvolver interfaces que sejam elegantes e ao mesmo tempo fáceis, intuitivas e bem modernas, Buscando sempre entregar melhor performance, detalhes e fluidez, porque acredito que as melhores interfaces são aquelas que desaparecem para o usuário final, deixando apenas a experiência.",
+    bio: "Sou aficionado em tecnologia no geral, desenvolvo interfaces que unem elegância e intuitividade, sendo modernas o bastante para impressionar mas simples o suficiente para desaparecer. Estou em constante evolução no aprendizado e aperfeiçoamento, buscando sempre melhorar performance, fluidez e com muita atenção a todos os detalhes, acredito que a melhor experiência é aquela onde o usuário nem percebe que está tendo !",
     ctaHire: "Contrate-me",
     ctaCV: "Baixar CV",
     dock: {
@@ -85,6 +85,36 @@ export const translations = {
       clickToClose: "clique para fechar",
     },
     marquee: "Bem vindo ao meu portifólio | Leandro Dukievicz | Dev Front End \u00a0\u00a0\u00a0",
+    sobre: {
+      windowTitle: "sobre.txt — Leandro Dukievicz",
+      heading: "Sobre",
+      bio1: "Olá, é uma grande satisfação receber a sua visita, espero que esteja gostando da experiência de navegar neste portfólio — me custou algumas boas horas para juntar e sintetizar aqui o meu gosto pessoal e transferir um pouco do que eu sou e curto, além de muitos neurônios queimados no processo!",
+      bio2: "Sou desenvolvedor Full Stack, porém meu foco maior é no front, atualmente em transição de carreira, situado em Maringá-PR.",
+      bio3: "Esta minha trilha no desenvolvimento de software com certeza não é uma linha reta, eu passei boa parte da minha vida trabalhando no setor de vendas e atualmente trabalho como motorista de app. Com certeza essa bagagem adquirida ao longo dos anos me ajudou e me moldou pra ser como eu sou hoje, na forma como procuro encarar os problemas com uma visão de negócio um pouco mais aguçada, também tendo empatia pelo usuário, pois eu já tive a perspectiva de quem está do outro lado da tela.",
+      stackIntro: "Hoje meu foco é em construir aplicações web completas:",
+      stack: [
+        { label: "Front-end", desc: "com React e Next.js para interfaces escaláveis, modernas, performáticas, responsivas, pensadas para uma excelente experiência do usuário." },
+        { label: "Back-end", desc: "com Node.js / Express, para APIs robustas, eficientes e seguras." },
+        { label: "Dados",    desc: "com PostgreSQL e MySQL para modelagem e consultas em projetos reais." },
+      ],
+      bio4: "Além do código, gosto de tocar guitarra, violão, contrabaixo nas horas vagas, e claro, um assíduo consumidor de café, cinema e literatura ( principalmente ficção científica e sci-fi ), assim continuo alimentando a minha criatividade!",
+      bio5: "Se você precisa de uma pessoa persistente e que aprende rápido para a sua equipe,",
+      bio5Highlight: "vamos trocar uma ideia!",
+      timelineTitle: "Formação Acadêmica",
+      timeline: [
+        { date: "26 / JAN / 2024", title: "Bacharelado em Sistemas para Internet", sub: "Desenvolvimento Web Full Stack · Unicesumar" },
+        { date: "27 / MAR / 2025", title: "Pós-Graduação lato sensu", sub: "Desenvolvimento de Sistemas em Python · Concluído" },
+        { date: "01 / JUN / 2025 · CURSANDO", title: "Pós-Graduação lato sensu", sub: "Negócios Digitais e Inovação", badge: "Em andamento" },
+        { date: "Idiomas", title: "Inglês", sub: "( básico · em evolução para intermediário )", detail: "Com ênfase em termos técnicos e vocabulário relacionado à programação. Suficiente para comunicação efetiva no ambiente de desenvolvimento de software." },
+      ],
+      available: "Disponível para projetos",
+      badgeStart: "Início",
+      badgeCompleted: "Conclusão",
+      badgeInProgress: "Em andamento",
+      progressLabel: "Progresso",
+      scrollDown: "scroll down",
+      scrollUp: "scroll up",
+    },
   },
   en: {
     portfolioTitle: "Portfolio v1.0.0",
@@ -166,6 +196,36 @@ export const translations = {
       clickToClose: "click to close",
     },
     marquee: "Welcome to my portfolio | Leandro Dukievicz | Front End Dev \u00a0\u00a0\u00a0",
+    sobre: {
+      windowTitle: "about.txt — Leandro Dukievicz",
+      heading: "About",
+      bio1: "Hello, it's a great pleasure to have your visit — I hope you're enjoying the experience of navigating this portfolio. It cost me quite a few good hours to gather and synthesize my personal taste here and transfer a bit of who I am and what I enjoy, along with many neurons burned in the process!",
+      bio2: "I'm a Full Stack developer, but my main focus is on the front end, currently in career transition, based in Maringá-PR.",
+      bio3: "My path in software development is certainly not a straight line — I spent most of my life working in sales and currently work as a rideshare driver. This baggage acquired over the years has certainly helped shape who I am today, in the way I approach problems with a sharper business perspective, and also with empathy for the user, since I've had the perspective of someone on the other side of the screen.",
+      stackIntro: "Today my focus is on building complete web applications:",
+      stack: [
+        { label: "Front-end", desc: "with React and Next.js for scalable, modern, performant, responsive interfaces designed for an excellent user experience." },
+        { label: "Back-end", desc: "with Node.js / Express, for robust, efficient, and secure APIs." },
+        { label: "Data",     desc: "with PostgreSQL and MySQL for modeling and queries in real projects." },
+      ],
+      bio4: "Besides coding, I enjoy playing guitar, acoustic guitar, and bass in my free time — and of course, I'm an avid coffee drinker, movie lover, and bookworm ( especially science fiction and sci-fi ), keeping my creativity alive!",
+      bio5: "If you need a persistent person who learns fast for your team,",
+      bio5Highlight: "let's talk!",
+      timelineTitle: "Academic Background",
+      timeline: [
+        { date: "26 / JAN / 2024", title: "Bachelor's Degree in Internet Systems", sub: "Full Stack Web Development · Unicesumar" },
+        { date: "27 / MAR / 2025", title: "Postgraduate lato sensu", sub: "Python Systems Development · Completed" },
+        { date: "01 / JUN / 2025 · IN PROGRESS", title: "Postgraduate lato sensu", sub: "Digital Business and Innovation", badge: "In progress" },
+        { date: "Languages", title: "English", sub: "( basic · evolving to intermediate )", detail: "With emphasis on technical terms and vocabulary related to programming. Sufficient for effective communication in the software development environment." },
+      ],
+      available: "Available for projects",
+      badgeStart: "Start",
+      badgeCompleted: "Completed",
+      badgeInProgress: "In progress",
+      progressLabel: "Progress",
+      scrollDown: "scroll down",
+      scrollUp: "scroll up",
+    },
   },
 } as const;
 
@@ -182,7 +242,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const toggle = () => setLang(l => (l === "pt" ? "en" : "pt"));
 
   return (
-    <Ctx.Provider value={{ lang, t: translations[lang], toggle }}>
+    <Ctx.Provider value={{ lang, t: translations[lang] as typeof translations["pt"], toggle }}>
       {children}
     </Ctx.Provider>
   );

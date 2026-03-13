@@ -161,12 +161,25 @@ const SOFT_SKILLS = [
   { Icon: TbSearch,        label: "Pensamento crítico",     desc: "Questiono soluções, avalio alternativas e busco sempre a melhor abordagem técnica.",         color: "#00EAFF" },
   { Icon: TbClock,         label: "Gestão do tempo",        desc: "Entrego tarefas dentro do prazo mantendo alta qualidade e organização.",                     color: "#BD00FF" },
   { Icon: TbHeart,         label: "Inteligência emocional",    desc: "Lido com pressão e feedback de forma madura, equilibrada e construtiva.",                    color: "#FF2D78" },
-  { Icon: TbCode,          label: "Princípios de Engenharia", desc: "Aplico SOLID, DRY, KISS e Clean Code para escrever software legível, sustentável e de qualidade.", color: "#00EAFF" },
+  { Icon: TbCode, label: "Princípios de Engenharia", desc: "", color: "#00EAFF" },
 ];
+
+const PRINCIPLES = [
+  { num: "1️⃣", title: "Performance primeiro",                   desc: "Interfaces devem ser rápidas e eficientes. Cada milissegundo impacta a experiência do usuário." },
+  { num: "2️⃣", title: "Simplicidade vence complexidade",        desc: "A melhor solução geralmente é a mais simples de entender e manter." },
+  { num: "3️⃣", title: "Código é comunicação",                   desc: "Código não deve apenas funcionar — ele precisa ser claro para outros desenvolvedores." },
+  { num: "4️⃣", title: "Experiência do usuário em primeiro lugar", desc: "Tecnologia só tem valor quando melhora a experiência de quem usa o produto." },
+  { num: "5️⃣", title: "Escalabilidade desde o início",          desc: "Aplicações devem ser estruturadas para crescer sem gerar dívida técnica." },
+  { num: "6️⃣", title: "Consistência visual e técnica",          desc: "Interfaces e padrões de código devem seguir uma lógica consistente." },
+  { num: "7️⃣", title: "Automação sempre que possível",          desc: "Ferramentas e processos automatizados aumentam a qualidade e reduzem erros." },
+];
+
+const PRINCIPIOS_IDX = SOFT_SKILLS.length - 1;
 
 export default function Skills() {
   const [isMobile, setIsMobile] = useState(false);
   const [flippedCard, setFlippedCard] = useState<number | null>(null);
+  const [showPrincipios, setShowPrincipios] = useState(false);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -200,6 +213,11 @@ export default function Skills() {
           padding: 5px 4px;
         }
         .flip-back { transform: rotateY(180deg); }
+        @keyframes cursor-blink { 50% { opacity: 0; } }
+        @keyframes principles-in {
+          from { opacity: 0; transform: translateX(24px); }
+          to   { opacity: 1; transform: translateX(0); }
+        }
       `}</style>
 
       <div
@@ -241,7 +259,67 @@ export default function Skills() {
         </div>
 
         {/* Content area */}
-        <div style={{ flex: 1, display: "flex", flexDirection: isMobile ? "column" : "row", overflow: "hidden" }}>
+        <div style={{ flex: 1, display: "flex", flexDirection: isMobile ? "column" : "row", overflow: "hidden", position: "relative" }}>
+
+          {/* Painel Princípios de Engenharia */}
+          <div style={{
+            position: "absolute", inset: 0, zIndex: 20,
+            background: "rgba(3,17,31,0.97)",
+            backdropFilter: "blur(10px)",
+            display: "flex", flexDirection: "column",
+            padding: "18px 28px 16px",
+            opacity: showPrincipios ? 1 : 0,
+            transform: showPrincipios ? "translateX(0)" : "translateX(28px)",
+            transition: "opacity 0.38s ease, transform 0.38s ease",
+            pointerEvents: showPrincipios ? "auto" : "none",
+            overflowY: "auto",
+            scrollbarWidth: "thin",
+            scrollbarColor: "rgba(255,255,255,0.1) transparent",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexShrink: 0 }}>
+              <button
+                onClick={() => setShowPrincipios(false)}
+                style={{
+                  background: "rgba(0,234,255,0.08)", border: "1px solid rgba(0,234,255,0.3)",
+                  borderRadius: 6, padding: "4px 12px", cursor: "pointer",
+                  color: "#00EAFF", fontSize: "0.8rem", fontFamily: "inherit",
+                  letterSpacing: "0.06em", transition: "background 0.2s",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,234,255,0.15)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,234,255,0.08)")}
+              >
+                ← Voltar
+              </button>
+              <h2 style={{
+                margin: 0, fontSize: "1rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
+                background: "linear-gradient(90deg, #00EAFF 0%, #BD00FF 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              }}>
+                Princípios de Engenharia
+              </h2>
+            </div>
+            <div style={{ height: 1, background: "linear-gradient(90deg, #00EAFF55, #BD00FF55, transparent)", marginBottom: 14, flexShrink: 0 }} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {PRINCIPLES.map(({ num, title, desc }, i) => (
+                <div
+                  key={title}
+                  style={{
+                    display: "flex", gap: 10, alignItems: "flex-start",
+                    animation: showPrincipios ? `principles-in 0.35s ease ${i * 55}ms both` : "none",
+                  }}
+                >
+                  <div>
+                    <span style={{ fontSize: "1.2rem", fontWeight: 700, color: "rgba(255,255,255,0.9)", letterSpacing: "0.04em" }}>
+                      {title}
+                    </span>
+                    <p style={{ margin: "2px 0 0", fontSize: "1.2rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>
+                      {desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Hard Skills */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: isMobile ? "10px" : "12px 16px", overflow: "hidden" }}>
@@ -353,7 +431,10 @@ export default function Skills() {
                 return (
                   <div
                     key={label}
-                    onClick={() => setFlippedCard(isFlipped ? null : i)}
+                    onClick={() => {
+                      if (i === PRINCIPIOS_IDX) { setShowPrincipios(true); }
+                      else { setFlippedCard(isFlipped ? null : i); }
+                    }}
                     style={{
                       perspective: 600,
                       cursor: "pointer",
@@ -363,7 +444,7 @@ export default function Skills() {
                       ...(i === SOFT_SKILLS.length - 1 ? { gridColumn: "2 / 4" } : {}),
                     }}
                   >
-                    <div className={`flip-inner${isFlipped ? " flipped" : ""}`}>
+                    <div className={`flip-inner${i !== PRINCIPIOS_IDX && isFlipped ? " flipped" : ""}`}>
                       {/* Frente */}
                       <div
                         className="flip-face"
@@ -380,8 +461,13 @@ export default function Skills() {
                         }}>
                           {label}
                         </span>
+                        {i === PRINCIPIOS_IDX && (
+                          <span style={{ fontSize: "0.65rem", color: `${color}88`, letterSpacing: "0.06em", marginTop: 2 }}>
+                            ver →
+                          </span>
+                        )}
                       </div>
-                      {/* Verso */}
+                      {/* Verso (não usado pelo card especial) */}
                       <div
                         className="flip-face flip-back"
                         style={{

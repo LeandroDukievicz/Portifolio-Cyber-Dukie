@@ -50,7 +50,7 @@ const PROJECTS: (Project | null)[] = [
   {
     title: "Barber Shop — Institucional",
     subtitle: "Front-end",
-    description: "Landing page completa de uma barbearia com visual escuro e elegante, apresenta todas as seções típicas de um negócio local: hero com horários e endereço, seção sobre com história da empresa, listagem de serviços, formulário de agendamento e galeria de fotos, rodapé com localização no mapa.\n\nSeções: Home . Sobre . Serviços . Agendamento . Galeria . Localização",
+    description: "Landing page completa de uma barbearia com visual escuro e elegante, apresenta todas as seções típicas de um negócio local: hero com horários e endereço, seção sobre com história da empresa, listagem de serviços, formulário de agendamento e galeria de fotos, rodapé com localização no mapa.",
     tags: ["HTML5", "CSS3", "Forms", "Vercel"],
     image: "/images/projetos/barbershop.webp",
     ctas: [

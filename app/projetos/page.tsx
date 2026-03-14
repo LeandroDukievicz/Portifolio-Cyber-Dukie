@@ -165,7 +165,7 @@ export default function Projetos() {
           style={{
             width: "100%",
             maxWidth: 1200,
-            height: isMobile ? 393 : 590,
+            height: isMobile ? 430 : 640,
             position: "relative",
             perspective: "1000px",
           }}
@@ -185,7 +185,7 @@ export default function Projetos() {
               const offset   = ((i - current) % TOTAL_CARDS + TOTAL_CARDS) % TOTAL_CARDS;
               const isCenter = offset === 0;
               const cardW    = isMobile ? 253 : 393;
-              const cardH    = isMobile ? 337 : 534;
+              const cardH    = isMobile ? 370 : 580;
               return (
                 <div
                   key={i}
@@ -215,7 +215,7 @@ export default function Projetos() {
                     <>
                       {/* Imagem */}
                       {project.image && (
-                        <div style={{ position: "relative", width: "100%", height: isMobile ? 140 : 210, flexShrink: 0 }}>
+                        <div style={{ position: "relative", width: "100%", height: isMobile ? 140 : 185, flexShrink: 0 }}>
                           <Image
                             src={project.image}
                             alt={project.title}

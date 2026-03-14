@@ -11,6 +11,7 @@ type Project = {
   tags: string[];
   image?: string;
   ctas?: { label: string; href: string; icon: "github" | "link" }[];
+  soon?: boolean;
 };
 
 const PROJECTS: (Project | null)[] = [
@@ -58,7 +59,7 @@ const PROJECTS: (Project | null)[] = [
       { label: "Ver Projeto",  href: "https://barberhop-dukievicz.vercel.app/#services",            icon: "link"   },
     ],
   },
-  null,
+  { title: "", subtitle: "", description: "", tags: [], soon: true },
   null,
 ];
 
@@ -187,6 +188,12 @@ export default function Projetos() {
           from { transform: scaleX(0); }
           to   { transform: scaleX(1); }
         }
+        @keyframes blink1 { 0%,100%{opacity:0} 33%{opacity:1} }
+        @keyframes blink2 { 0%,100%{opacity:0} 66%{opacity:1} }
+        @keyframes blink3 { 0%,100%{opacity:0} 100%{opacity:1} }
+        .soon-dot-1 { animation: blink1 1.2s ease-in-out infinite; }
+        .soon-dot-2 { animation: blink2 1.2s ease-in-out infinite; }
+        .soon-dot-3 { animation: blink3 1.2s ease-in-out infinite; }
       `}</style>
 
       <div style={{
@@ -252,7 +259,30 @@ export default function Projetos() {
                     ...getCardStyle(offset, isMobile),
                   }}
                 >
-                  {project ? (
+                  {project?.soon ? (
+                    <div style={{
+                      flex: 1, display: "flex", flexDirection: "column",
+                      alignItems: "center", justifyContent: "center",
+                      gap: 16, padding: 24,
+                      fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                    }}>
+                      <span style={{
+                        fontSize: isMobile ? "2rem" : "2.6rem",
+                        fontWeight: 800,
+                        letterSpacing: "0.04em",
+                        color: "rgba(255,255,255,0.15)",
+                        textTransform: "uppercase",
+                        lineHeight: 1,
+                      }}>
+                        Em Breve
+                      </span>
+                      <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                        <span className="soon-dot-1" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                        <span className="soon-dot-2" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                        <span className="soon-dot-3" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                      </div>
+                    </div>
+                  ) : project ? (
                     <>
                       {/* Imagem */}
                       {project.image && (

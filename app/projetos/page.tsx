@@ -38,7 +38,7 @@ const PROJECTS: (Project | null)[] = [
   },
   {
     title: "",
-    subtitle: "",
+    subtitle: "Front-end",
     description: "",
     tags: [],
     image: "/images/projetos/imovi.webp",

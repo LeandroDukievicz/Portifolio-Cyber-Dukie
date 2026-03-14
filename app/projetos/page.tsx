@@ -501,7 +501,7 @@ export default function Projetos() {
                           color: "rgba(255,255,255,0.9)",
                           textTransform: "uppercase",
                           lineHeight: 1,
-                        }}>Em Breve</span>
+                        }}>{p.comingSoon}</span>
                         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
                           <span className="soon-dot-1" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
                           <span className="soon-dot-2" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>

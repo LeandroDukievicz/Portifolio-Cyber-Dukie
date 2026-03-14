@@ -17,7 +17,7 @@ const PROJECTS: (Project | null)[] = [
   {
     title: "Electrum — E-commerce Front-end",
     subtitle: "Front-end",
-    description: "Front-end de um e-commerce fictício de eletrônicos, desenvolvido com foco na prática de SASS com arquitetura modular. O projeto simula um fluxo real de desenvolvimento frontend, com a estilização dividida em 3 módulos:\n\nBase — reset, variáveis e tags sem classe/id\nLayouts — todas as seções, classes e ids do site\nModules — componentes reutilizáveis ao longo do projeto",
+    description: "Front-end de um e-commerce fictício de eletrônicos, desenvolvido com foco na prática de SASS com arquitetura modular. O projeto simula um fluxo real de desenvolvimento frontend, com a estilização dividida em 3 módulos.",
     tags: ["HTML5", "Sass", "Vercel"],
     image: "/images/projetos/projeto-electrum.webp",
     ctas: [

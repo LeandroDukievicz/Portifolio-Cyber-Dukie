@@ -244,7 +244,8 @@ export default function Projetos() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 150,
+        marginBottom: isMobile ? 0 : 150,
+        marginTop: isMobile ? 72 : 0,
         gap: 32,
       }}>
 

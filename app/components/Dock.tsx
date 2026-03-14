@@ -151,11 +151,11 @@ export default function Dock() {
         className="md:hidden"
         style={{
           position: "fixed",
-          bottom: 28,
-          right: 24,
+          top: 16,
+          right: 16,
           zIndex: 300,
-          width: 52,
-          height: 52,
+          width: 44,
+          height: 44,
           borderRadius: "50%",
           background: "rgba(3,17,31,0.85)",
           backdropFilter: "blur(16px)",
@@ -178,7 +178,7 @@ export default function Dock() {
             key={n}
             style={{
               display: "block",
-              width: 22,
+              width: 18,
               height: 2,
               borderRadius: 2,
               background: "#00EAFF",

@@ -226,8 +226,8 @@ export default function Skills() {
         className="window-rise"
         style={{
           position: "fixed",
-          top: 48,
-          bottom: isMobile ? 70 : 186,
+          top: isMobile ? 72 : 48,
+          bottom: isMobile ? 16 : 186,
           left: isMobile ? "2vw" : "10vw",
           width: isMobile ? "96vw" : "80vw",
           borderRadius: 12,

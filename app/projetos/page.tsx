@@ -1,9 +1,34 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 
-const TOTAL_CARDS = 6;
+type Project = {
+  title: string;
+  subtitle: string;
+  description: string;
+  tags: string[];
+  image?: string;
+  href?: string;
+};
+
+const PROJECTS: (Project | null)[] = [
+  {
+    title: "Electrum",
+    subtitle: "Cibersegurança",
+    description: "Plataforma de análise e monitoramento de segurança com dashboards em tempo real e detecção de ameaças.",
+    tags: ["Next.js", "TypeScript", "Security"],
+    image: "/images/projetos/projeto-electrum.webp",
+  },
+  null,
+  null,
+  null,
+  null,
+  null,
+];
+
+const TOTAL_CARDS = PROJECTS.length;
 const TRANSITION = "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
 const AUTO_INTERVAL = 3000;
 
@@ -152,17 +177,19 @@ export default function Projetos() {
             position: "relative",
             transformStyle: "preserve-3d",
           }}>
-            {Array.from({ length: TOTAL_CARDS }).map((_, i) => {
+            {PROJECTS.map((project, i) => {
               const offset   = ((i - current) % TOTAL_CARDS + TOTAL_CARDS) % TOTAL_CARDS;
               const isCenter = offset === 0;
+              const cardW    = isMobile ? 253 : 393;
+              const cardH    = isMobile ? 337 : 534;
               return (
                 <div
                   key={i}
                   onClick={() => { if (!isDragging.current) go(i); }}
                   style={{
                     position: "absolute",
-                    width: isMobile ? 253 : 393,
-                    height: isMobile ? 337 : 534,
+                    width: cardW,
+                    height: cardH,
                     borderRadius: 20,
                     background: isCenter ? "rgba(0,234,255,0.05)" : "rgba(3,17,31,0.6)",
                     border: isCenter ? "1px solid rgba(0,234,255,0.4)" : "1px solid rgba(255,255,255,0.07)",
@@ -174,9 +201,65 @@ export default function Projetos() {
                     cursor: grabbing ? "grabbing" : "grab",
                     userSelect: "none",
                     transition: TRANSITION,
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
                     ...getCardStyle(offset, isMobile),
                   }}
-                />
+                >
+                  {project ? (
+                    <>
+                      {/* Imagem */}
+                      {project.image && (
+                        <div style={{ position: "relative", width: "100%", height: isMobile ? 140 : 210, flexShrink: 0 }}>
+                          <Image
+                            src={project.image}
+                            alt={project.title}
+                            fill
+                            style={{ objectFit: "cover" }}
+                            draggable={false}
+                          />
+                          <div style={{
+                            position: "absolute", inset: 0,
+                            background: "linear-gradient(to bottom, transparent 60%, rgba(3,17,31,0.95))",
+                          }} />
+                        </div>
+                      )}
+
+                      {/* Info */}
+                      <div style={{
+                        flex: 1, display: "flex", flexDirection: "column",
+                        padding: isMobile ? "14px 16px" : "20px 24px",
+                        gap: 10,
+                        fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                      }}>
+                        <span style={{ fontSize: "0.62rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(0,234,255,0.6)" }}>
+                          {project.subtitle}
+                        </span>
+                        <h2 style={{ margin: 0, fontSize: isMobile ? "1rem" : "1.2rem", fontWeight: 700, color: "#fff", letterSpacing: "0.03em" }}>
+                          {project.title}
+                        </h2>
+                        <p style={{ margin: 0, fontSize: isMobile ? "0.7rem" : "0.78rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, flex: 1 }}>
+                          {project.description}
+                        </p>
+                        {/* Tags */}
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                          {project.tags.map(tag => (
+                            <span key={tag} style={{
+                              fontSize: "0.6rem", letterSpacing: "0.08em", textTransform: "uppercase",
+                              padding: "3px 8px", borderRadius: 4,
+                              background: "rgba(0,234,255,0.08)",
+                              border: "1px solid rgba(0,234,255,0.2)",
+                              color: "rgba(0,234,255,0.7)",
+                            }}>
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  ) : null}
+                </div>
               );
             })}
           </div>

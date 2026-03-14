@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import CyberpunkBackground from "../components/CyberpunkBackground";
+import { useLanguage } from "../context/LanguageContext";
 
 const CONTACTS = [
   {
@@ -50,6 +51,8 @@ const CONTACTS = [
 ];
 
 export default function Contato() {
+  const { t } = useLanguage();
+  const c = t.contato;
   const [isMobile,   setIsMobile]   = useState(false);
   const [hovered,    setHovered]    = useState<number | null>(null);
   const [form, setForm] = useState({ nome: "", email: "", assunto: "", mensagem: "" });
@@ -195,7 +198,7 @@ export default function Contato() {
           gap: 10,
         }}>
           <span style={{ fontSize: "1.6rem" }}>⚠</span>
-          <span>Preencha todos os campos corretamente antes de enviar.</span>
+          <span>{c.toastMsg}</span>
         </div>
       )}
 
@@ -232,7 +235,7 @@ export default function Contato() {
           <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
           <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
-            contato.md
+            {c.windowTitle}
           </span>
         </div>
 
@@ -296,19 +299,19 @@ export default function Contato() {
               {/* Nome + Email */}
               <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 12 }}>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-                  <label style={labelStyle}>Nome</label>
+                  <label style={labelStyle}>{c.labelName}</label>
                   <input
-                    placeholder="Seu nome"
+                    placeholder={c.placeholderName}
                     style={inputStyle}
                     value={form.nome}
                     onChange={e => setForm(f => ({ ...f, nome: e.target.value }))}
                   />
                 </div>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-                  <label style={labelStyle}>E-mail</label>
+                  <label style={labelStyle}>{c.labelEmail}</label>
                   <input
                     type="email"
-                    placeholder="seu-Melhor-Email@mail.com"
+                    placeholder={c.placeholderEmail}
                     style={inputStyle}
                     value={form.email}
                     onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
@@ -318,9 +321,9 @@ export default function Contato() {
 
               {/* Assunto */}
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={labelStyle}>Assunto</label>
+                <label style={labelStyle}>{c.labelSubject}</label>
                 <input
-                  placeholder="Ex: Proposta de projeto, Contratação PJ..."
+                  placeholder={c.placeholderSubject}
                   style={inputStyle}
                   value={form.assunto}
                   onChange={e => setForm(f => ({ ...f, assunto: e.target.value }))}
@@ -329,9 +332,9 @@ export default function Contato() {
 
               {/* Mensagem */}
               <div style={{ display: "flex", flexDirection: "column", gap: 6, flex: 1 }}>
-                <label style={labelStyle}>Mensagem</label>
+                <label style={labelStyle}>{c.labelMessage}</label>
                 <textarea
-                  placeholder="Descreva como posso te ajudar..."
+                  placeholder={c.placeholderMessage}
                   style={{ ...inputStyle, flex: 1, resize: "none", minHeight: 90 }}
                   value={form.mensagem}
                   onChange={e => setForm(f => ({ ...f, mensagem: e.target.value }))}
@@ -342,7 +345,7 @@ export default function Contato() {
               <div style={{ alignSelf: "flex-end", display: "flex", alignItems: "center", gap: 12 }}>
                 {submitted && (
                   <span style={{ fontSize: "0.78rem", color: "#00EAFF", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}>
-                    ✓ Mensagem enviada!
+                    {c.successMsg}
                   </span>
                 )}
                 <button
@@ -351,7 +354,7 @@ export default function Contato() {
                   disabled={submitting}
                   style={{ opacity: allFilled ? 1 : 0.4 }}
                 >
-                  {submitting ? "Enviando..." : "Enviar mensagem"}
+                  {submitting ? c.btnSending : c.btnSend}
                 </button>
               </div>
             </form>

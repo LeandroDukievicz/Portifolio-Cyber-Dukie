@@ -37,11 +37,15 @@ const PROJECTS: (Project | null)[] = [
     ],
   },
   {
-    title: "",
+    title: "iMovi Construtora — Site Institucional",
     subtitle: "Front-end",
-    description: "",
-    tags: [],
+    description: "Landing Page de uma construtora, desenvolvido para consolidar técnicas do Bootstrap, recursos: sliders, cards, ícones, svg e customização seguindo estrutura de site institucional moderno.",
+    tags: ["HTML5", "CSS3", "Bootstrap 5", "Vercel"],
     image: "/images/projetos/imovi.webp",
+    ctas: [
+      { label: "Ver Detalhes", href: "https://github.com/LeandroDukievicz/bootstrap-imovi",  icon: "github" },
+      { label: "Ver Projeto",  href: "https://bootstrap-imovi.vercel.app/",                  icon: "link"   },
+    ],
   },
   null,
   null,

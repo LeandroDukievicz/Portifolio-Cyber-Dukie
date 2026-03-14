@@ -372,7 +372,7 @@ export default function Projetos() {
                     <>
                       {/* Imagem */}
                       {project.image && (
-                        <div style={{ position: "relative", width: "100%", height: isMobile ? 130 : isTablet ? 155 : 185, flexShrink: 0 }}>
+                        <div style={{ position: "relative", width: "100%", height: isMobile ? 105 : isTablet ? 155 : 185, flexShrink: 0 }}>
                           <Image
                             src={project.image}
                             alt={project.title}
@@ -390,8 +390,8 @@ export default function Projetos() {
                       {/* Info */}
                       <div style={{
                         flex: 1, display: "flex", flexDirection: "column",
-                        padding: isMobile ? "14px 16px 20px" : "18px 24px 28px",
-                        gap: 10,
+                        padding: isMobile ? "10px 14px 14px" : "18px 24px 28px",
+                        gap: isMobile ? 7 : 10,
                         fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
                         justifyContent: "flex-start",
                       }}>
@@ -401,11 +401,24 @@ export default function Projetos() {
                         <h2 style={{ margin: 0, fontSize: isMobile ? "1rem" : "1.2rem", fontWeight: 700, color: "#fff", letterSpacing: "0.03em" }}>
                           {project.title}
                         </h2>
-                        <p style={{ margin: 0, fontSize: isMobile ? "0.72rem" : "0.82rem", color: "rgba(255,255,255,0.82)", lineHeight: 1.75, whiteSpace: "pre-line", letterSpacing: "0.01em", textAlign: "justify" }}>
+                        <p style={{
+                          margin: 0,
+                          fontSize: isMobile ? "0.7rem" : "0.82rem",
+                          color: "rgba(255,255,255,0.82)",
+                          lineHeight: isMobile ? 1.55 : 1.75,
+                          letterSpacing: "0.01em",
+                          textAlign: "justify",
+                          ...(isMobile ? {
+                            display: "-webkit-box",
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: "vertical" as const,
+                            overflow: "hidden",
+                          } : { whiteSpace: "pre-line" }),
+                        }}>
                           {project.description}
                         </p>
                         {/* Tags */}
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: isMobile ? 4 : 6 }}>
                           {project.tags.map(tag => (
                             <span key={tag} style={{
                               fontSize: "0.6rem", letterSpacing: "0.08em", textTransform: "uppercase",
@@ -420,7 +433,7 @@ export default function Projetos() {
                         </div>
                         {/* CTAs */}
                         {project.ctas && (
-                          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", marginTop: isMobile ? 2 : 6 }}>
                             {project.ctas.map(cta => (
                               <a
                                 key={cta.href}

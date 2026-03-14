@@ -281,6 +281,16 @@ export default function Projetos() {
                         <span className="soon-dot-2" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
                         <span className="soon-dot-3" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
                       </div>
+                      <span style={{
+                        fontSize: isMobile ? "0.85rem" : "1rem",
+                        fontWeight: 600,
+                        letterSpacing: "0.06em",
+                        color: "rgba(255,255,255,0.45)",
+                        textTransform: "uppercase",
+                        textAlign: "center",
+                      }}>
+                        Dashboard de Controle
+                      </span>
                     </div>
                   ) : project ? (
                     <>

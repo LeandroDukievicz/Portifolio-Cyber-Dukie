@@ -21,7 +21,7 @@ const PROJECTS: (Project | null)[] = [
     tags: ["HTML5", "Sass", "Vercel"],
     image: "/images/projetos/projeto-electrum.webp",
     ctas: [
-      { label: "Ver Arquitetura", href: "https://github.com/LeandroDukievicz/sass-project-electrum", icon: "github" },
+      { label: "Ver Detalhes", href: "https://github.com/LeandroDukievicz/sass-project-electrum", icon: "github" },
       { label: "Ver Projeto",     href: "https://projectelectrumleandrod.vercel.app/",              icon: "link"   },
     ],
   },

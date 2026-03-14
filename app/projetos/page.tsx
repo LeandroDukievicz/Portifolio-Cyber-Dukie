@@ -156,7 +156,7 @@ export default function Projetos() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: 50,
+        marginBottom: 150,
         gap: 32,
       }}>
 

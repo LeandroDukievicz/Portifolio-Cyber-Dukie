@@ -170,11 +170,10 @@ export default function Contato() {
       {showToast && (
         <div style={{
           position: "fixed",
-          top: "calc(20vh - 100px)",
-          left: "calc(80vw + 16px)",
-          transform: "none",
-          width: 160,
-          height: 160,
+          ...(isMobile
+            ? { bottom: 90, left: "50%", transform: "translateX(-50%)", width: "80vw", height: "auto", minHeight: 80 }
+            : { top: "calc(20vh - 100px)", left: "calc(80vw + 16px)", transform: "none", width: 160, height: 160 }
+          ),
           background: "rgba(3,17,31,0.92)",
           backdropFilter: "blur(12px)",
           border: "1px solid rgba(255,80,80,0.5)",
@@ -238,18 +237,20 @@ export default function Contato() {
         </div>
 
         {/* Content */}
-        <div style={{ flex: 1, display: "flex", flexDirection: "row", overflow: "hidden" }}>
+        <div style={{ flex: 1, display: "flex", flexDirection: isMobile ? "column" : "row", overflow: "hidden" }}>
 
-          {/* Coluna lateral esquerda — ícones 2x3 */}
+          {/* Coluna lateral — ícones 2x3 */}
           <div style={{
-            width: "40%",
+            width: isMobile ? "100%" : "40%",
+            height: isMobile ? "auto" : undefined,
+            flexShrink: 0,
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: isMobile ? "repeat(6, 1fr)" : "1fr 1fr",
             alignContent: "center",
             justifyItems: "center",
-            gap: isMobile ? 21 : 36,
-            padding: "24px",
-            borderRight: "none",
+            gap: isMobile ? 12 : 36,
+            padding: isMobile ? "12px 16px" : "24px",
+            borderBottom: isMobile ? "1px solid rgba(255,255,255,0.07)" : "none",
           }}>
             {CONTACTS.map(({ name, image, href, color }, i) => (
               <div
@@ -277,9 +278,9 @@ export default function Contato() {
                   <Image
                     src={image}
                     alt={name}
-                    width={50}
-                    height={50}
-                    style={{ borderRadius: 10 }}
+                    width={isMobile ? 36 : 50}
+                    height={isMobile ? 36 : 50}
+                    style={{ borderRadius: 8 }}
                   />
                 </a>
               </div>
@@ -287,13 +288,13 @@ export default function Contato() {
           </div>
 
           {/* Formulário de contato */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: "24px 28px", overflowY: "auto" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: isMobile ? "12px 14px" : "24px 28px", overflowY: "auto" }}>
             <form
               onSubmit={handleSubmit}
-              style={{ display: "flex", flexDirection: "column", gap: 14, height: "100%", justifyContent: "center", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10, padding: "20px", boxShadow: "2px 2px 0 rgba(255,255,255,0.08), 4px 4px 0 rgba(255,255,255,0.04)" }}
+              style={{ display: "flex", flexDirection: "column", gap: isMobile ? 10 : 14, height: "100%", justifyContent: "center", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 10, padding: isMobile ? "14px" : "20px", boxShadow: "2px 2px 0 rgba(255,255,255,0.08), 4px 4px 0 rgba(255,255,255,0.04)" }}
             >
               {/* Nome + Email */}
-              <div style={{ display: "flex", gap: 12 }}>
+              <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 12 }}>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
                   <label style={labelStyle}>Nome</label>
                   <input

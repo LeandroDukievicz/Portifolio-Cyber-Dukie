@@ -423,8 +423,8 @@ export default function Skills() {
             <div style={{
               flex: 1,
               display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 5,
+              gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+              gap: isMobile ? 6 : 5,
             }}>
               {SOFT_SKILLS.map(({ Icon, color }, i) => {
                 const isFlipped = flippedCard === i;
@@ -444,7 +444,7 @@ export default function Skills() {
                       opacity: 0,
                       animation: "card-in 0.35s ease forwards",
                       animationDelay: `${i * 45}ms`,
-                      ...(i === SOFT_SKILLS.length - 1 ? { gridColumn: "2 / 4" } : {}),
+                      ...(i === SOFT_SKILLS.length - 1 ? { gridColumn: isMobile ? "1 / -1" : "2 / 4" } : {}),
                     }}
                   >
                     <div className={`flip-inner${!isPrincipio && isFlipped ? " flipped" : ""}`}>

@@ -268,8 +268,8 @@ export default function Sobre() {
 
           {/* Lado esquerdo — foto + info */}
           <div style={{
-            width: isMobile ? "100%" : "480px",
-            height: isMobile ? "340px" : "auto",
+            width: isMobile ? "100%" : "clamp(260px, 32%, 420px)",
+            height: isMobile ? "300px" : "auto",
             flexShrink: 0,
             borderRight: isMobile ? "none" : "1px solid rgba(255,255,255,0.07)",
             borderBottom: isMobile ? "1px solid rgba(255,255,255,0.07)" : "none",

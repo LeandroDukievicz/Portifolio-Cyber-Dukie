@@ -26,11 +26,15 @@ const PROJECTS: (Project | null)[] = [
     ],
   },
   {
-    title: "",
+    title: "Artes Urbanas",
     subtitle: "Front-end",
-    description: "",
-    tags: [],
+    description: "Projeto Front end de um site temático de artes urbanas, desenvolvido como primeiro contato com bootstrap 5 via CDN, conceitos praticados: containers, grid, breakpoints, colunas, alinhamentos, offset, ordenação de elementos e ícones.",
+    tags: ["HTML5", "CSS3", "Bootstrap", "CDN", "Vercel"],
     image: "/images/projetos/artes-urbanas.webp",
+    ctas: [
+      { label: "Ver Detalhes", href: "https://github.com/LeandroDukievicz/bootstrap-urban-arts", icon: "github" },
+      { label: "Ver Projeto",  href: "https://artesurbanas.vercel.app/",                         icon: "link"   },
+    ],
   },
   null,
   null,

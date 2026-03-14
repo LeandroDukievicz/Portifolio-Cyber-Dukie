@@ -307,7 +307,7 @@ export default function Contato() {
                   <label style={labelStyle}>E-mail</label>
                   <input
                     type="email"
-                    placeholder="seu@email.com"
+                    placeholder="seu-Melhor-Email@mail.com"
                     style={inputStyle}
                     value={form.email}
                     onChange={e => setForm(f => ({ ...f, email: e.target.value }))}

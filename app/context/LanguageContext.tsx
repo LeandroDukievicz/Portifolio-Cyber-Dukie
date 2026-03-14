@@ -115,6 +115,38 @@ export const translations = {
       scrollDown: "scroll down",
       scrollUp: "scroll up",
     },
+    projects: {
+      comingSoon: "Em Breve",
+      ctaDetails: "Ver Detalhes",
+      ctaProject: "Ver Projeto",
+      items: [
+        {
+          title: "Electrum — E-commerce Front-end",
+          subtitle: "Front-end",
+          description: "Front-end de um e-commerce fictício de eletrônicos, desenvolvido com foco na prática de SASS com arquitetura modular. O projeto simula um fluxo real de desenvolvimento frontend, com a estilização dividida em 3 módulos.",
+        },
+        {
+          title: "Artes Urbanas",
+          subtitle: "Front-end",
+          description: "Projeto Front end de um site temático de artes urbanas, desenvolvido como primeiro contato com bootstrap 5 via CDN, conceitos praticados: containers, grid, breakpoints, colunas, alinhamentos, offset, ordenação de elementos e ícones.",
+        },
+        {
+          title: "iMovi Construtora — Site Institucional",
+          subtitle: "Front-end",
+          description: "Landing Page de uma construtora, desenvolvido para consolidar técnicas do Bootstrap, recursos: sliders, cards, ícones, svg e customização seguindo estrutura de site institucional moderno.",
+        },
+        {
+          title: "Barber Shop — Institucional",
+          subtitle: "Front-end",
+          description: "Landing page completa de uma barbearia com visual escuro e elegante, apresenta todas as seções típicas de um negócio local: hero com horários e endereço, seção sobre com história da empresa, listagem de serviços, formulário de agendamento e galeria de fotos, rodapé com localização no mapa.",
+        },
+        { title: "", subtitle: "", description: "", soonLabel: "Dashboard de Controle" },
+        { title: "", subtitle: "", description: "", soonLabel: "Blog" },
+        { title: "", subtitle: "", description: "" },
+        { title: "", subtitle: "", description: "" },
+        { title: "", subtitle: "", description: "" },
+      ],
+    },
     skills: {
       windowTitle: "skills.txt — Leandro Dukievicz",
       hardSkills: "Hard Skills",
@@ -258,6 +290,38 @@ export const translations = {
       progressLabel: "Progress",
       scrollDown: "scroll down",
       scrollUp: "scroll up",
+    },
+    projects: {
+      comingSoon: "Coming Soon",
+      ctaDetails: "View Details",
+      ctaProject: "View Project",
+      items: [
+        {
+          title: "Electrum — E-commerce Front-end",
+          subtitle: "Front-end",
+          description: "Front-end of a fictional electronics e-commerce, developed with a focus on practicing SASS with modular architecture. The project simulates a real frontend development workflow, with styling split into 3 modules.",
+        },
+        {
+          title: "Urban Arts",
+          subtitle: "Front-end",
+          description: "Front-end project of an urban arts themed website, developed as a first contact with Bootstrap 5 via CDN. Concepts practiced: containers, grid, breakpoints, columns, alignments, offset, element ordering, and icons.",
+        },
+        {
+          title: "iMovi Construction — Institutional Site",
+          subtitle: "Front-end",
+          description: "Landing Page for a construction company, developed to consolidate Bootstrap techniques. Features: sliders, cards, icons, svg and customization following a modern institutional site structure.",
+        },
+        {
+          title: "Barber Shop — Institutional",
+          subtitle: "Front-end",
+          description: "Complete landing page for a barbershop with a dark and elegant look, featuring all typical sections of a local business: hero with hours and address, about section with company history, services listing, scheduling form, photo gallery, and footer with map location.",
+        },
+        { title: "", subtitle: "", description: "", soonLabel: "Control Dashboard" },
+        { title: "", subtitle: "", description: "", soonLabel: "Blog" },
+        { title: "", subtitle: "", description: "" },
+        { title: "", subtitle: "", description: "" },
+        { title: "", subtitle: "", description: "" },
+      ],
     },
     skills: {
       windowTitle: "skills.txt — Leandro Dukievicz",

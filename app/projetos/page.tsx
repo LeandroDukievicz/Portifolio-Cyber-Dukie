@@ -271,8 +271,8 @@ export default function Projetos() {
                       {/* Overlay escuro */}
                       <div style={{
                         position: "absolute", inset: 0,
-                        background: "rgba(3,17,31,0.72)",
-                        backdropFilter: "blur(1px)",
+                        background: "rgba(3,17,31,0.85)",
+                        backdropFilter: "blur(2px)",
                       }} />
                       {/* Conteúdo */}
                       <div style={{
@@ -286,7 +286,7 @@ export default function Projetos() {
                           fontSize: isMobile ? "2rem" : "2.6rem",
                           fontWeight: 800,
                           letterSpacing: "0.04em",
-                          color: "rgba(255,255,255,0.25)",
+                          color: "rgba(255,255,255,0.9)",
                           textTransform: "uppercase",
                           lineHeight: 1,
                         }}>
@@ -301,7 +301,7 @@ export default function Projetos() {
                           fontSize: isMobile ? "0.85rem" : "1rem",
                           fontWeight: 600,
                           letterSpacing: "0.06em",
-                          color: "rgba(255,255,255,0.6)",
+                          color: "rgba(255,255,255,0.85)",
                           textTransform: "uppercase",
                           textAlign: "center",
                         }}>

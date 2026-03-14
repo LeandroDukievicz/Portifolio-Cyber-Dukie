@@ -44,9 +44,9 @@ const TOTAL_CARDS = STATIC.length;
 const TRANSITION = "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
 const AUTO_INTERVAL = 3000;
 
-function getCardStyle(offset: number, isMobile: boolean): React.CSSProperties {
-  const x    = isMobile ? 183 : 309;
-  const xFar = isMobile ? 365 : 604;
+function getCardStyle(offset: number, isMobile: boolean, isTablet: boolean): React.CSSProperties {
+  const x    = isMobile ? 170 : isTablet ? 240 : 309;
+  const xFar = isMobile ? 310 : isTablet ? 440 : 604;
 
   if (offset === 0) {
     return { transform: "translateX(0) scale(1.1) translateZ(0)", zIndex: 10, opacity: 1, pointerEvents: "auto" };
@@ -88,13 +88,18 @@ export default function Projetos() {
 
   const [current, setCurrent]   = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const [paused, setPaused]     = useState(false);
   const animating               = useRef(false);
   const currentRef              = useRef(current);
   currentRef.current            = current;
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
+    const check = () => {
+      const w = window.innerWidth;
+      setIsMobile(w < 640);
+      setIsTablet(w >= 640 && w < 1100);
+    };
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -248,7 +253,7 @@ export default function Projetos() {
           style={{
             width: "100%",
             maxWidth: 1200,
-            height: isMobile ? 430 : 640,
+            height: isMobile ? 420 : isTablet ? 520 : 640,
             position: "relative",
             perspective: "1000px",
           }}
@@ -268,8 +273,8 @@ export default function Projetos() {
             {PROJECTS.map((project, i) => {
               const offset   = ((i - current) % TOTAL_CARDS + TOTAL_CARDS) % TOTAL_CARDS;
               const isCenter = offset === 0;
-              const cardW    = isMobile ? 253 : 393;
-              const cardH    = isMobile ? 370 : 580;
+              const cardW    = isMobile ? Math.min(window.innerWidth * 0.78, 280) : isTablet ? 310 : 393;
+              const cardH    = isMobile ? 360 : isTablet ? 460 : 580;
               return (
                 <div
                   key={i}
@@ -292,7 +297,7 @@ export default function Projetos() {
                     overflow: "hidden",
                     display: "flex",
                     flexDirection: "column",
-                    ...getCardStyle(offset, isMobile),
+                    ...getCardStyle(offset, isMobile, isTablet),
                   }}
                 >
                   {project?.soon ? (
@@ -366,7 +371,7 @@ export default function Projetos() {
                     <>
                       {/* Imagem */}
                       {project.image && (
-                        <div style={{ position: "relative", width: "100%", height: isMobile ? 140 : 185, flexShrink: 0 }}>
+                        <div style={{ position: "relative", width: "100%", height: isMobile ? 130 : isTablet ? 155 : 185, flexShrink: 0 }}>
                           <Image
                             src={project.image}
                             alt={project.title}

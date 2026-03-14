@@ -45,6 +45,14 @@ export default function TerminalWindow() {
   const [booting, setBooting]       = useState(true);
   const [currentInput, setInput]    = useState("");
   const [isAutoClosing, setIsAutoClosing] = useState(false);
+  const [isMobile, setIsMobile]     = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
   const prevPathname = useRef(pathname);
   const inputRef  = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -266,7 +274,7 @@ export default function TerminalWindow() {
     }
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || isMobile) return null;
 
   const totalH = (isMinimized ? 0 : effectiveH) + TITLE_BAR_H;
 

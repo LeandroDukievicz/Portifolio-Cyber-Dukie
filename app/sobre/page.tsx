@@ -211,10 +211,10 @@ export default function Sobre() {
 
   const windowStyle: React.CSSProperties = {
     position: "fixed",
-    top: 48,
+    top: isMobile ? 72 : 48,
     left: isMobile ? "2vw" : "10vw",
     width: isMobile ? "96vw" : "80vw",
-    bottom: isMobile ? 70 : 186,
+    bottom: isMobile ? 16 : 186,
     borderRadius: 12,
     overflow: "hidden",
     background: "rgba(3,17,31,0.65)",

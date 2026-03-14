@@ -36,6 +36,14 @@ export default function Dock() {
   const { open }   = useTerminal();
   const { t }      = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   // Fecha menu ao redimensionar para desktop
   useEffect(() => {
@@ -143,11 +151,11 @@ export default function Dock() {
         className="md:hidden"
         style={{
           position: "fixed",
-          bottom: 28,
-          right: 24,
+          top: 16,
+          right: 16,
           zIndex: 300,
-          width: 52,
-          height: 52,
+          width: 44,
+          height: 44,
           borderRadius: "50%",
           background: "rgba(3,17,31,0.85)",
           backdropFilter: "blur(16px)",
@@ -170,10 +178,10 @@ export default function Dock() {
             key={n}
             style={{
               display: "block",
-              width: 22,
+              width: 18,
               height: 2,
               borderRadius: 2,
-              background: menuOpen ? "#00EAFF" : "rgba(255,255,255,0.85)",
+              background: "#00EAFF",
               transformOrigin: "center",
               transition: "transform 0.3s ease, opacity 0.3s ease, background 0.3s",
               transform: menuOpen
@@ -206,7 +214,7 @@ export default function Dock() {
         }}
         onClick={(e) => { if (e.target === e.currentTarget) setMenuOpen(false); }}
       >
-        {NAV_ITEMS.map((item, i) => {
+        {NAV_ITEMS.filter(item => !(isMobile && item.kind === "button" && item.action === "terminal")).map((item, i) => {
           const content = (
             <>
               <span style={{ fontSize: 28, color: "#00EAFF", display: "flex", alignItems: "center" }}>

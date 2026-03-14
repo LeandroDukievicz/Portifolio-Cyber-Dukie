@@ -206,8 +206,8 @@ export default function Contato() {
         className="window-rise"
         style={{
           position: "fixed",
-          top:    isMobile ? "5vh"  : "calc(20vh - 100px)",
-          bottom: isMobile ? "5vh" : "calc(20vh + 100px)",
+          top:    isMobile ? 72     : "calc(20vh - 100px)",
+          bottom: isMobile ? 16    : "calc(20vh + 100px)",
           left:   isMobile ? "5vw"  : "20vw",
           width:  isMobile ? "90vw" : "60vw",
           borderRadius: 12,

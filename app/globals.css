@@ -118,6 +118,12 @@ html[data-blog-theme="light"] {
   transition: all 400ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+.cta-btn-wrap.flex-1 .cta-btn {
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
 .cta-btn-shadow {
   --shadow-cutoff: 20px;
   position: absolute;

@@ -12,6 +12,7 @@ type Project = {
   image?: string;
   ctas?: { label: string; href: string; icon: "github" | "link" }[];
   soon?: boolean;
+  soonLabel?: string;
 };
 
 const PROJECTS: (Project | null)[] = [
@@ -59,8 +60,8 @@ const PROJECTS: (Project | null)[] = [
       { label: "Ver Projeto",  href: "https://barberhop-dukievicz.vercel.app/#services",            icon: "link"   },
     ],
   },
-  { title: "", subtitle: "", description: "", tags: [], soon: true },
-  null,
+  { title: "", subtitle: "", description: "", tags: [], soon: true, image: "/images/projetos/dashboard.webp", soonLabel: "Dashboard de Controle" },
+  { title: "", subtitle: "", description: "", tags: [], soon: true, image: "/images/projetos/helmet.webp", soonLabel: "Blog" },
 ];
 
 const TOTAL_CARDS = PROJECTS.length;
@@ -261,13 +262,15 @@ export default function Projetos() {
                 >
                   {project?.soon ? (
                     <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-                      <Image
-                        src="/images/projetos/dashboard.webp"
-                        alt="Dashboard de Controle"
-                        fill
-                        style={{ objectFit: "cover" }}
-                        draggable={false}
-                      />
+                      {project.image && (
+                        <Image
+                          src={project.image}
+                          alt={project.soonLabel ?? "Em Breve"}
+                          fill
+                          style={{ objectFit: "cover" }}
+                          draggable={false}
+                        />
+                      )}
                       {/* Overlay escuro */}
                       <div style={{
                         position: "absolute", inset: 0,
@@ -305,7 +308,7 @@ export default function Projetos() {
                           textTransform: "uppercase",
                           textAlign: "center",
                         }}>
-                          Dashboard de Controle
+                          {project.soonLabel ?? ""}
                         </span>
                       </div>
                     </div>

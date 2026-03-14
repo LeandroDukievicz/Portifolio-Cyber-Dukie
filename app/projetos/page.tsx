@@ -47,7 +47,13 @@ const PROJECTS: (Project | null)[] = [
       { label: "Ver Projeto",  href: "https://bootstrap-imovi.vercel.app/",                  icon: "link"   },
     ],
   },
-  null,
+  {
+    title: "",
+    subtitle: "Front-end",
+    description: "",
+    tags: [],
+    image: "/images/projetos/barbershop.webp",
+  },
   null,
   null,
 ];

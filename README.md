@@ -59,11 +59,8 @@ Tanto o botão **Baixar CV** quanto o comando `sudo hire-me` do terminal dispara
 
 ### Janela estilo macOS
 
-A página `/sobre` é renderizada como uma janela flutuante sobre o background animado, com todos os controles macOS funcionais:
+A página `/sobre` é renderizada como uma janela flutuante sobre o background animado. Os três botões macOS (vermelho, amarelo, verde) são **decorativos** — sem função ativa, mantidos apenas como elemento estético consistente com o design system do portfólio.
 
-- **Botão vermelho** — fecha e navega para `/`
-- **Botão amarelo** — minimiza a janela (height colapsa para 42px com transição suave)
-- **Botão verde** — alterna fullscreen (cobre todo o viewport)
 - Entrada animada: `opacity 0 → 1` + `scale(0.96) → scale(1)` + `translateY(16px) → 0`
 - Glassmorphism: `background: rgba(3,17,31,0.65)` + `backdrop-filter: blur(12px)`
 - Layout responsivo: coluna (mobile) ou linha lado-a-lado (desktop ≥ 768px)
@@ -145,7 +142,7 @@ Todos os textos da página (bio, títulos, labels da timeline, badges, status, b
 
 ### Janela estilo macOS
 
-Mesma estrutura de janela glassmorphism das demais páginas: title bar com traffic lights (vermelho fecha e navega para `/`, amarelo e verde decorativos), `backdrop-filter: blur(12px)`, entrada animada via classe `window-rise`, responsiva (96vw mobile / 80vw desktop).
+Mesma estrutura de janela glassmorphism das demais páginas: title bar com traffic lights **decorativos** (vermelho, amarelo, verde sem função ativa), `backdrop-filter: blur(12px)`, entrada animada via classe `window-rise`, responsiva (96vw mobile / 80vw desktop).
 
 ### Layout — dois painéis lado a lado
 
@@ -190,8 +187,10 @@ Grid fixo 4 colunas com **flip cards 3D** — cada card tem frente e verso:
 
 - **Frente**: ícone + label da soft skill
 - **Verso**: descrição da competência
-- Clique alterna o estado `flippedCard` — rotaciona 180° em Y via CSS `transform-style: preserve-3d` + `rotateY(180deg)` com transição de 0.45s
-- Apenas um card vira por vez (clicar outro reseta o anterior)
+- **Desktop**: hover (`onMouseEnter/onMouseLeave`) vira o card automaticamente ao passar o mouse — sem clique necessário
+- **Mobile**: clique (`onClick`) alterna o estado do card — fallback tátil
+- Rotação de 180° em Y via CSS `transform-style: preserve-3d` + `rotateY(180deg)` com transição de 0.45s
+- Apenas um card vira por vez (hover em outro reseta o anterior)
 - `backface-visibility: hidden` para esconder a face oposta
 
 **12 soft skills:**
@@ -204,7 +203,8 @@ Cores alternadas entre `#00EAFF`, `#BD00FF` e `#FF2D78`.
 O último item do grid de soft skills (`TbCode` — "Princípios de Engenharia") tem comportamento diferente dos outros:
 - Ocupa **2 colunas centrais** (`gridColumn: "2 / 4"`) para destaque visual
 - Exibe "ver →" abaixo do label
-- Ao clicar **não vira** — em vez disso abre um painel sobreposto deslizando da direita (`translateX(28px) → 0` + opacity 0→1 em 0.38s)
+- **Funciona apenas com clique** (tanto desktop quanto mobile) — não vira com hover
+- Ao clicar abre um painel sobreposto deslizando da direita (`translateX(28px) → 0` + opacity 0→1 em 0.38s)
 
 **Painel de Princípios de Engenharia:**
 - Cobre todo o content area com `position: absolute, inset: 0, zIndex: 20`
@@ -221,6 +221,198 @@ O último item do grid de soft skills (`TbCode` — "Princípios de Engenharia")
 | 5 | Escalabilidade desde o início |
 | 6 | Consistência visual e técnica |
 | 7 | Automação sempre que possível |
+
+### i18n na Página Skills
+
+Todos os textos da página vêm de `t.skills` via `useLanguage()`:
+
+| Campo traduzido |
+|---|
+| `windowTitle`, `hardSkills`, `softSkills` |
+| `back`, `principlesTitle`, `principlesHint` |
+| `categories[]` — nomes das 5 categorias |
+| `softSkillsData[].label`, `softSkillsData[].desc` — 13 itens |
+| `principles[].title`, `principles[].desc` — 7 princípios |
+
+---
+
+## ✅ Projetos — Concluída
+
+### CoverFlow 3D Carousel
+
+A página `/projetos` apresenta os projetos em um carrossel estilo **Apple CoverFlow** com perspectiva 3D real:
+
+- **Card central**: `scale(1.1)`, `translateZ(0)`, borda ciano e fundo levemente ciano
+- **Adjacentes (±1)**: `scale(0.9)`, `translateZ(-100px)`, `opacity: 0.85`
+- **Adjacentes (±2)**: `scale(0.8)`, `translateZ(-300px)`, `opacity: 0.6`
+- **Demais**: `opacity: 0`, invisíveis
+- Todos os cards com `backdrop-filter: blur(8px)` e `border-radius: 20px`
+- `perspective: 1000px` no container do track
+- Transição suave: `all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)`
+
+**Formas de navegação:**
+
+| Método | Comportamento |
+|---|---|
+| **Clique** no card lateral | Avança/retrocede para aquele card |
+| **Setas do teclado** ← → | Navega entre cards |
+| **Swipe** (touch) | Arrasta horizontalmente (threshold: 50px) |
+| **Drag com mouse** | Clica e arrasta (threshold: 50px) |
+| **Scroll do mouse** | Rola para baixo = próximo, para cima = anterior (debounce 600ms) |
+| **Auto-rotate** | Avança automaticamente a cada 3s, pausa ao hover |
+
+**Indicadores de progresso (dots):**
+- Dot ativo se expande de `10px → 36px` com transição suave
+- Barra de progresso ciano preenchendo o dot ativo via animação `dot-progress` sincronizada com o `AUTO_INTERVAL` (3000ms)
+- Pausa a animação quando o carousel está pausado (hover)
+
+### Cards de Projeto
+
+Cada card com conteúdo exibe:
+- **Imagem** do projeto cobrindo a parte superior do card (185px desktop) com gradiente de fade para o fundo na base
+- **Subtitle** em ciano pequeno (categoria, ex: "Front-end")
+- **Título** do projeto em destaque
+- **Descrição** com `textAlign: justify`
+- **Tags** de stack em badges ciano com borda semi-transparente
+- **Dois CTAs** (Ver Detalhes + Ver Projeto) posicionados nos cantos opostos do card, com ícones SVG embutidos (GitHub / link externo), glassmorphism e hover com glow ciano + `translateY(-1px)`
+
+Os CTAs têm `e.stopPropagation()` para não acionar a navegação do carousel ao clicar.
+
+**Projetos no carousel:**
+
+| # | Projeto | Stack |
+|---|---|---|
+| 1 | Electrum — E-commerce Front-end | HTML5, Sass, Vercel |
+| 2 | Artes Urbanas | HTML5, CSS3, Bootstrap, CDN, Vercel |
+| 3 | iMovi Construtora — Site Institucional | HTML5, CSS3, Bootstrap 5, Vercel |
+| 4 | Barber Shop — Institucional | HTML5, CSS3, Forms, Vercel |
+| 5 | Dashboard de Controle *(Em Breve)* | — |
+| 6 | Blog *(Em Breve)* | — |
+| 7–9 | Cards vazios *(Em Breve)* | — |
+
+### Cards "Em Breve"
+
+Cards com imagem de fundo (dashboard, helmet) exibem:
+- Overlay escuro `rgba(3,17,31,0.85)` + `backdrop-filter: blur(2px)`
+- Texto "Em Breve" / "Coming Soon" em branco
+- Três pontos animados em sequência (`blink1/2/3` com `ease-in-out infinite`)
+- Label do projeto abaixo dos pontos
+
+Cards `null` (sem conteúdo) exibem automaticamente:
+- **12 pontos de interrogação** `?` espalhados pelo card em posições, tamanhos e rotações pré-definidas
+- Cada `?` tem sua própria animação de flutuação (`qfloat1–6`) com duração entre 3,7s e 6,8s, criando movimento orgânico assíncrono
+- Cor ciano com `textShadow: 0 0 8px rgba(0,234,255,0.4)` e opacidade entre 0.18–0.42
+- Texto "Em Breve" + pontos animados centralizados sobre os `?`
+- **Regra automática**: qualquer `null` no array `STATIC` renderiza este card sem configuração adicional
+
+### Imagens dos Projetos
+
+Todas as imagens em `/public/images/projetos/` estão no formato `.webp` para melhor performance:
+
+| Arquivo | Projeto |
+|---|---|
+| `projeto-electrum.webp` | Electrum E-commerce |
+| `artes-urbanas.webp` | Artes Urbanas |
+| `imovi.webp` | iMovi Construtora |
+| `barbershop.webp` | Barber Shop |
+| `dashboard.webp` | Dashboard de Controle (Em Breve) |
+| `helmet.webp` | Blog (Em Breve) |
+
+### i18n na Página Projetos
+
+Ao trocar de idioma, os seguintes elementos são traduzidos via `t.projects`:
+
+| Campo traduzido |
+|---|
+| `comingSoon` — "Em Breve" / "Coming Soon" |
+| `ctaDetails` — "Ver Detalhes" / "View Details" |
+| `ctaProject` — "Ver Projeto" / "View Project" |
+| `items[].title` — título de cada projeto |
+| `items[].subtitle` — categoria do projeto |
+| `items[].description` — descrição do projeto |
+| `items[].soonLabel` — label dos cards Em Breve |
+
+Tags, URLs dos CTAs e caminhos de imagem permanecem estáticos.
+
+---
+
+## ✅ Contato — Concluída
+
+### Janela estilo macOS
+
+A página `/contato` renderiza uma janela glassmorphism com:
+- Botões macOS (vermelho, amarelo, verde) **decorativos** — sem função ativa
+- Dimensões: `60vw` largura desktop / `90vw` mobile
+- Posição: `top: calc(20vh - 100px)`, centralizada horizontalmente em `left: 20vw`
+- Entrada animada via classe `window-rise`
+- Glassmorphism: `background: rgba(3,17,31,0.65)` + `backdrop-filter: blur(12px)` + borda magenta sutil
+
+### Coluna de Ícones de Contato (40% da janela)
+
+Grid 2×3 com 6 ícones de contato, todos no formato `.webp` (50×50px):
+
+| Ícone | Link | Cor de glow |
+|---|---|---|
+| WhatsApp | `wa.me/5544991293234` com mensagem pré-preenchida | `#25D366` |
+| Telegram | `t.me/+5544991293234` | `#2AABEE` |
+| LinkedIn | `linkedin.com/in/leandrodukievicz` | `#0A66C2` |
+| GitHub | `github.com/LeandroDukievicz` | `#ffffff` |
+| Gmail | `mailto:leandrodukievicz1718@gmail.com` | `#EA4335` |
+| Apple Mail | `mailto:ldukie@icloud.com` | `#1a8cff` |
+
+Efeito de hover em cada ícone: `scale(1.1)` + `drop-shadow(0 0 10px {cor}99)` — transição de 0.25s.
+
+Entrada animada com `contact-in` (opacity 0→1 + translateY 14px→0) com stagger de 60ms por ícone.
+
+### Formulário de Contato (60% da janela)
+
+Campos com borda `1px solid #ffffff` e fundo semi-transparente:
+
+| Campo | Tipo | Placeholder |
+|---|---|---|
+| Nome | `text` | "Seu nome" |
+| E-mail | `email` | "seu-Melhor-Email@mail.com" |
+| Assunto | `text` | "Ex: Proposta de projeto, Contratação PJ..." |
+| Mensagem | `textarea` | "Descreva como posso te ajudar..." |
+
+**Validação:**
+- Todos os campos obrigatórios (`trim() !== ""`)
+- Email validado com regex `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`
+- Botão com `opacity: 0.4` quando formulário inválido
+- Toast de erro quadrado (160×160px) aparece à direita da janela com animação `toast-in` quando o envio é tentado com campos inválidos
+
+**Botão de envio — Liquid Glass:**
+- Estilo `.btn-liquid-glass` com `backdrop-filter: blur(16px)`, borda branca, `inset box-shadow` com highlight no topo
+- Estados: hover com `scale(0.975)` + glow ciano; active com `scale(0.96)`
+- Mostra "Enviando..." durante o fetch e "✓ Mensagem enviada!" após sucesso
+
+**Integração com Formspree:**
+- `POST https://formspree.io/f/maqpbbor` com `Content-Type: application/json`
+- Formulário resetado automaticamente após envio bem-sucedido
+
+**Confetti pós-envio:**
+- Explosão tripla com `canvas-confetti`: burst central + dois laterais (esquerda e direita) com 150ms de atraso
+- Cores: `#00EAFF`, `#FF00FF`, `#FF2D78`, `#ffffff`, `#00ff88`
+
+---
+
+## ✅ Blog — Em Desenvolvimento
+
+### Estrutura Atual
+
+A página `/blog` exibe um card central com mensagem "Em Breve" utilizando:
+
+**Efeito Particle Assemble** no texto "Em Breve":
+- Cada caractere é composto por partículas que voam de posições aleatórias da tela e se montam na posição final
+- Implementado com DOM puro via `useEffect` + `requestAnimationFrame` — sem canvas
+- Interpolação `ease-out-cubic` para desaceleração suave na chegada
+- Efeito de scramble durante o voo: caracteres aleatórios substituem a letra real até pousar
+- Cleanup completo na desmontagem: `cancelAnimationFrame` + remoção dos elementos DOM
+- **Sensível ao tema**: partículas em voo são `#000000` (tema claro) ou `#00EAFF` (dark/dim); cor final é `#000000` (claro) ou `#ffffff` (dark/dim)
+
+**Astronauta SVG animado** abaixo do texto:
+- Animação `astronaut-float`: flutuação vertical suave (translateY ±18px em 3.5s ease-in-out infinite)
+- Animação `astronaut-color`: gradiente de cores ciano → purple → magenta com `filter: hue-rotate` em 4s
 
 ---
 
@@ -267,6 +459,8 @@ Ao clicar no ícone de idioma no MenuBar, **todo o site muda de idioma**:
 | Greeting de boas-vindas | ✅ |
 | Marquee da aba do browser | ✅ |
 | Página Sobre (bio, timeline, badges, scroll) | ✅ |
+| Página Skills (hard skills, soft skills, princípios) | ✅ |
+| Página Projetos (títulos, descrições, CTAs, Em Breve) | ✅ |
 
 ### MenuBar
 
@@ -294,6 +488,14 @@ Ao clicar no ícone de idioma no MenuBar, **todo o site muda de idioma**:
 - Aparece apenas uma vez por sessão (sessionStorage)
 - Textos traduzíveis via i18n
 
+### Otimização de Imagens
+
+Todas as imagens do projeto estão no formato `.webp` para melhor performance de carregamento:
+- Conversão realizada com a lib **sharp** (Node.js) — qualidade 90
+- Imagens em `/public/images/` (ícones de contato, fotos de perfil)
+- Imagens em `/public/images/projetos/` (screenshots dos projetos)
+- Componente `next/image` com `fill` e `objectFit: cover` para carregamento otimizado
+
 ---
 
 ## Stack
@@ -302,10 +504,17 @@ Ao clicar no ícone de idioma no MenuBar, **todo o site muda de idioma**:
 |---|---|
 | [Next.js 15](https://nextjs.org/) | Framework React com App Router |
 | [TypeScript](https://www.typescriptlang.org/) | Tipagem estática |
-| [Tailwind CSS](https://tailwindcss.com/) | Estilização utilitária |
-| [GSAP](https://gsap.com/) | Animação da Dock |
-| [canvas-confetti](https://github.com/catdad/canvas-confetti) | Efeito de confete |
-| [react-icons](https://react-icons.github.io/react-icons/) | Ícones |
+| [Tailwind CSS v4](https://tailwindcss.com/) | Estilização utilitária |
+| [GSAP](https://gsap.com/) | Animação da Dock (magnification) |
+| [canvas-confetti](https://github.com/catdad/canvas-confetti) | Efeito de confete (CV download e envio de formulário) |
+| [react-icons](https://react-icons.github.io/react-icons/) | Ícones (skills, sobre, UI) |
+| [sharp](https://sharp.pixelplumbing.com/) | Conversão de imagens PNG/JPG → WebP |
+| [Formspree](https://formspree.io/) | Backend de formulário de contato (sem servidor) |
+| `requestAnimationFrame` | Parallax, blobs, particle assemble, glitch, scan sweep |
+| CSS `backdrop-filter` | Glassmorphism em janelas, botões e cards |
+| CSS `transform-style: preserve-3d` | Flip cards 3D nas soft skills |
+| CSS `perspective` | CoverFlow 3D do carousel de projetos |
+| SVG Filters | RGB Glitch na foto hexagonal da home |
 
 ---
 
@@ -319,18 +528,27 @@ app/
 │   ├── HeroPhoto.tsx            # Foto hexagonal com parallax, glitch e bordas animadas
 │   ├── MenuBar.tsx              # Barra superior com relógio e seletor de idioma
 │   ├── MarqueeTitle.tsx         # Marquee animado + favicon rotativo
-│   ├── TerminalWindow.tsx       # Terminal interativo com resize e auto-close
+│   ├── TerminalWindow.tsx       # Terminal interativo com resize e drag
 │   └── VisitorGreeting.tsx      # Toast de boas-vindas com geolocalização
 ├── context/
 │   ├── TerminalContext.tsx      # Estado global do terminal e hire flow
 │   └── LanguageContext.tsx      # Estado global de idioma e traduções (PT/EN)
-├── blog/                        # Página do blog
-├── sobre/                       # Página sobre (janela estilo macOS)
-├── skills/                      # Página de habilidades
-├── projetos/                    # Página de projetos
-├── contato/                     # Página de contato
-├── layout.tsx                   # Layout global
-└── page.tsx                     # Home ✅ Concluída
+├── blog/
+│   └── LiquidGlassBlog.tsx      # Particle Assemble + astronauta SVG animado
+├── sobre/                       # Janela macOS — foto holográfica + timeline
+├── skills/                      # Janela macOS — hard skills + flip cards + princípios
+├── projetos/                    # CoverFlow 3D carousel com cards de projeto
+├── contato/                     # Janela macOS — ícones de contato + formulário
+├── layout.tsx                   # Layout global (MenuBar, Dock, Terminal, Providers)
+└── page.tsx                     # Home — hero, foto hexagonal, CTAs
+public/
+├── images/
+│   ├── projetos/                # Screenshots dos projetos (.webp)
+│   ├── astronautas.svg          # SVG do astronauta (blog)
+│   ├── foto-1.webp              # Foto da home (hexagonal)
+│   ├── foto-sobre.webp          # Foto holográfica (sobre)
+│   └── *.webp                   # Ícones de contato (GitHub, LinkedIn, etc.)
+└── cv.pdf                       # Currículo para download
 ```
 
 ---
@@ -360,7 +578,10 @@ Acesse [http://localhost:3000](http://localhost:3000).
 |---|---|---|
 | `v1.0.0` | 2026-03-11 | Home concluída — hero, terminal, i18n, CTAs, dock, glitch |
 | `v1.1.0` | 2026-03-13 | Página Sobre — janela macOS, foto holográfica, timeline, i18n |
-| `v1.2.0` | 2026-03-13 | Página Skills — hard skills com stagger, flip cards, princípios de engenharia |
+| `v1.2.0` | 2026-03-13 | Página Skills — hard skills com stagger, flip cards hover, princípios, i18n |
+| `v1.3.0` | 2026-03-13 | Página Contato — janela macOS, ícones, formulário, Formspree, confetti, liquid glass |
+| `v1.4.0` | 2026-03-13 | Blog — Particle Assemble, astronauta SVG animado, tema-aware |
+| `v1.5.0` | 2026-03-13 | Projetos — CoverFlow 3D, cards completos, Em Breve, i18n, scroll/swipe/drag |
 
 ---
 

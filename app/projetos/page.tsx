@@ -213,6 +213,43 @@ export default function Projetos() {
         .soon-dot-1 { animation: blink1 1.2s ease-in-out infinite; }
         .soon-dot-2 { animation: blink2 1.2s ease-in-out infinite; }
         .soon-dot-3 { animation: blink3 1.2s ease-in-out infinite; }
+
+        @keyframes qfloat1 {
+          0%,100% { transform: rotate(-15deg) translate(0, 0); }
+          50%     { transform: rotate(-12deg) translate(6px, -10px); }
+        }
+        @keyframes qfloat2 {
+          0%,100% { transform: rotate(20deg) translate(0, 0); }
+          50%     { transform: rotate(24deg) translate(-8px, 8px); }
+        }
+        @keyframes qfloat3 {
+          0%,100% { transform: rotate(-8deg) translate(0, 0); }
+          50%     { transform: rotate(-5deg) translate(5px, -12px); }
+        }
+        @keyframes qfloat4 {
+          0%,100% { transform: rotate(12deg) translate(0, 0); }
+          50%     { transform: rotate(8deg) translate(-6px, 9px); }
+        }
+        @keyframes qfloat5 {
+          0%,100% { transform: rotate(-25deg) translate(0, 0); }
+          50%     { transform: rotate(-20deg) translate(10px, -7px); }
+        }
+        @keyframes qfloat6 {
+          0%,100% { transform: rotate(5deg) translate(0, 0); }
+          50%     { transform: rotate(9deg) translate(-9px, -11px); }
+        }
+        .qm-0  { animation: qfloat1 4.2s ease-in-out infinite; }
+        .qm-1  { animation: qfloat2 5.8s ease-in-out infinite; }
+        .qm-2  { animation: qfloat3 3.7s ease-in-out infinite; }
+        .qm-3  { animation: qfloat4 6.1s ease-in-out infinite; }
+        .qm-4  { animation: qfloat5 4.8s ease-in-out infinite; }
+        .qm-5  { animation: qfloat6 5.2s ease-in-out infinite; }
+        .qm-6  { animation: qfloat1 6.5s ease-in-out infinite; }
+        .qm-7  { animation: qfloat3 3.9s ease-in-out infinite; }
+        .qm-8  { animation: qfloat2 5.0s ease-in-out infinite; }
+        .qm-9  { animation: qfloat5 4.3s ease-in-out infinite; }
+        .qm-10 { animation: qfloat4 6.8s ease-in-out infinite; }
+        .qm-11 { animation: qfloat6 4.0s ease-in-out infinite; }
       `}</style>
 
       <div style={{
@@ -289,19 +326,19 @@ export default function Projetos() {
                           draggable={false}
                         />
                       )}
-                      {/* Pontos de interrogação sutis (só em cards sem imagem) */}
+                      {/* Pontos de interrogação animados (só em cards sem imagem) */}
                       {!project.image && QUESTION_MARKS.map((q, qi) => (
-                        <span key={qi} style={{
+                        <span key={qi} className={`qm-${qi}`} style={{
                           position: "absolute",
                           top: q.top, left: q.left,
                           fontSize: q.size,
-                          opacity: q.opacity,
+                          opacity: q.opacity * 6,
                           color: "#00EAFF",
                           fontFamily: "'JetBrains Mono', monospace",
                           fontWeight: 700,
-                          transform: `rotate(${q.rotate}deg)`,
                           userSelect: "none",
                           pointerEvents: "none",
+                          textShadow: "0 0 8px rgba(0,234,255,0.4)",
                         }}>?</span>
                       ))}
                       {/* Overlay escuro */}

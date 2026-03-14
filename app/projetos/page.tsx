@@ -102,6 +102,16 @@ export default function Projetos() {
     if (Math.abs(diff) > 50) go(currentRef.current + (diff > 0 ? 1 : -1));
   };
 
+  // Scroll do mouse
+  const lastWheel = useRef(0);
+  const onWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const now = Date.now();
+    if (now - lastWheel.current < 600) return;
+    lastWheel.current = now;
+    go(currentRef.current + (e.deltaY > 0 ? 1 : -1));
+  };
+
   // Drag com mouse
   const dragStartX  = useRef<number | null>(null);
   const isDragging  = useRef(false);
@@ -174,6 +184,7 @@ export default function Projetos() {
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
+          onWheel={onWheel}
         >
           <div style={{
             width: "100%", height: "100%",

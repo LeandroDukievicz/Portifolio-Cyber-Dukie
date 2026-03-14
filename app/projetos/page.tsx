@@ -233,9 +233,10 @@ export default function Projetos() {
                       {/* Info */}
                       <div style={{
                         flex: 1, display: "flex", flexDirection: "column",
-                        padding: isMobile ? "14px 16px" : "20px 24px",
+                        padding: isMobile ? "14px 16px 20px" : "18px 24px 28px",
                         gap: 10,
                         fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                        justifyContent: "flex-start",
                       }}>
                         <span style={{ fontSize: "0.62rem", letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(0,234,255,0.6)" }}>
                           {project.subtitle}
@@ -243,7 +244,7 @@ export default function Projetos() {
                         <h2 style={{ margin: 0, fontSize: isMobile ? "1rem" : "1.2rem", fontWeight: 700, color: "#fff", letterSpacing: "0.03em" }}>
                           {project.title}
                         </h2>
-                        <p style={{ margin: 0, fontSize: isMobile ? "0.72rem" : "0.82rem", color: "rgba(255,255,255,0.82)", lineHeight: 1.75, flex: 1, whiteSpace: "pre-line", letterSpacing: "0.01em" }}>
+                        <p style={{ margin: 0, fontSize: isMobile ? "0.72rem" : "0.82rem", color: "rgba(255,255,255,0.82)", lineHeight: 1.75, whiteSpace: "pre-line", letterSpacing: "0.01em", textAlign: "justify" }}>
                           {project.description}
                         </p>
                         {/* Tags */}
@@ -262,7 +263,7 @@ export default function Projetos() {
                         </div>
                         {/* CTAs */}
                         {project.ctas && (
-                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 6 }}>
                             {project.ctas.map(cta => (
                               <a
                                 key={cta.href}

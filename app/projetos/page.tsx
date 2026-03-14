@@ -4,6 +4,21 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 
+const QUESTION_MARKS = [
+  { top: "8%",  left: "12%", size: "1.1rem", opacity: 0.06, rotate: -15 },
+  { top: "14%", left: "72%", size: "2.4rem", opacity: 0.04, rotate: 20  },
+  { top: "28%", left: "88%", size: "0.9rem", opacity: 0.07, rotate: -8  },
+  { top: "38%", left: "5%",  size: "1.8rem", opacity: 0.05, rotate: 12  },
+  { top: "52%", left: "55%", size: "3rem",   opacity: 0.03, rotate: -25 },
+  { top: "60%", left: "25%", size: "1rem",   opacity: 0.07, rotate: 5   },
+  { top: "70%", left: "80%", size: "1.5rem", opacity: 0.05, rotate: -10 },
+  { top: "78%", left: "40%", size: "0.8rem", opacity: 0.06, rotate: 18  },
+  { top: "85%", left: "10%", size: "2rem",   opacity: 0.04, rotate: -20 },
+  { top: "90%", left: "65%", size: "1.2rem", opacity: 0.06, rotate: 8   },
+  { top: "20%", left: "45%", size: "1.6rem", opacity: 0.04, rotate: -5  },
+  { top: "45%", left: "30%", size: "0.7rem", opacity: 0.07, rotate: 30  },
+];
+
 type Project = {
   title: string;
   subtitle: string;
@@ -274,11 +289,26 @@ export default function Projetos() {
                           draggable={false}
                         />
                       )}
+                      {/* Pontos de interrogação sutis (só em cards sem imagem) */}
+                      {!project.image && QUESTION_MARKS.map((q, qi) => (
+                        <span key={qi} style={{
+                          position: "absolute",
+                          top: q.top, left: q.left,
+                          fontSize: q.size,
+                          opacity: q.opacity,
+                          color: "#00EAFF",
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontWeight: 700,
+                          transform: `rotate(${q.rotate}deg)`,
+                          userSelect: "none",
+                          pointerEvents: "none",
+                        }}>?</span>
+                      ))}
                       {/* Overlay escuro */}
                       <div style={{
                         position: "absolute", inset: 0,
-                        background: "rgba(3,17,31,0.85)",
-                        backdropFilter: "blur(2px)",
+                        background: project.image ? "rgba(3,17,31,0.85)" : "transparent",
+                        backdropFilter: project.image ? "blur(2px)" : "none",
                       }} />
                       {/* Conteúdo */}
                       <div style={{

@@ -263,7 +263,7 @@ export default function Projetos() {
                         </div>
                         {/* CTAs */}
                         {project.ctas && (
-                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 6 }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6 }}>
                             {project.ctas.map(cta => (
                               <a
                                 key={cta.href}

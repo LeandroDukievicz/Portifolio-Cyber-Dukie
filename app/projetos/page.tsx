@@ -62,6 +62,9 @@ const PROJECTS: (Project | null)[] = [
   },
   { title: "", subtitle: "", description: "", tags: [], soon: true, image: "/images/projetos/dashboard.webp", soonLabel: "Dashboard de Controle" },
   { title: "", subtitle: "", description: "", tags: [], soon: true, image: "/images/projetos/helmet.webp", soonLabel: "Blog" },
+  null,
+  null,
+  null,
 ];
 
 const TOTAL_CARDS = PROJECTS.length;

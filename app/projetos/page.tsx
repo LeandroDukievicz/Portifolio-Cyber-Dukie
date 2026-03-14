@@ -77,9 +77,9 @@ const PROJECTS: (Project | null)[] = [
   },
   { title: "", subtitle: "", description: "", tags: [], soon: true, image: "/images/projetos/dashboard.webp", soonLabel: "Dashboard de Controle" },
   { title: "", subtitle: "", description: "", tags: [], soon: true, image: "/images/projetos/helmet.webp", soonLabel: "Blog" },
-  { title: "", subtitle: "", description: "", tags: [], soon: true },
-  { title: "", subtitle: "", description: "", tags: [], soon: true },
-  { title: "", subtitle: "", description: "", tags: [], soon: true },
+  null,
+  null,
+  null,
 ];
 
 const TOTAL_CARDS = PROJECTS.length;
@@ -490,7 +490,46 @@ export default function Projetos() {
                         )}
                       </div>
                     </>
-                  ) : null}
+                  ) : (
+                    /* Card vazio — fallback igual ao Em Breve sem imagem */
+                    <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+                      {QUESTION_MARKS.map((q, qi) => (
+                        <span key={qi} className={`qm-${qi}`} style={{
+                          position: "absolute",
+                          top: q.top, left: q.left,
+                          fontSize: q.size,
+                          opacity: q.opacity * 6,
+                          color: "#00EAFF",
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontWeight: 700,
+                          userSelect: "none",
+                          pointerEvents: "none",
+                          textShadow: "0 0 8px rgba(0,234,255,0.4)",
+                        }}>?</span>
+                      ))}
+                      <div style={{
+                        position: "absolute", inset: 0,
+                        display: "flex", flexDirection: "column",
+                        alignItems: "center", justifyContent: "center",
+                        gap: 16,
+                        fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                      }}>
+                        <span style={{
+                          fontSize: isMobile ? "2rem" : "2.6rem",
+                          fontWeight: 800,
+                          letterSpacing: "0.04em",
+                          color: "rgba(255,255,255,0.9)",
+                          textTransform: "uppercase",
+                          lineHeight: 1,
+                        }}>Em Breve</span>
+                        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                          <span className="soon-dot-1" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                          <span className="soon-dot-2" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                          <span className="soon-dot-3" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               );
             })}

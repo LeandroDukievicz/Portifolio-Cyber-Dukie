@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import CyberpunkBackground from "../components/CyberpunkBackground";
+import { useLanguage } from "../context/LanguageContext";
 
 const QUESTION_MARKS = [
   { top: "8%",  left: "12%", size: "1.1rem", opacity: 0.06, rotate: -15 },
@@ -19,70 +20,27 @@ const QUESTION_MARKS = [
   { top: "45%", left: "30%", size: "0.7rem", opacity: 0.07, rotate: 30  },
 ];
 
-type Project = {
-  title: string;
-  subtitle: string;
-  description: string;
+type StaticProject = {
   tags: string[];
   image?: string;
-  ctas?: { label: string; href: string; icon: "github" | "link" }[];
+  ctaHrefs?: [string, string];
   soon?: boolean;
-  soonLabel?: string;
 };
 
-const PROJECTS: (Project | null)[] = [
-  {
-    title: "Electrum — E-commerce Front-end",
-    subtitle: "Front-end",
-    description: "Front-end de um e-commerce fictício de eletrônicos, desenvolvido com foco na prática de SASS com arquitetura modular. O projeto simula um fluxo real de desenvolvimento frontend, com a estilização dividida em 3 módulos.",
-    tags: ["HTML5", "Sass", "Vercel"],
-    image: "/images/projetos/projeto-electrum.webp",
-    ctas: [
-      { label: "Ver Detalhes", href: "https://github.com/LeandroDukievicz/sass-project-electrum", icon: "github" },
-      { label: "Ver Projeto",     href: "https://projectelectrumleandrod.vercel.app/",              icon: "link"   },
-    ],
-  },
-  {
-    title: "Artes Urbanas",
-    subtitle: "Front-end",
-    description: "Projeto Front end de um site temático de artes urbanas, desenvolvido como primeiro contato com bootstrap 5 via CDN, conceitos praticados: containers, grid, breakpoints, colunas, alinhamentos, offset, ordenação de elementos e ícones.",
-    tags: ["HTML5", "CSS3", "Bootstrap", "CDN", "Vercel"],
-    image: "/images/projetos/artes-urbanas.webp",
-    ctas: [
-      { label: "Ver Detalhes", href: "https://github.com/LeandroDukievicz/bootstrap-urban-arts", icon: "github" },
-      { label: "Ver Projeto",  href: "https://artesurbanas.vercel.app/",                         icon: "link"   },
-    ],
-  },
-  {
-    title: "iMovi Construtora — Site Institucional",
-    subtitle: "Front-end",
-    description: "Landing Page de uma construtora, desenvolvido para consolidar técnicas do Bootstrap, recursos: sliders, cards, ícones, svg e customização seguindo estrutura de site institucional moderno.",
-    tags: ["HTML5", "CSS3", "Bootstrap 5", "Vercel"],
-    image: "/images/projetos/imovi.webp",
-    ctas: [
-      { label: "Ver Detalhes", href: "https://github.com/LeandroDukievicz/bootstrap-imovi",  icon: "github" },
-      { label: "Ver Projeto",  href: "https://bootstrap-imovi.vercel.app/",                  icon: "link"   },
-    ],
-  },
-  {
-    title: "Barber Shop — Institucional",
-    subtitle: "Front-end",
-    description: "Landing page completa de uma barbearia com visual escuro e elegante, apresenta todas as seções típicas de um negócio local: hero com horários e endereço, seção sobre com história da empresa, listagem de serviços, formulário de agendamento e galeria de fotos, rodapé com localização no mapa.",
-    tags: ["HTML5", "CSS3", "Forms", "Vercel"],
-    image: "/images/projetos/barbershop.webp",
-    ctas: [
-      { label: "Ver Detalhes", href: "https://github.com/LeandroDukievicz/BarberShop",              icon: "github" },
-      { label: "Ver Projeto",  href: "https://barberhop-dukievicz.vercel.app/#services",            icon: "link"   },
-    ],
-  },
-  { title: "", subtitle: "", description: "", tags: [], soon: true, image: "/images/projetos/dashboard.webp", soonLabel: "Dashboard de Controle" },
-  { title: "", subtitle: "", description: "", tags: [], soon: true, image: "/images/projetos/helmet.webp", soonLabel: "Blog" },
+// Dados estáticos (imagens, tags, links) — não mudam com o idioma
+const STATIC: (StaticProject | null)[] = [
+  { tags: ["HTML5", "Sass", "Vercel"],            image: "/images/projetos/projeto-electrum.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/sass-project-electrum", "https://projectelectrumleandrod.vercel.app/"] },
+  { tags: ["HTML5", "CSS3", "Bootstrap", "CDN", "Vercel"], image: "/images/projetos/artes-urbanas.webp",   ctaHrefs: ["https://github.com/LeandroDukievicz/bootstrap-urban-arts", "https://artesurbanas.vercel.app/"] },
+  { tags: ["HTML5", "CSS3", "Bootstrap 5", "Vercel"],      image: "/images/projetos/imovi.webp",           ctaHrefs: ["https://github.com/LeandroDukievicz/bootstrap-imovi", "https://bootstrap-imovi.vercel.app/"] },
+  { tags: ["HTML5", "CSS3", "Forms", "Vercel"],            image: "/images/projetos/barbershop.webp",      ctaHrefs: ["https://github.com/LeandroDukievicz/BarberShop", "https://barberhop-dukievicz.vercel.app/#services"] },
+  { tags: [], soon: true, image: "/images/projetos/dashboard.webp" },
+  { tags: [], soon: true, image: "/images/projetos/helmet.webp" },
   null,
   null,
   null,
 ];
 
-const TOTAL_CARDS = PROJECTS.length;
+const TOTAL_CARDS = STATIC.length;
 const TRANSITION = "all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
 const AUTO_INTERVAL = 3000;
 
@@ -106,6 +64,28 @@ function getCardStyle(offset: number, isMobile: boolean): React.CSSProperties {
 }
 
 export default function Projetos() {
+  const { t } = useLanguage();
+  const p = t.projects;
+
+  // Monta projetos mesclando dados estáticos com traduções
+  const PROJECTS = STATIC.map((s, i) => {
+    if (!s) return null;
+    const tr = p.items[i];
+    return {
+      title:       tr?.title ?? "",
+      subtitle:    tr?.subtitle ?? "",
+      description: tr?.description ?? "",
+      tags:        s.tags,
+      image:       s.image,
+      soon:        s.soon,
+      soonLabel:   tr && "soonLabel" in tr ? (tr as { soonLabel?: string }).soonLabel : undefined,
+      ctas: s.ctaHrefs ? [
+        { label: p.ctaDetails, href: s.ctaHrefs[0], icon: "github" as const },
+        { label: p.ctaProject, href: s.ctaHrefs[1], icon: "link"   as const },
+      ] : undefined,
+    };
+  });
+
   const [current, setCurrent]   = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [paused, setPaused]     = useState(false);
@@ -320,7 +300,7 @@ export default function Projetos() {
                       {project.image && (
                         <Image
                           src={project.image}
-                          alt={project.soonLabel ?? "Em Breve"}
+                          alt={project.soonLabel ?? p.comingSoon}
                           fill
                           style={{ objectFit: "cover" }}
                           draggable={false}
@@ -363,7 +343,7 @@ export default function Projetos() {
                           textTransform: "uppercase",
                           lineHeight: 1,
                         }}>
-                          Em Breve
+                          {p.comingSoon}
                         </span>
                         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
                           <span className="soon-dot-1" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>

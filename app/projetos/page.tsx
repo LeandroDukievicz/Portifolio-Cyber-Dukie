@@ -260,37 +260,54 @@ export default function Projetos() {
                   }}
                 >
                   {project?.soon ? (
-                    <div style={{
-                      flex: 1, display: "flex", flexDirection: "column",
-                      alignItems: "center", justifyContent: "center",
-                      gap: 16, padding: 24,
-                      fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
-                    }}>
-                      <span style={{
-                        fontSize: isMobile ? "2rem" : "2.6rem",
-                        fontWeight: 800,
-                        letterSpacing: "0.04em",
-                        color: "rgba(255,255,255,0.15)",
-                        textTransform: "uppercase",
-                        lineHeight: 1,
+                    <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+                      <Image
+                        src="/images/projetos/dashboard.webp"
+                        alt="Dashboard de Controle"
+                        fill
+                        style={{ objectFit: "cover" }}
+                        draggable={false}
+                      />
+                      {/* Overlay escuro */}
+                      <div style={{
+                        position: "absolute", inset: 0,
+                        background: "rgba(3,17,31,0.72)",
+                        backdropFilter: "blur(1px)",
+                      }} />
+                      {/* Conteúdo */}
+                      <div style={{
+                        position: "absolute", inset: 0,
+                        display: "flex", flexDirection: "column",
+                        alignItems: "center", justifyContent: "center",
+                        gap: 16,
+                        fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
                       }}>
-                        Em Breve
-                      </span>
-                      <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                        <span className="soon-dot-1" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
-                        <span className="soon-dot-2" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
-                        <span className="soon-dot-3" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                        <span style={{
+                          fontSize: isMobile ? "2rem" : "2.6rem",
+                          fontWeight: 800,
+                          letterSpacing: "0.04em",
+                          color: "rgba(255,255,255,0.25)",
+                          textTransform: "uppercase",
+                          lineHeight: 1,
+                        }}>
+                          Em Breve
+                        </span>
+                        <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                          <span className="soon-dot-1" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                          <span className="soon-dot-2" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                          <span className="soon-dot-3" style={{ fontSize: isMobile ? "2rem" : "2.8rem", color: "#00EAFF", lineHeight: 1 }}>.</span>
+                        </div>
+                        <span style={{
+                          fontSize: isMobile ? "0.85rem" : "1rem",
+                          fontWeight: 600,
+                          letterSpacing: "0.06em",
+                          color: "rgba(255,255,255,0.6)",
+                          textTransform: "uppercase",
+                          textAlign: "center",
+                        }}>
+                          Dashboard de Controle
+                        </span>
                       </div>
-                      <span style={{
-                        fontSize: isMobile ? "0.85rem" : "1rem",
-                        fontWeight: 600,
-                        letterSpacing: "0.06em",
-                        color: "rgba(255,255,255,0.45)",
-                        textTransform: "uppercase",
-                        textAlign: "center",
-                      }}>
-                        Dashboard de Controle
-                      </span>
                     </div>
                   ) : project ? (
                     <>

@@ -285,13 +285,13 @@ export default function Projetos() {
                     width: cardW,
                     height: cardH,
                     borderRadius: 20,
-                    background: isCenter ? "rgba(0,234,255,0.05)" : "rgba(3,17,31,0.6)",
+                    background: isCenter ? "rgba(2,10,22,0.92)" : "rgba(3,17,31,0.55)",
                     border: isCenter ? "1px solid rgba(0,234,255,0.4)" : "1px solid rgba(255,255,255,0.07)",
                     boxShadow: isCenter
-                      ? "0 0 40px rgba(0,234,255,0.12), 0 24px 60px rgba(0,0,0,0.5)"
+                      ? "0 0 40px rgba(0,234,255,0.15), 0 24px 60px rgba(0,0,0,0.7)"
                       : "0 16px 40px rgba(0,0,0,0.4)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
+                    backdropFilter: isCenter ? "blur(20px)" : "blur(6px)",
+                    WebkitBackdropFilter: isCenter ? "blur(20px)" : "blur(6px)",
                     cursor: grabbing ? "grabbing" : "grab",
                     userSelect: "none",
                     transition: TRANSITION,

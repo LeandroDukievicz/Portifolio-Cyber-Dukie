@@ -118,7 +118,7 @@ export default function Dock() {
           shadow-[4px_0_20px_rgba(0,0,0,0.3)]
         ">
           {NAV_ITEMS.map((item, i) =>
-            renderItem(item, i, "w-[44px] h-[44px] flex-shrink-0")
+            renderItem(item, i, "w-full flex-1")
           )}
         </ul>
       </div>

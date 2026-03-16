@@ -56,8 +56,9 @@ export default function Contato() {
   const [isMobile,   setIsMobile]   = useState(false);
   const [hovered,    setHovered]    = useState<number | null>(null);
   const [form, setForm] = useState({ nome: "", email: "", assunto: "", mensagem: "" });
-  const [showToast, setShowToast]       = useState(false);
-  const [submitted, setSubmitted]       = useState(false);
+  const [showToast, setShowToast]         = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [submitted, setSubmitted]         = useState(false);
   const [submitting, setSubmitting]     = useState(false);
 
   const allFilled = Object.values(form).every(v => v.trim() !== "") && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
@@ -77,6 +78,8 @@ export default function Contato() {
     });
     setSubmitting(false);
     setSubmitted(true);
+    setShowSuccessToast(true);
+    setTimeout(() => setShowSuccessToast(false), 3000);
     setForm({ nome: "", email: "", assunto: "", mensagem: "" });
     const confetti = (await import("canvas-confetti")).default;
     const colors = ["#00EAFF", "#FF00FF", "#FF2D78", "#ffffff", "#00ff88"];
@@ -173,10 +176,9 @@ export default function Contato() {
       {showToast && (
         <div style={{
           position: "fixed",
-          ...(isMobile
-            ? { bottom: 16, left: "50%", transform: "translateX(-50%)", width: "calc(100vw - 78px)", maxWidth: 320, height: "auto", minHeight: 80 }
-            : { top: "calc(20vh - 100px)", left: "calc(80vw + 16px)", transform: "none", width: 160, height: 160 }
-          ),
+          top: 100,
+          right: 100,
+          width: 220,
           background: "rgba(3,17,31,0.92)",
           backdropFilter: "blur(12px)",
           border: "1px solid rgba(255,80,80,0.5)",
@@ -199,6 +201,36 @@ export default function Contato() {
         }}>
           <span style={{ fontSize: "1.6rem" }}>⚠</span>
           <span>{c.toastMsg}</span>
+        </div>
+      )}
+
+      {showSuccessToast && (
+        <div style={{
+          position: "fixed",
+          top: 100,
+          right: 100,
+          width: 220,
+          background: "rgba(3,17,31,0.92)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(0,234,255,0.5)",
+          borderRadius: 12,
+          padding: "20px 16px",
+          color: "#00EAFF",
+          fontSize: "0.78rem",
+          fontFamily: "'JetBrains Mono', monospace",
+          letterSpacing: "0.04em",
+          lineHeight: 1.5,
+          zIndex: 999,
+          boxShadow: "0 0 24px rgba(0,234,255,0.15)",
+          animation: "toast-in 0.3s ease forwards",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          textAlign: "center",
+          gap: 10,
+        }}>
+          <span style={{ fontSize: "1.6rem" }}>✓</span>
+          <span>{c.successMsg}</span>
         </div>
       )}
 
@@ -343,11 +375,6 @@ export default function Contato() {
 
               {/* Botão */}
               <div style={{ alignSelf: "flex-end", display: "flex", alignItems: "center", gap: 12 }}>
-                {submitted && (
-                  <span style={{ fontSize: "0.78rem", color: "#00EAFF", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}>
-                    {c.successMsg}
-                  </span>
-                )}
                 <button
                   type="submit"
                   className="btn-liquid-glass"

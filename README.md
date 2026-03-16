@@ -403,19 +403,70 @@ Campos com borda `1px solid #ffffff` e fundo semi-transparente:
 
 ### Estrutura Atual
 
-A página `/blog` exibe um card central com mensagem "Em Breve" utilizando:
+A página `/blog` exibe conteúdo "Em Breve" com formulário de inscrição e integração com Notion.
 
-**Efeito Particle Assemble** no texto "Em Breve":
-- Cada caractere é composto por partículas que voam de posições aleatórias da tela e se montam na posição final
-- Implementado com DOM puro via `useEffect` + `requestAnimationFrame` — sem canvas
-- Interpolação `ease-out-cubic` para desaceleração suave na chegada
-- Efeito de scramble durante o voo: caracteres aleatórios substituem a letra real até pousar
-- Cleanup completo na desmontagem: `cancelAnimationFrame` + remoção dos elementos DOM
-- **Sensível ao tema**: partículas em voo são `#000000` (tema claro) ou `#00EAFF` (dark/dim); cor final é `#000000` (claro) ou `#ffffff` (dark/dim)
+### Textos com ScrambleText (Framer Motion)
 
-**Astronauta SVG animado** abaixo do texto:
-- Animação `astronaut-float`: flutuação vertical suave (translateY ±18px em 3.5s ease-in-out infinite)
-- Animação `astronaut-color`: gradiente de cores ciano → purple → magenta com `filter: hue-rotate` em 4s
+Três textos animados com efeito de caracteres scramble usando `framer-motion` + `useInView`:
+
+| Texto | Delay | Estilo |
+|---|---|---|
+| `"Em breve"` | 0ms | uppercase, opacidade 0.5, tamanho `clamp(1.7rem, 4vw, 2rem)` |
+| `"Um novo Blog"` | 300ms | bold, `clamp(1.6rem, 5vw, 2.8rem)`, com **text-shadow** na paleta do SVG |
+| `"Assine :"` | 600ms | uppercase, opacidade 0.6 |
+
+**Componente `ScrambleText`:**
+- Cicla por caracteres aleatórios (`A-Z a-z 0-9 @#$%&`) antes de resolver para o texto final
+- 22 frames a 45ms — revelação progressiva da esquerda para a direita
+- Entrada suave via `motion.span` com `opacity 0 → 1` + `translateY 10px → 0`
+- Dispara ao entrar na viewport (`useInView`, `once: true`)
+- **Sensível ao tema**: cor `#000000` (light) ou `#ffffff` (dark/dim)
+
+**Text-shadow em "Um novo Blog"** seguindo a paleta do astronauta SVG:
+- `light`: glow ciano `rgba(0,234,255,0.45)` + halo externo
+- `dark/dim`: ciano + roxo `#BD00FF` + magenta `#FF00FF` (espelha a animação `astronaut-color`)
+
+### Formulário de Inscrição
+
+Input de email + botão "Cadastrar" com validação e estados visuais:
+
+- **Input**: fundo semitransparente, borda sutil, focus acende a borda — theme-aware (light/dark)
+- **Botão**: glassmorphism, hover clareia o fundo, `Enter` também envia
+- **Estado loading**: botão mostra `...` e fica desabilitado
+- **Estado success**: input e botão substituídos por mensagem de confirmação
+
+### Sistema de Toasts
+
+| Situação | Tipo | Mensagem |
+|---|---|---|
+| Email inválido/incompleto | `error` (borda `#FF2D78`) | "Que Pena :-( Preencha Novamente!" |
+| Cadastro bem-sucedido | `success` (borda `#00EAFF`) | "Obrigado pela inscrição! 🚀 Aguarde novidades em breve." |
+
+- Posicionado `top: 100px, right: 50px` com `AnimatePresence` para entrada/saída suave
+- Auto-dismiss após 4s ou clique/toque para fechar
+- Confetti (`canvas-confetti`) disparado nas cores da paleta (`#00EAFF`, `#BD00FF`, `#FF2D78`, `#ffffff`) ao cadastrar com sucesso
+
+### Integração com Notion — API Route `/api/subscribe`
+
+API route server-side que recebe o email e persiste no banco de dados **"assinantes do blog"** no Notion:
+
+- Validação de email com regex no servidor antes de chamar a API
+- Cria uma nova página no database com as propriedades:
+  - **`Email`** (Title) — endereço informado
+  - **`Data de cadastro`** (Date) — timestamp ISO da requisição
+- Erros da API Notion logados no servidor e retornados com status `500`
+- Credenciais via variáveis de ambiente (nunca expostas ao cliente):
+
+```
+NOTION_TOKEN=...
+NOTION_BLOG_SUBSCRIBERS_DB=...
+```
+
+### Astronauta SVG animado
+
+- Animação `astronaut-float`: flutuação vertical suave (translateY ±22px em 4s ease-in-out infinite)
+- Animação `astronaut-color`: gradiente ciano → purple → magenta com `filter` (apenas dark/dim)
+- `light`: `drop-shadow(0 4px 12px rgba(0,0,0,0.25))`
 
 ---
 

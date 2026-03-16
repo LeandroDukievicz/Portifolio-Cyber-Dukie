@@ -341,7 +341,6 @@ export default function LiquidGlassBlog() {
               textAlign: "center",
               color: "#ffffff",
               opacity: 0.6,
-              marginTop: "8px",
             }}
           />
 
@@ -353,7 +352,6 @@ export default function LiquidGlassBlog() {
               position: "relative",
               display: "flex",
               gap: "8px",
-              marginTop: "4px",
               width: "100%",
               maxWidth: "420px",
             }}

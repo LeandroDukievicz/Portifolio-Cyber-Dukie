@@ -383,7 +383,7 @@ export default function LiquidGlassBlog() {
               display: "block",
               width: "100%",
               fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "clamp(0.85rem, 2vw, 1rem)",
+              fontSize: "clamp(1.7rem, 4vw, 2rem)",
               letterSpacing: "0.25em",
               textTransform: "uppercase",
               textAlign: "center",

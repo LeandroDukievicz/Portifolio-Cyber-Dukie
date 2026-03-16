@@ -2,51 +2,116 @@ import { NextRequest, NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
 import { Resend } from "resend";
 import dns from "dns/promises";
+import isEmail from "validator/lib/isEmail";
+import { isDisposableDomain, isValidEmailFormat } from "@/lib/emailValidation";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const DATABASE_ID = process.env.NOTION_BLOG_SUBSCRIBERS_DB!;
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// ─── Rate limiting em memória (máx 5 tentativas / minuto por IP) ───────────
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT = 5;
+const WINDOW_MS = 60 * 1000;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT) return true;
+  entry.count++;
+  return false;
+}
+
+// ─── Verifica MX record real (rejeita null MX e domínios sem servidor) ──────
 async function hasValidMx(domain: string): Promise<boolean> {
   try {
     const records = await dns.resolveMx(domain);
-    // rejeita null MX (exchange vazio = domínio não aceita email)
     return records.length > 0 && records.some(r => r.exchange.trim() !== "");
   } catch {
     return false;
   }
 }
 
+// ─── Sanitiza o input: remove espaços e força lowercase ─────────────────────
+function sanitizeEmail(raw: string): string {
+  return raw.trim().toLowerCase();
+}
+
 export async function POST(req: NextRequest) {
-  const { email } = await req.json();
-
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return NextResponse.json({ error: "Email inválido." }, { status: 400 });
+  // ── Rate limiting por IP ──────────────────────────────────────────────────
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: "Muitas tentativas. Aguarde 1 minuto." },
+      { status: 429 }
+    );
   }
 
+  const body = await req.json().catch(() => null);
+  if (!body) {
+    return NextResponse.json({ error: "Requisição inválida." }, { status: 400 });
+  }
+
+  // ── Honeypot: bots preenchem campos ocultos, humanos não ─────────────────
+  // O campo "website" nunca aparece na UI — se vier preenchido é bot.
+  if (body.website) {
+    // Retorna 200 para não revelar que foi detectado
+    return NextResponse.json({ ok: true });
+  }
+
+  const rawEmail: string = body.email ?? "";
+  const email = sanitizeEmail(rawEmail);
+
+  // ── Formato básico (regex) ────────────────────────────────────────────────
+  if (!isValidEmailFormat(email)) {
+    return NextResponse.json({ error: "Formato de e-mail inválido." }, { status: 400 });
+  }
+
+  // ── validator.js — validação rigorosa de RFC ──────────────────────────────
+  if (!isEmail(email, { allow_utf8_local_part: false, require_tld: true })) {
+    return NextResponse.json({ error: "E-mail inválido." }, { status: 400 });
+  }
+
+  // ── Domínio descartável ───────────────────────────────────────────────────
+  if (isDisposableDomain(email)) {
+    return NextResponse.json(
+      { error: "E-mails temporários não são aceitos." },
+      { status: 400 }
+    );
+  }
+
+  // ── MX record — domínio precisa ter servidor de e-mail real ──────────────
   const domain = email.split("@")[1];
-  const validDomain = await hasValidMx(domain);
-  if (!validDomain) {
-    return NextResponse.json({ error: "Domínio de email inexistente." }, { status: 400 });
+  if (!(await hasValidMx(domain))) {
+    return NextResponse.json(
+      { error: "Domínio de e-mail inexistente." },
+      { status: 400 }
+    );
   }
 
+  // ── Salva no Notion ───────────────────────────────────────────────────────
   try {
     await notion.pages.create({
       parent: { database_id: DATABASE_ID },
       properties: {
-        Email: {
-          title: [{ text: { content: email } }],
-        },
-        "Data de cadastro": {
-          date: { start: new Date().toISOString() },
-        },
+        Email: { title: [{ text: { content: email } }] },
+        "Data de cadastro": { date: { start: new Date().toISOString() } },
       },
     });
   } catch (err) {
     console.error("[subscribe] Notion error:", err);
-    return NextResponse.json({ error: "Erro ao salvar. Tente novamente." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Erro ao salvar. Tente novamente." },
+      { status: 500 }
+    );
   }
 
+  // ── Notificação por e-mail (não bloqueia em caso de falha) ────────────────
   try {
     await resend.emails.send({
       from: "Blog Dukie <onboarding@resend.dev>",

@@ -137,25 +137,40 @@ export default function LiquidGlassBlog() {
   const [theme, setTheme] = useState<Theme>("light");
   const [prevOption, setPrevOption] = useState<string>("1");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [honeypot, setHoneypot] = useState(""); // campo invisível anti-bot
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
   const showToast = (message: string, type: ToastType) => setToast({ message, type });
   const dismissToast = () => setToast(null);
 
+  // Valida formato no frontend antes de enviar
+  const validateEmail = (value: string): string => {
+    if (!value.trim()) return "Informe seu e-mail.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim()))
+      return "Formato de e-mail inválido.";
+    return "";
+  };
+
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+    if (emailError) setEmailError(validateEmail(value));
+  };
+
   const handleSubscribe = async () => {
-    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-    if (!valid) {
-      showToast("Que Pena :-(\u2002 Preencha Novamente!", "error");
-      return;
-    }
+    const err = validateEmail(email);
+    if (err) { setEmailError(err); return; }
+    setEmailError("");
     setStatus("loading");
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
+        // honeypot enviado junto — API rejeita silenciosamente se preenchido
+        body: JSON.stringify({ email: email.trim(), website: honeypot }),
       });
+      const data = await res.json();
       if (res.ok) {
         setStatus("success");
         confetti({
@@ -166,11 +181,11 @@ export default function LiquidGlassBlog() {
         });
         showToast("Obrigado pela inscrição! 🚀\nAguarde novidades em breve.", "success");
       } else {
-        showToast("Que Pena :-(\u2002 Preencha Novamente!", "error");
+        setEmailError(data.error ?? "E-mail inválido.");
         setStatus("idle");
       }
     } catch {
-      showToast("Que Pena :-(\u2002 Preencha Novamente!", "error");
+      showToast("Erro de conexão. Tente novamente.", "error");
       setStatus("idle");
     }
   };
@@ -448,58 +463,93 @@ export default function LiquidGlassBlog() {
               </p>
             ) : (
               <>
+                {/* Honeypot — invisível para humanos, bots preenchem automaticamente */}
                 <input
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  onKeyDown={e => e.key === "Enter" && handleSubscribe()}
-                  disabled={status === "loading"}
-                  style={{
-                    flex: 1,
-                    background: theme === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.07)",
-                    border: theme === "light" ? "1px solid rgba(0,0,0,0.2)" : "1px solid rgba(255,255,255,0.2)",
-                    borderRadius: "8px",
-                    padding: "10px 14px",
-                    color: theme === "light" ? "#000000" : "#ffffff",
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.85rem",
-                    outline: "none",
-                    transition: "border-color 0.2s",
-                  }}
-                  onFocus={e => (e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)")}
-                  onBlur={e  => (e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)")}
+                  type="text"
+                  name="website"
+                  value={honeypot}
+                  onChange={e => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  aria-hidden="true"
+                  autoComplete="off"
+                  style={{ position: "absolute", opacity: 0, pointerEvents: "none", width: 0, height: 0 }}
                 />
-                <button
-                  type="button"
-                  onClick={handleSubscribe}
-                  disabled={status === "loading"}
-                  style={{
-                    background: theme === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)",
-                    border: theme === "light" ? "1px solid rgba(0,0,0,0.2)" : "1px solid rgba(255,255,255,0.25)",
-                    borderRadius: "8px",
-                    padding: "10px 18px",
-                    color: theme === "light" ? "#000000" : "#ffffff",
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.85rem",
-                    fontWeight: 600,
-                    letterSpacing: "0.08em",
-                    cursor: status === "loading" ? "wait" : "pointer",
-                    whiteSpace: "nowrap",
-                    transition: "background 0.2s, border-color 0.2s",
-                    opacity: status === "loading" ? 0.6 : 1,
-                  }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = theme === "light" ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.22)";
-                    e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.4)" : "rgba(255,255,255,0.4)";
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = theme === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)";
-                    e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.25)";
-                  }}
-                >
-                  {status === "loading" ? "..." : "Cadastrar"}
-                </button>
+
+                <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 4 }}>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input
+                      type="email"
+                      placeholder="seu@email.com"
+                      value={email}
+                      onChange={e => handleEmailChange(e.target.value)}
+                      onBlur={() => setEmailError(validateEmail(email))}
+                      onKeyDown={e => e.key === "Enter" && handleSubscribe()}
+                      disabled={status === "loading"}
+                      style={{
+                        flex: 1,
+                        background: theme === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.07)",
+                        border: emailError
+                          ? "1px solid #FF2D78"
+                          : theme === "light" ? "1px solid rgba(0,0,0,0.2)" : "1px solid rgba(255,255,255,0.2)",
+                        borderRadius: "8px",
+                        padding: "10px 14px",
+                        color: theme === "light" ? "#000000" : "#ffffff",
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "0.85rem",
+                        outline: "none",
+                        transition: "border-color 0.2s",
+                      }}
+                      onFocus={e => !emailError && (e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)")}
+                      onBlur={e => {
+                        const err = validateEmail(email);
+                        setEmailError(err);
+                        if (!err) e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)";
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSubscribe}
+                      disabled={status === "loading"}
+                      style={{
+                        background: theme === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)",
+                        border: theme === "light" ? "1px solid rgba(0,0,0,0.2)" : "1px solid rgba(255,255,255,0.25)",
+                        borderRadius: "8px",
+                        padding: "10px 18px",
+                        color: theme === "light" ? "#000000" : "#ffffff",
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "0.85rem",
+                        fontWeight: 600,
+                        letterSpacing: "0.08em",
+                        cursor: status === "loading" ? "wait" : "pointer",
+                        whiteSpace: "nowrap",
+                        transition: "background 0.2s, border-color 0.2s",
+                        opacity: status === "loading" ? 0.6 : 1,
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = theme === "light" ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.22)";
+                        e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.4)" : "rgba(255,255,255,0.4)";
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = theme === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)";
+                        e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.25)";
+                      }}
+                    >
+                      {status === "loading" ? "..." : "Cadastrar"}
+                    </button>
+                  </div>
+
+                  {/* Erro inline abaixo do input */}
+                  {emailError && (
+                    <span style={{
+                      fontFamily: "'JetBrains Mono', monospace",
+                      fontSize: "0.72rem",
+                      color: "#FF2D78",
+                      letterSpacing: "0.03em",
+                    }}>
+                      ⚠ {emailError}
+                    </span>
+                  )}
+                </div>
               </>
             )}
           </motion.div>

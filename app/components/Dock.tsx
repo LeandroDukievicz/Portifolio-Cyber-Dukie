@@ -117,7 +117,7 @@ export default function Dock() {
           border-r border-white/20
           shadow-[4px_0_20px_rgba(0,0,0,0.3)]
         ">
-          {NAV_ITEMS.map((item, i) =>
+          {NAV_ITEMS.filter(item => item.kind === "link").map((item, i) =>
             renderItem(item, i, "w-full flex-1")
           )}
         </ul>

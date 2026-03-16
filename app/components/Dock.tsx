@@ -85,7 +85,7 @@ export default function Dock() {
   return (
     <>
       {/* ── DOCK (desktop + mobile) ── */}
-      <div className="flex fixed bottom-3 md:bottom-[70px] inset-x-auto left-1/2 -translate-x-1/2 justify-center z-[150]">
+      <div className="flex fixed bottom-[30px] inset-x-auto left-1/2 -translate-x-1/2 justify-center z-[150]">
         <ul
           ref={dockRef}
           className="

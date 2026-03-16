@@ -33,7 +33,7 @@ export default function MenuBar() {
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-3"
+      className="fixed top-0 left-[54px] md:left-0 right-0 z-[200] flex items-center justify-between px-3"
       style={{
         height: "28px",
         background: "rgba(10, 10, 20, 0.55)",
@@ -43,13 +43,13 @@ export default function MenuBar() {
       }}
     >
       {/* Left — logo + name */}
-      <div className="flex items-center gap-2 text-white">
-        <VscCode size={15} />
-        <span className="font-semibold" style={{ fontSize: "13px" }}>{t.portfolioTitle}</span>
+      <div className="flex items-center gap-2 text-white min-w-0 shrink-0">
+        <VscCode size={15} className="shrink-0" />
+        <span className="font-semibold truncate" style={{ fontSize: "13px" }}>{t.portfolioTitle}</span>
       </div>
 
       {/* Center — Language switcher */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+      <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={toggle}
           title={lang === "pt" ? "Switch to English" : "Mudar para Português"}
@@ -64,7 +64,7 @@ export default function MenuBar() {
 
       {/* Right — clock */}
       {time && (
-        <span className="hidden sm:inline text-white/90" style={{ fontSize: "12px" }}>{time}</span>
+        <span className="hidden sm:inline text-white/90 shrink-0" style={{ fontSize: "12px" }}>{time}</span>
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import MarqueeTitle from "./components/MarqueeTitle";
 import MenuBar from "./components/MenuBar";
 import VisitorGreeting from "./components/VisitorGreeting";
 import TerminalWindow from "./components/TerminalWindow";
+import LoadingScreen from "./components/LoadingScreen";
 import { TerminalProvider } from "./context/TerminalContext";
 import { LanguageProvider } from "./context/LanguageContext";
 
@@ -27,6 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br" suppressHydrationWarning>
+      <head>
+        {/* Script bloqueante: esconde o body antes de qualquer pintura se for primeira visita */}
+        <script dangerouslySetInnerHTML={{ __html: `try{if(!localStorage.getItem('portfolio-loaded')){document.documentElement.classList.add('fl')}}catch(e){}` }} />
+      </head>
       <body
         className={`${roboto.variable} antialiased bg-[#03111F] w-full h-full`}
         style={{ fontFamily: "var(--font-roboto), sans-serif" }}
@@ -34,6 +39,7 @@ export default function RootLayout({
       >
         <LanguageProvider>
         <TerminalProvider>
+          <LoadingScreen />
           <MenuBar />
           <VisitorGreeting />
           {children}

@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Esconde todo o conteúdo enquanto o loading de primeira visita está ativo */
+html.fl body { visibility: hidden; }
+html.fl      { background: #000;   }
+
 html {
   height: 100%;
   --dock-icon-color: #ffffff;

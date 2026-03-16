@@ -422,6 +422,7 @@ export default function LiquidGlassBlog() {
               textAlign: "center",
               color: theme === "light" ? "#000000" : "#ffffff",
               opacity: 0.6,
+              marginTop: "8px",
             }}
           />
 

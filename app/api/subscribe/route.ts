@@ -1,16 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
 import { Resend } from "resend";
+import dns from "dns/promises";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const DATABASE_ID = process.env.NOTION_BLOG_SUBSCRIBERS_DB!;
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+async function hasValidMx(domain: string): Promise<boolean> {
+  try {
+    const records = await dns.resolveMx(domain);
+    return records.length > 0;
+  } catch {
+    return false;
+  }
+}
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json();
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "Email inválido." }, { status: 400 });
+  }
+
+  const domain = email.split("@")[1];
+  const validDomain = await hasValidMx(domain);
+  if (!validDomain) {
+    return NextResponse.json({ error: "Domínio de email inexistente." }, { status: 400 });
   }
 
   try {
@@ -47,7 +63,6 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error("[subscribe] Resend error:", err);
-    // não bloqueia — Notion já salvou
   }
 
   return NextResponse.json({ ok: true });

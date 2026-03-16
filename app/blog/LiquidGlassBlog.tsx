@@ -1,7 +1,71 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import styles from "./blog.module.css";
+
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&";
+
+function ScrambleText({
+  text,
+  delay = 0,
+  className,
+  style,
+}: {
+  text: string;
+  delay?: number;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+  const [display, setDisplay] = useState(() => text.replace(/./g, " "));
+
+  useEffect(() => {
+    if (!inView) return;
+    let frame = 0;
+    const totalFrames = 22;
+    let timeout: ReturnType<typeof setTimeout>;
+
+    timeout = setTimeout(() => {
+      const interval = setInterval(() => {
+        frame++;
+        setDisplay(
+          text
+            .split("")
+            .map((char, i) => {
+              if (char === " ") return " ";
+              const revealAt = Math.floor((i / text.length) * totalFrames * 0.7);
+              if (frame > revealAt + Math.floor(totalFrames * 0.3)) return char;
+              return CHARS[Math.floor(Math.random() * CHARS.length)];
+            })
+            .join("")
+        );
+        if (frame >= totalFrames) {
+          setDisplay(text);
+          clearInterval(interval);
+        }
+      }, 45);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [inView, text, delay]);
+
+  return (
+    <motion.span
+      ref={ref}
+      className={className}
+      style={style}
+      initial={{ opacity: 0, y: 10 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.4, delay: delay / 1000 }}
+    >
+      {display}
+    </motion.span>
+  );
+}
 
 type Theme = "light" | "dark" | "dim";
 
@@ -15,6 +79,23 @@ const STORAGE_KEY = "blog-theme";
 export default function LiquidGlassBlog() {
   const [theme, setTheme] = useState<Theme>("light");
   const [prevOption, setPrevOption] = useState<string>("1");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubscribe = async () => {
+    if (!email) return;
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setStatus(res.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY) as Theme | null;
@@ -204,12 +285,160 @@ export default function LiquidGlassBlog() {
       <article className={styles.article}>
         <div style={{
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
-          alignItems: "center",
+          alignItems: "flex-start",
           width: "100%",
+          maxWidth: "600px",
           height: "100%",
           padding: "40px 0",
+          gap: "12px",
+          marginTop: "-70px",
+          textAlign: "justify",
         }}>
+          <ScrambleText
+            text="Em breve"
+            delay={0}
+            style={{
+              display: "block",
+              width: "100%",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "clamp(0.85rem, 2vw, 1rem)",
+              letterSpacing: "0.25em",
+              textTransform: "uppercase",
+              textAlign: "justify",
+              color: "#ffffff",
+              opacity: 0.5,
+            }}
+          />
+          <ScrambleText
+            text="Um novo Blog"
+            delay={300}
+            style={{
+              display: "block",
+              width: "100%",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "clamp(1.6rem, 5vw, 2.8rem)",
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textAlign: "justify",
+              color: "#ffffff",
+              textShadow: theme === "light"
+                ? "0 0 18px rgba(0,234,255,0.45), 0 0 40px rgba(0,234,255,0.2)"
+                : "0 0 18px rgba(0,234,255,0.6), 0 0 40px rgba(189,0,255,0.4), 0 0 80px rgba(255,0,255,0.15)",
+            }}
+          />
+          <ScrambleText
+            text="Assine :"
+            delay={600}
+            style={{
+              display: "block",
+              width: "100%",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "clamp(0.85rem, 2vw, 1rem)",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              textAlign: "justify",
+              color: "#ffffff",
+              opacity: 0.6,
+              marginTop: "8px",
+            }}
+          />
+
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.9 }}
+            style={{
+              position: "relative",
+              display: "flex",
+              gap: "8px",
+              marginTop: "4px",
+              width: "100%",
+              maxWidth: "420px",
+            }}
+          >
+            {status === "success" ? (
+              <p style={{
+                fontFamily: "'JetBrains Mono', monospace",
+                fontSize: "0.85rem",
+                color: "#00EAFF",
+                margin: 0,
+                letterSpacing: "0.05em",
+              }}>
+                ✓ Cadastrado com sucesso!
+              </p>
+            ) : (
+              <>
+                <input
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && handleSubscribe()}
+                  disabled={status === "loading"}
+                  style={{
+                    flex: 1,
+                    background: "rgba(255,255,255,0.07)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    borderRadius: "8px",
+                    padding: "10px 14px",
+                    color: "#ffffff",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.85rem",
+                    outline: "none",
+                    transition: "border-color 0.2s",
+                  }}
+                  onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)")}
+                  onBlur={e  => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)")}
+                />
+                <button
+                  type="button"
+                  onClick={handleSubscribe}
+                  disabled={status === "loading"}
+                  style={{
+                    background: "rgba(255,255,255,0.12)",
+                    border: "1px solid rgba(255,255,255,0.25)",
+                    borderRadius: "8px",
+                    padding: "10px 18px",
+                    color: "#ffffff",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.08em",
+                    cursor: status === "loading" ? "wait" : "pointer",
+                    whiteSpace: "nowrap",
+                    transition: "background 0.2s, border-color 0.2s",
+                    opacity: status === "loading" ? 0.6 : 1,
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.22)";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
+                  }}
+                >
+                  {status === "loading" ? "..." : "Cadastrar"}
+                </button>
+                {status === "error" && (
+                  <p style={{
+                    position: "absolute",
+                    bottom: "-22px",
+                    left: 0,
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "0.72rem",
+                    color: "#FF2D78",
+                    margin: 0,
+                  }}>
+                    Erro ao cadastrar. Tente novamente.
+                  </p>
+                )}
+              </>
+            )}
+          </motion.div>
+
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/astronautas.svg"

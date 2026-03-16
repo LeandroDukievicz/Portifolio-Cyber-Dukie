@@ -120,7 +120,7 @@ export default function Page() {
           />
 
           <p
-            className="w-full text-center text-sm lg:text-base font-light tracking-widest uppercase"
+            className="w-full text-justify lg:text-center text-sm lg:text-base font-light tracking-widest uppercase"
             style={{ color: "rgba(255,255,255,0.5)" }}
           >
             {t.subtitle}

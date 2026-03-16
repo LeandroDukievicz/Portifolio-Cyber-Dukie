@@ -58,8 +58,8 @@
 .switcher {
   position: fixed;
   z-index: 50;
-  top: 24px;
-  right: 24px;
+  top: 0;
+  right: 0;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -69,7 +69,7 @@
   box-sizing: border-box;
   padding: 4px 6px 5px;
   border: none;
-  border-radius: 99em;
+  border-radius: 0 0 0 99em;
   background-color: color-mix(in srgb, var(--c-glass) 12%, transparent);
   backdrop-filter: blur(8px) url(#blog-switcher) saturate(var(--saturation));
   -webkit-backdrop-filter: blur(8px) saturate(var(--saturation));

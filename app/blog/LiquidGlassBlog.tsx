@@ -22,17 +22,15 @@ function Toast({ message, type, onClose }: { message: string; type: ToastType; o
       onClick={onClose}
       style={{
         position: "fixed",
-        bottom: 90,
-        left: "50%",
-        transform: "translateX(-50%)",
+        top: 100,
+        right: 50,
         zIndex: 9999,
         background: "rgba(3,17,31,0.95)",
         backdropFilter: "blur(16px)",
         border: `1px solid ${type === "success" ? "rgba(0,234,255,0.4)" : "rgba(255,45,120,0.4)"}`,
         borderRadius: 12,
         padding: "14px 20px",
-        maxWidth: 360,
-        width: "86vw",
+        width: 260,
         boxShadow: type === "success"
           ? "0 0 24px rgba(0,234,255,0.15), 0 8px 32px rgba(0,0,0,0.5)"
           : "0 0 24px rgba(255,45,120,0.15), 0 8px 32px rgba(0,0,0,0.5)",

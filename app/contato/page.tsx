@@ -177,7 +177,7 @@ export default function Contato() {
         <div style={{
           position: "fixed",
           top: 100,
-          right: 100,
+          right: 50,
           width: 220,
           background: "rgba(3,17,31,0.92)",
           backdropFilter: "blur(12px)",
@@ -208,7 +208,7 @@ export default function Contato() {
         <div style={{
           position: "fixed",
           top: 100,
-          right: 100,
+          right: 50,
           width: 220,
           background: "rgba(3,17,31,0.92)",
           backdropFilter: "blur(12px)",

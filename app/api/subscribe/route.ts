@@ -11,17 +11,22 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Email inválido." }, { status: 400 });
   }
 
-  await notion.pages.create({
-    parent: { database_id: DATABASE_ID },
-    properties: {
-      Email: {
-        title: [{ text: { content: email } }],
+  try {
+    await notion.pages.create({
+      parent: { database_id: DATABASE_ID },
+      properties: {
+        Email: {
+          title: [{ text: { content: email } }],
+        },
+        "Data de cadastro": {
+          date: { start: new Date().toISOString() },
+        },
       },
-      "Data de cadastro": {
-        date: { start: new Date().toISOString() },
-      },
-    },
-  });
+    });
+  } catch (err) {
+    console.error("[subscribe] Notion error:", err);
+    return NextResponse.json({ error: "Erro ao salvar. Tente novamente." }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true });
 }

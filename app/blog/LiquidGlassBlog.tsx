@@ -287,14 +287,14 @@ export default function LiquidGlassBlog() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          alignItems: "flex-start",
+          alignItems: "center",
           width: "100%",
           maxWidth: "600px",
           height: "100%",
           padding: "40px 0",
           gap: "12px",
           marginTop: "-70px",
-          textAlign: "justify",
+          textAlign: "center",
         }}>
           <ScrambleText
             text="Em breve"
@@ -306,7 +306,7 @@ export default function LiquidGlassBlog() {
               fontSize: "clamp(0.85rem, 2vw, 1rem)",
               letterSpacing: "0.25em",
               textTransform: "uppercase",
-              textAlign: "justify",
+              textAlign: "center",
               color: "#ffffff",
               opacity: 0.5,
             }}
@@ -321,7 +321,7 @@ export default function LiquidGlassBlog() {
               fontSize: "clamp(1.6rem, 5vw, 2.8rem)",
               fontWeight: 700,
               letterSpacing: "0.08em",
-              textAlign: "justify",
+              textAlign: "center",
               color: "#ffffff",
               textShadow: theme === "light"
                 ? "0 0 18px rgba(0,234,255,0.45), 0 0 40px rgba(0,234,255,0.2)"
@@ -338,7 +338,7 @@ export default function LiquidGlassBlog() {
               fontSize: "clamp(0.85rem, 2vw, 1rem)",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              textAlign: "justify",
+              textAlign: "center",
               color: "#ffffff",
               opacity: 0.6,
               marginTop: "8px",

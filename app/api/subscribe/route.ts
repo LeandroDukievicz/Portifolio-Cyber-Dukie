@@ -10,7 +10,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 async function hasValidMx(domain: string): Promise<boolean> {
   try {
     const records = await dns.resolveMx(domain);
-    return records.length > 0;
+    // rejeita null MX (exchange vazio = domínio não aceita email)
+    return records.length > 0 && records.some(r => r.exchange.trim() !== "");
   } catch {
     return false;
   }

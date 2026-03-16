@@ -246,7 +246,7 @@ export default function Projetos() {
         justifyContent: "center",
         marginBottom: isMobile ? 8 : 150,
         marginTop: isMobile ? 36 : 0,
-        gap: 32,
+        gap: isMobile ? 8 : 32,
       }}>
 
         {/* Track */}
@@ -254,7 +254,7 @@ export default function Projetos() {
           style={{
             width: "100%",
             maxWidth: 1200,
-            height: isMobile ? "min(380px, calc(100vh - 240px))" : isTablet ? 520 : 640,
+            height: isMobile ? "calc(100vh - 88px)" : isTablet ? 520 : 640,
             position: "relative",
             perspective: "1000px",
           }}
@@ -275,7 +275,7 @@ export default function Projetos() {
               const offset   = ((i - current) % TOTAL_CARDS + TOTAL_CARDS) % TOTAL_CARDS;
               const isCenter = offset === 0;
               const cardW    = isMobile ? Math.min(window.innerWidth - 74, 265) : isTablet ? 310 : 393;
-              const cardH    = isMobile ? Math.min(300, window.innerHeight - 180) : isTablet ? 460 : 580;
+              const cardH    = isMobile ? Math.round((window.innerHeight - 100) / 1.1) : isTablet ? 460 : 580;
               return (
                 <div
                   key={i}
@@ -372,7 +372,7 @@ export default function Projetos() {
                     <>
                       {/* Imagem */}
                       {project.image && (
-                        <div style={{ position: "relative", width: "100%", height: isMobile ? 105 : isTablet ? 155 : 185, flexShrink: 0 }}>
+                        <div style={{ position: "relative", width: "100%", height: isMobile ? Math.round(cardH * 0.35) : isTablet ? 155 : 185, flexShrink: 0 }}>
                           <Image
                             src={project.image}
                             alt={project.title}
@@ -408,12 +408,7 @@ export default function Projetos() {
                           lineHeight: isMobile ? 1.55 : 1.75,
                           letterSpacing: "0.01em",
                           textAlign: "justify",
-                          ...(isMobile ? {
-                            display: "-webkit-box",
-                            WebkitLineClamp: 3,
-                            WebkitBoxOrient: "vertical" as const,
-                            overflow: "hidden",
-                          } : { whiteSpace: "pre-line" }),
+                          whiteSpace: "pre-line",
                         }}>
                           {project.description}
                         </p>

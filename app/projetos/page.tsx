@@ -245,7 +245,7 @@ export default function Projetos() {
         alignItems: "center",
         justifyContent: "center",
         marginBottom: isMobile ? 8 : 150,
-        marginTop: isMobile ? 43 : 0,
+        marginTop: isMobile ? 33 : 0,
         gap: isMobile ? 8 : 32,
       }}>
 
@@ -254,7 +254,7 @@ export default function Projetos() {
           style={{
             width: "100%",
             maxWidth: 1200,
-            height: isMobile ? "calc(100vh - 95px)" : isTablet ? 520 : 640,
+            height: isMobile ? "calc(100vh - 85px)" : isTablet ? 520 : 640,
             position: "relative",
             perspective: "1000px",
           }}

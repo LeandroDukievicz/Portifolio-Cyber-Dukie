@@ -82,46 +82,64 @@ export default function Dock() {
 
   const innerClass = "flex flex-col items-center justify-center gap-1 w-full h-full";
 
+  const renderItem = (item: NavItem, i: number, liClass: string, refFn?: (el: HTMLLIElement | null) => void) => (
+    <li
+      key={`${item.labelKey}-${i}`}
+      ref={refFn}
+      className={liClass}
+    >
+      {item.kind === "link" ? (
+        <Link href={item.href} className={innerClass}>
+          <span className="text-[22px] md:text-[34px]">
+            <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
+          </span>
+          <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
+        </Link>
+      ) : (
+        <button onClick={open} className={`${innerClass} cursor-pointer bg-transparent border-none w-full`}>
+          <span className="text-[22px] md:text-[34px]">
+            <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
+          </span>
+          <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
+        </button>
+      )}
+    </li>
+  );
+
   return (
     <>
-      {/* ── DOCK (desktop + mobile) ── */}
-      <div className="flex fixed bottom-[30px] inset-x-auto left-1/2 -translate-x-1/2 justify-center z-[150]">
+      {/* ── MOBILE: dock vertical lado esquerdo ── */}
+      <div className="md:hidden fixed left-0 top-0 h-full z-[150] flex">
+        <ul className="
+          flex flex-col items-center justify-evenly h-full w-[54px]
+          m-0 list-none py-3
+          bg-white/10 backdrop-blur-md
+          border-r border-white/20
+          shadow-[4px_0_20px_rgba(0,0,0,0.3)]
+        ">
+          {NAV_ITEMS.map((item, i) =>
+            renderItem(item, i, "w-[44px] h-[44px] flex-shrink-0")
+          )}
+        </ul>
+      </div>
+
+      {/* ── DESKTOP: dock horizontal bottom center ── */}
+      <div className="hidden md:flex fixed bottom-[30px] inset-x-auto left-1/2 -translate-x-1/2 justify-center z-[150]">
         <ul
           ref={dockRef}
           className="
             w-auto inline-flex items-end justify-center
-            rounded-xl px-3 py-2 md:px-4 md:py-3 m-0 list-none
+            rounded-xl px-4 py-3 m-0 list-none
             bg-white/10 backdrop-blur-md
             border border-white/20
             shadow-[0_-4px_30px_rgba(0,0,0,0.3)]
           "
         >
-          {NAV_ITEMS.map((item, i) => (
-            <li
-              key={item.labelKey}
-              ref={(el) => { if (el) itemsRef.current[i] = el; }}
-              className={`w-[44px] h-[44px] mx-0.5 md:w-[67px] md:h-[67px] md:mx-1 ${item.kind === "button" ? "hidden md:block" : ""}`}
-            >
-              {item.kind === "link" ? (
-                <Link href={item.href} className={innerClass}>
-                  <span className="text-[22px] md:text-[34px]">
-                    <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
-                  </span>
-                  <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
-                </Link>
-              ) : (
-                <button onClick={open} className={`${innerClass} cursor-pointer bg-transparent border-none w-full`}>
-                  <span className="text-[22px] md:text-[34px]">
-                    <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
-                  </span>
-                  <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
-                </button>
-              )}
-            </li>
-          ))}
+          {NAV_ITEMS.map((item, i) =>
+            renderItem(item, i, "w-[67px] h-[67px] mx-1", (el) => { if (el) itemsRef.current[i] = el; })
+          )}
         </ul>
       </div>
-
     </>
   );
 }

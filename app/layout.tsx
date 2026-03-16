@@ -33,7 +33,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: `try{if(!localStorage.getItem('portfolio-loaded')){document.documentElement.classList.add('fl')}}catch(e){}` }} />
       </head>
       <body
-        className={`${roboto.variable} antialiased bg-[#03111F] w-full h-full`}
+        className={`${roboto.variable} antialiased bg-[#03111F] w-full h-full pl-[54px] md:pl-0`}
         style={{ fontFamily: "var(--font-roboto), sans-serif" }}
         suppressHydrationWarning
       >

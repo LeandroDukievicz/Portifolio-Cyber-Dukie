@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "@notionhq/client";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const DATABASE_ID = process.env.NOTION_BLOG_SUBSCRIBERS_DB!;
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json();
@@ -38,9 +31,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await transporter.sendMail({
-      from: `"Blog Dukie" <${process.env.GMAIL_USER}>`,
-      to: process.env.GMAIL_USER,
+    await resend.emails.send({
+      from: "Blog Dukie <onboarding@resend.dev>",
+      to: "leandrodukievicz1718@gmail.com",
       subject: "🔔 Novo assinante no blog!",
       html: `
         <div style="font-family:monospace;padding:24px;background:#03111F;color:#fff;border-radius:8px">
@@ -53,8 +46,8 @@ export async function POST(req: NextRequest) {
       `,
     });
   } catch (err) {
-    console.error("[subscribe] Email error:", err);
-    // não bloqueia a resposta — Notion já salvou
+    console.error("[subscribe] Resend error:", err);
+    // não bloqueia — Notion já salvou
   }
 
   return NextResponse.json({ ok: true });

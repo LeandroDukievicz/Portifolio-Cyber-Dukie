@@ -1,8 +1,67 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import confetti from "canvas-confetti";
 import styles from "./blog.module.css";
+
+type ToastType = "error" | "success";
+
+function Toast({ message, type, onClose }: { message: string; type: ToastType; onClose: () => void }) {
+  useEffect(() => {
+    const t = setTimeout(onClose, 4000);
+    return () => clearTimeout(t);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+      transition={{ duration: 0.3 }}
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        bottom: 90,
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 9999,
+        background: "rgba(3,17,31,0.95)",
+        backdropFilter: "blur(16px)",
+        border: `1px solid ${type === "success" ? "rgba(0,234,255,0.4)" : "rgba(255,45,120,0.4)"}`,
+        borderRadius: 12,
+        padding: "14px 20px",
+        maxWidth: 360,
+        width: "86vw",
+        boxShadow: type === "success"
+          ? "0 0 24px rgba(0,234,255,0.15), 0 8px 32px rgba(0,0,0,0.5)"
+          : "0 0 24px rgba(255,45,120,0.15), 0 8px 32px rgba(0,0,0,0.5)",
+        cursor: "pointer",
+        textAlign: "center",
+      }}
+    >
+      <p style={{
+        margin: 0,
+        fontFamily: "'JetBrains Mono', monospace",
+        fontSize: "0.82rem",
+        color: type === "success" ? "#00EAFF" : "#FF2D78",
+        lineHeight: 1.5,
+        letterSpacing: "0.04em",
+      }}>
+        {message}
+      </p>
+      <span style={{
+        display: "block",
+        marginTop: 6,
+        fontSize: "0.65rem",
+        color: "rgba(255,255,255,0.25)",
+        fontFamily: "'JetBrains Mono', monospace",
+      }}>
+        toque para fechar
+      </span>
+    </motion.div>
+  );
+}
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&";
 
@@ -80,20 +139,41 @@ export default function LiquidGlassBlog() {
   const [theme, setTheme] = useState<Theme>("light");
   const [prevOption, setPrevOption] = useState<string>("1");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success">("idle");
+  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
+
+  const showToast = (message: string, type: ToastType) => setToast({ message, type });
+  const dismissToast = () => setToast(null);
 
   const handleSubscribe = async () => {
-    if (!email) return;
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+    if (!valid) {
+      showToast("Que Pena :-(\u2002 Preencha Novamente!", "error");
+      return;
+    }
     setStatus("loading");
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim() }),
       });
-      setStatus(res.ok ? "success" : "error");
+      if (res.ok) {
+        setStatus("success");
+        confetti({
+          particleCount: 120,
+          spread: 80,
+          origin: { y: 0.6 },
+          colors: ["#00EAFF", "#BD00FF", "#FF2D78", "#ffffff"],
+        });
+        showToast("Obrigado pela inscrição! 🚀\nAguarde novidades em breve.", "success");
+      } else {
+        showToast("Que Pena :-(\u2002 Preencha Novamente!", "error");
+        setStatus("idle");
+      }
     } catch {
-      setStatus("error");
+      showToast("Que Pena :-(\u2002 Preencha Novamente!", "error");
+      setStatus("idle");
     }
   };
 
@@ -307,7 +387,7 @@ export default function LiquidGlassBlog() {
               letterSpacing: "0.25em",
               textTransform: "uppercase",
               textAlign: "center",
-              color: "#ffffff",
+              color: theme === "light" ? "#000000" : "#ffffff",
               opacity: 0.5,
             }}
           />
@@ -322,9 +402,9 @@ export default function LiquidGlassBlog() {
               fontWeight: 700,
               letterSpacing: "0.08em",
               textAlign: "center",
-              color: "#ffffff",
+              color: theme === "light" ? "#000000" : "#ffffff",
               textShadow: theme === "light"
-                ? "0 0 18px rgba(0,234,255,0.45), 0 0 40px rgba(0,234,255,0.2)"
+                ? "none"
                 : "0 0 18px rgba(0,234,255,0.6), 0 0 40px rgba(189,0,255,0.4), 0 0 80px rgba(255,0,255,0.15)",
             }}
           />
@@ -339,7 +419,7 @@ export default function LiquidGlassBlog() {
               letterSpacing: "0.2em",
               textTransform: "uppercase",
               textAlign: "center",
-              color: "#ffffff",
+              color: theme === "light" ? "#000000" : "#ffffff",
               opacity: 0.6,
             }}
           />
@@ -377,29 +457,29 @@ export default function LiquidGlassBlog() {
                   disabled={status === "loading"}
                   style={{
                     flex: 1,
-                    background: "rgba(255,255,255,0.07)",
-                    border: "1px solid rgba(255,255,255,0.2)",
+                    background: theme === "light" ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.07)",
+                    border: theme === "light" ? "1px solid rgba(0,0,0,0.2)" : "1px solid rgba(255,255,255,0.2)",
                     borderRadius: "8px",
                     padding: "10px 14px",
-                    color: "#ffffff",
+                    color: theme === "light" ? "#000000" : "#ffffff",
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.85rem",
                     outline: "none",
                     transition: "border-color 0.2s",
                   }}
-                  onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)")}
-                  onBlur={e  => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)")}
+                  onFocus={e => (e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.5)")}
+                  onBlur={e  => (e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.2)")}
                 />
                 <button
                   type="button"
                   onClick={handleSubscribe}
                   disabled={status === "loading"}
                   style={{
-                    background: "rgba(255,255,255,0.12)",
-                    border: "1px solid rgba(255,255,255,0.25)",
+                    background: theme === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)",
+                    border: theme === "light" ? "1px solid rgba(0,0,0,0.2)" : "1px solid rgba(255,255,255,0.25)",
                     borderRadius: "8px",
                     padding: "10px 18px",
-                    color: "#ffffff",
+                    color: theme === "light" ? "#000000" : "#ffffff",
                     fontFamily: "'JetBrains Mono', monospace",
                     fontSize: "0.85rem",
                     fontWeight: 600,
@@ -410,29 +490,16 @@ export default function LiquidGlassBlog() {
                     opacity: status === "loading" ? 0.6 : 1,
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.22)";
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
+                    e.currentTarget.style.background = theme === "light" ? "rgba(0,0,0,0.15)" : "rgba(255,255,255,0.22)";
+                    e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.4)" : "rgba(255,255,255,0.4)";
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.12)";
-                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
+                    e.currentTarget.style.background = theme === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.12)";
+                    e.currentTarget.style.borderColor = theme === "light" ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.25)";
                   }}
                 >
                   {status === "loading" ? "..." : "Cadastrar"}
                 </button>
-                {status === "error" && (
-                  <p style={{
-                    position: "absolute",
-                    bottom: "-22px",
-                    left: 0,
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.72rem",
-                    color: "#FF2D78",
-                    margin: 0,
-                  }}>
-                    Erro ao cadastrar. Tente novamente.
-                  </p>
-                )}
               </>
             )}
           </motion.div>
@@ -457,6 +524,17 @@ export default function LiquidGlassBlog() {
           />
         </div>
       </article>
+
+      <AnimatePresence>
+        {toast && (
+          <Toast
+            key={toast.message}
+            message={toast.message}
+            type={toast.type}
+            onClose={dismissToast}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

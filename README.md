@@ -193,6 +193,8 @@ Grid fixo 4 colunas com **flip cards 3D** — cada card tem frente e verso:
 - Rotação de 180° em Y via CSS `transform-style: preserve-3d` + `rotateY(180deg)` com transição de 0.45s
 - Apenas um card vira por vez (hover em outro reseta o anterior)
 - `backface-visibility: hidden` para esconder a face oposta
+- **Grid preenchimento total**: `gridAutoRows: "1fr"` + `alignContent: "stretch"` — linhas dividem o espaço disponível igualmente sem sobra
+- `minHeight: 0` no container flex para compatibilidade Firefox/Chrome com `flex: 1` + grid
 
 **12 soft skills:**
 Resolução de problemas, Pensamento analítico, Comunicação clara, Trabalho em equipe, Aprendizado contínuo, Adaptabilidade, Organização, Atenção aos detalhes, Proatividade, Pensamento crítico, Gestão do tempo, Inteligência emocional.
@@ -202,7 +204,7 @@ Cores alternadas entre `#00EAFF`, `#BD00FF` e `#FF2D78`.
 ### Card especial — Princípios de Engenharia
 
 O último item do grid de soft skills (`TbCode` — "Princípios de Engenharia") tem comportamento diferente dos outros:
-- Ocupa **2 colunas centrais** (`gridColumn: "2 / 4"`) para destaque visual
+- Ocupa **toda a largura** (`gridColumn: "1 / -1"`) para fechar o grid sem células vazias
 - Exibe "ver →" abaixo do label
 - **Funciona apenas com clique** (tanto desktop quanto mobile) — não vira com hover
 - Ao clicar abre um painel sobreposto deslizando da direita (`translateX(28px) → 0` + opacity 0→1 em 0.38s)
@@ -595,11 +597,13 @@ O site é totalmente responsivo de **320px a 1920px+**, seguindo a abordagem mob
 | [TypeScript](https://www.typescriptlang.org/) | Tipagem estática |
 | [Tailwind CSS v4](https://tailwindcss.com/) | Estilização utilitária |
 | [GSAP](https://gsap.com/) | Animação da Dock (magnification) |
-| [canvas-confetti](https://github.com/catdad/canvas-confetti) | Efeito de confete (CV download e envio de formulário) |
+| [Framer Motion](https://www.framer.com/motion/) | ScrambleText, AnimatePresence e toasts no Blog |
+| [@notionhq/client](https://github.com/makenotion/notion-sdk-js) | Integração com Notion API (assinantes do blog) |
+| [canvas-confetti](https://github.com/catdad/canvas-confetti) | Efeito de confete (CV download, formulário de contato e inscrição no blog) |
 | [react-icons](https://react-icons.github.io/react-icons/) | Ícones (skills, sobre, UI) |
 | [sharp](https://sharp.pixelplumbing.com/) | Conversão de imagens PNG/JPG → WebP |
 | [Formspree](https://formspree.io/) | Backend de formulário de contato (sem servidor) |
-| `requestAnimationFrame` | Parallax, blobs, particle assemble, glitch, scan sweep |
+| `requestAnimationFrame` | Parallax, blobs, glitch, scan sweep |
 | CSS `backdrop-filter` | Glassmorphism em janelas, botões e cards |
 | CSS `transform-style: preserve-3d` | Flip cards 3D nas soft skills |
 | CSS `perspective` | CoverFlow 3D do carousel de projetos |
@@ -611,9 +615,12 @@ O site é totalmente responsivo de **320px a 1920px+**, seguindo a abordagem mob
 
 ```
 app/
+├── api/
+│   └── subscribe/
+│       └── route.ts             # POST /api/subscribe — salva email no Notion
 ├── components/
-│   ├── CyberpunkBackground.tsx  # Background animado com blobs neon
-│   ├── Dock.tsx                 # Dock estilo macOS com GSAP
+│   ├── CyberpunkBackground.tsx  # Background animado com blobs neon (delta time)
+│   ├── Dock.tsx                 # Dock horizontal (desktop, 30px bottom) / vertical (mobile)
 │   ├── HeroPhoto.tsx            # Foto hexagonal com parallax, glitch e bordas animadas
 │   ├── MenuBar.tsx              # Barra superior com relógio e seletor de idioma
 │   ├── MarqueeTitle.tsx         # Marquee animado + favicon rotativo
@@ -623,9 +630,9 @@ app/
 │   ├── TerminalContext.tsx      # Estado global do terminal e hire flow
 │   └── LanguageContext.tsx      # Estado global de idioma e traduções (PT/EN)
 ├── blog/
-│   └── LiquidGlassBlog.tsx      # Particle Assemble + astronauta SVG animado
+│   └── LiquidGlassBlog.tsx      # ScrambleText + formulário de inscrição + integração Notion
 ├── sobre/                       # Janela macOS — foto holográfica + timeline
-├── skills/                      # Janela macOS — hard skills + flip cards + princípios
+├── skills/                      # Janela macOS — hard skills + flip cards preenchidos + princípios
 ├── projetos/                    # CoverFlow 3D carousel com cards de projeto
 ├── contato/                     # Janela macOS — ícones de contato + formulário
 ├── layout.tsx                   # Layout global (MenuBar, Dock, Terminal, Providers)
@@ -653,11 +660,26 @@ git clone https://github.com/LeandroDukievicz/Portifolio-Cyber-Dukie.git
 # Instale as dependências
 npm install
 
+# Configure as variáveis de ambiente
+cp .env.example .env.local
+# Edite .env.local com suas credenciais do Notion
+
 # Rode em modo desenvolvimento
 npm run dev
 ```
 
 Acesse [http://localhost:3000](http://localhost:3000).
+
+### Variáveis de Ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto:
+
+```env
+NOTION_TOKEN=seu_token_de_integracao_notion
+NOTION_BLOG_SUBSCRIBERS_DB=id_do_database_notion
+```
+
+> O `NOTION_TOKEN` é gerado em [notion.so/my-integrations](https://www.notion.so/my-integrations). O banco de dados deve ter as colunas `Email` (Title) e `Data de cadastro` (Date).
 
 ---
 
@@ -675,6 +697,9 @@ Acesse [http://localhost:3000](http://localhost:3000).
 | `v1.7.0` | 2026-03-16 | Background com delta time normalizado — velocidade constante sem aceleração |
 | `v1.8.0` | 2026-03-16 | Dock vertical mobile (sidebar esquerda), Terminal oculto em mobile |
 | `v1.9.0` | 2026-03-16 | Responsividade completa — w-full, janelas corrigidas, grids, MenuBar, cards projetos |
+| `v2.0.0` | 2026-03-16 | Blog refatorado — ScrambleText (Framer Motion), formulário de inscrição, integração Notion, toasts, confetti |
+| `v2.1.0` | 2026-03-16 | Skills: flip cards preenchem o espaço (gridAutoRows 1fr, alignContent stretch, último card 1/-1) |
+| `v2.2.0` | 2026-03-16 | Dock posicionada a 30px do bottom; dock mobile vertical lateral esquerda |
 
 ---
 

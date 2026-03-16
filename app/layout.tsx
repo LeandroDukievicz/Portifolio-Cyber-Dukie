@@ -4,7 +4,6 @@ import "./globals.css";
 import Dock from "./components/Dock";
 import MarqueeTitle from "./components/MarqueeTitle";
 import MenuBar from "./components/MenuBar";
-import VisitorGreeting from "./components/VisitorGreeting";
 import TerminalWindow from "./components/TerminalWindow";
 import LoadingScreen from "./components/LoadingScreen";
 import { TerminalProvider } from "./context/TerminalContext";
@@ -41,8 +40,7 @@ export default function RootLayout({
         <TerminalProvider>
           <LoadingScreen />
           <MenuBar />
-          <VisitorGreeting />
-          {children}
+{children}
           <TerminalWindow />
           <Dock />
           <MarqueeTitle />

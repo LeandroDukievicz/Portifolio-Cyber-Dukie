@@ -405,7 +405,7 @@ Campos com borda `1px solid #ffffff` e fundo semi-transparente:
 
 ### Estrutura Atual
 
-A página `/blog` exibe conteúdo "Em Breve" com formulário de inscrição e integração com Notion.
+A página `/blog` exibe conteúdo "Em Breve" com formulário de inscrição e integração com Notion + Resend.
 
 ### Textos com ScrambleText (Framer Motion)
 
@@ -413,7 +413,7 @@ Três textos animados com efeito de caracteres scramble usando `framer-motion` +
 
 | Texto | Delay | Estilo |
 |---|---|---|
-| `"Em breve"` | 0ms | uppercase, opacidade 0.5, tamanho `clamp(1.7rem, 4vw, 2rem)` |
+| `"Em breve"` | 0ms | uppercase, **negrito**, tamanho `clamp(1.7rem, 4vw, 2rem)` |
 | `"Um novo Blog"` | 300ms | bold, `clamp(1.6rem, 5vw, 2.8rem)`, com **text-shadow** na paleta do SVG |
 | `"Assine :"` | 600ms | uppercase, opacidade 0.6 |
 
@@ -423,6 +423,7 @@ Três textos animados com efeito de caracteres scramble usando `framer-motion` +
 - Entrada suave via `motion.span` com `opacity 0 → 1` + `translateY 10px → 0`
 - Dispara ao entrar na viewport (`useInView`, `once: true`)
 - **Sensível ao tema**: cor `#000000` (light) ou `#ffffff` (dark/dim)
+- Todos os elementos da página centralizam o texto e usam espaçamento uniforme entre si
 
 **Text-shadow em "Um novo Blog"** seguindo a paleta do astronauta SVG:
 - `light`: glow ciano `rgba(0,234,255,0.45)` + halo externo
@@ -430,38 +431,73 @@ Três textos animados com efeito de caracteres scramble usando `framer-motion` +
 
 ### Formulário de Inscrição
 
-Input de email + botão "Cadastrar" com validação e estados visuais:
+Input de email + botão "Cadastrar" com validação multicamadas e estados visuais:
 
 - **Input**: fundo semitransparente, borda sutil, focus acende a borda — theme-aware (light/dark)
 - **Botão**: glassmorphism, hover clareia o fundo, `Enter` também envia
 - **Estado loading**: botão mostra `...` e fica desabilitado
 - **Estado success**: input e botão substituídos por mensagem de confirmação
+- **Erro inline**: borda do input fica vermelha + mensagem `⚠ {erro}` abaixo do campo ao digitar email inválido
+- **Honeypot anti-bot**: campo invisível `name="website"` — se preenchido (por bot), o servidor retorna `200` sem salvar
+
+### Validação de Email (Frontend + Backend)
+
+**Frontend (`LiquidGlassBlog.tsx`):**
+- Regex RFC 5322 simplificada via `isValidEmailFormat()` de `lib/emailValidation.ts`
+- Erro inline exibido abaixo do input em tempo real
+- Limpa o erro automaticamente ao começar a redigitar
+
+**Backend (`app/api/subscribe/route.ts`) — camadas em ordem:**
+
+| Camada | Biblioteca/Técnica | O que rejeita |
+|---|---|---|
+| Rate limiting | `Map` em memória | Máx 5 req/min por IP — retorna `429` |
+| Honeypot | Campo `website` | Bots que preenchem campos ocultos |
+| Formato básico | Regex RFC 5322 | Emails malformados |
+| Validação RFC | `validator.js` `isEmail()` | Emails que passam no regex mas violam a RFC |
+| Domínio descartável | Lista em `lib/emailValidation.ts` | 40+ domínios temporários (mailinator, guerrilla, yopmail…) |
+| MX Record | `dns/promises.resolveMx()` | Domínios sem servidor de email real; rejeita null MX (RFC 7505) |
+| Duplicata | Notion `databases.query` | Email já cadastrado — retorna `409 Conflict` |
 
 ### Sistema de Toasts
 
-| Situação | Tipo | Mensagem |
-|---|---|---|
-| Email inválido/incompleto | `error` (borda `#FF2D78`) | "Que Pena :-( Preencha Novamente!" |
-| Cadastro bem-sucedido | `success` (borda `#00EAFF`) | "Obrigado pela inscrição! 🚀 Aguarde novidades em breve." |
+Três tipos de toast, todos posicionados `top: 100px, right: 50px`:
 
-- Posicionado `top: 100px, right: 50px` com `AnimatePresence` para entrada/saída suave
+| Situação | Tipo | Cor de borda | Mensagem |
+|---|---|---|---|
+| Email inválido/incompleto | `error` | `#FF2D78` (pink) | "Que Pena :-( Preencha Novamente!" |
+| Email já cadastrado | `warning` | `rgba(255,200,0,0.5)` (gold) | "Este e-mail já está registrado!" |
+| Cadastro bem-sucedido | `success` | `#00EAFF` (cyan) | "Obrigado pela inscrição! 🚀 Aguarde novidades em breve." |
+
+- `AnimatePresence` para entrada/saída suave (translateY + opacity)
 - Auto-dismiss após 4s ou clique/toque para fechar
-- Confetti (`canvas-confetti`) disparado nas cores da paleta (`#00EAFF`, `#BD00FF`, `#FF2D78`, `#ffffff`) ao cadastrar com sucesso
+- Confetti (`canvas-confetti`) disparado nas cores da paleta ao cadastrar com sucesso
 
 ### Integração com Notion — API Route `/api/subscribe`
 
-API route server-side que recebe o email e persiste no banco de dados **"assinantes do blog"** no Notion:
+API route server-side que persiste o email no database **"assinantes do blog"** no Notion:
 
-- Validação de email com regex no servidor antes de chamar a API
-- Cria uma nova página no database com as propriedades:
+- Cria uma nova página com as propriedades:
   - **`Email`** (Title) — endereço informado
   - **`Data de cadastro`** (Date) — timestamp ISO da requisição
-- Erros da API Notion logados no servidor e retornados com status `500`
-- Credenciais via variáveis de ambiente (nunca expostas ao cliente):
+- Verifica duplicata antes de inserir (`databases.query`) — retorna `409` se já existir
+- Credenciais via variáveis de ambiente (nunca expostas ao cliente)
+
+### Notificação por Email — Resend
+
+Após cada cadastro bem-sucedido, envia um email de notificação via **Resend**:
+
+- **De**: `Blog Dukie <onboarding@resend.dev>`
+- **Para**: `leandrodukievicz1718@gmail.com`
+- **Assunto**: "🔔 Novo assinante no blog!"
+- Falhas no envio são logadas mas **não bloqueiam** o fluxo — o cadastro no Notion já foi salvo
+
+### Variáveis de Ambiente
 
 ```
 NOTION_TOKEN=...
 NOTION_BLOG_SUBSCRIBERS_DB=...
+RESEND_API_KEY=...
 ```
 
 ### Astronauta SVG animado
@@ -600,6 +636,8 @@ O site é totalmente responsivo de **320px a 1920px+**, seguindo a abordagem mob
 | [Framer Motion](https://www.framer.com/motion/) | ScrambleText, AnimatePresence e toasts no Blog |
 | [@notionhq/client](https://github.com/makenotion/notion-sdk-js) | Integração com Notion API (assinantes do blog) |
 | [canvas-confetti](https://github.com/catdad/canvas-confetti) | Efeito de confete (CV download, formulário de contato e inscrição no blog) |
+| [validator.js](https://github.com/validatorjs/validator.js) | Validação de email RFC-compliant no backend |
+| [Resend](https://resend.com/) | Envio de email de notificação por novo assinante |
 | [react-icons](https://react-icons.github.io/react-icons/) | Ícones (skills, sobre, UI) |
 | [sharp](https://sharp.pixelplumbing.com/) | Conversão de imagens PNG/JPG → WebP |
 | [Formspree](https://formspree.io/) | Backend de formulário de contato (sem servidor) |
@@ -645,6 +683,8 @@ public/
 │   ├── foto-sobre.webp          # Foto holográfica (sobre)
 │   └── *.webp                   # Ícones de contato (GitHub, LinkedIn, etc.)
 └── cv.pdf                       # Currículo para download
+lib/
+└── emailValidation.ts           # Regex, lista de domínios descartáveis, helpers de validação
 ```
 
 ---
@@ -677,9 +717,10 @@ Crie um arquivo `.env.local` na raiz do projeto:
 ```env
 NOTION_TOKEN=seu_token_de_integracao_notion
 NOTION_BLOG_SUBSCRIBERS_DB=id_do_database_notion
+RESEND_API_KEY=sua_api_key_resend
 ```
 
-> O `NOTION_TOKEN` é gerado em [notion.so/my-integrations](https://www.notion.so/my-integrations). O banco de dados deve ter as colunas `Email` (Title) e `Data de cadastro` (Date).
+> O `NOTION_TOKEN` é gerado em [notion.so/my-integrations](https://www.notion.so/my-integrations). O banco de dados deve ter as colunas `Email` (Title) e `Data de cadastro` (Date). O `RESEND_API_KEY` é obtido em [resend.com](https://resend.com/).
 
 ---
 
@@ -697,6 +738,9 @@ NOTION_BLOG_SUBSCRIBERS_DB=id_do_database_notion
 | `v1.7.0` | 2026-03-16 | Background com delta time normalizado — velocidade constante sem aceleração |
 | `v1.8.0` | 2026-03-16 | Dock vertical mobile (sidebar esquerda), Terminal oculto em mobile |
 | `v1.9.0` | 2026-03-16 | Responsividade completa — w-full, janelas corrigidas, grids, MenuBar, cards projetos |
+| `v2.0.0` | 2026-03-16 | Blog backend — API route `/api/subscribe`, Notion database, Resend notification |
+| `v2.1.0` | 2026-03-16 | Validação robusta de email — rate limiting, honeypot, validator.js, MX record, null MX, disposable domains |
+| `v2.2.0` | 2026-03-16 | Toast warning (gold) para email duplicado; erro inline no input; textos blog centralizados e bold |
 | `v2.0.0` | 2026-03-16 | Blog refatorado — ScrambleText (Framer Motion), formulário de inscrição, integração Notion, toasts, confetti |
 | `v2.1.0` | 2026-03-16 | Skills: flip cards preenchem o espaço (gridAutoRows 1fr, alignContent stretch, último card 1/-1) |
 | `v2.2.0` | 2026-03-16 | Dock posicionada a 30px do bottom; dock mobile vertical lateral esquerda |

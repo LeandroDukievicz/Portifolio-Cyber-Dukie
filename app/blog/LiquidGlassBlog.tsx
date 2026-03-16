@@ -138,6 +138,20 @@ const DISP_MAP =
 const themeToOption = { light: "1", dark: "2", dim: "3" } as const;
 
 const STORAGE_KEY = "blog-theme";
+const SUBSCRIBED_EMAILS_KEY = "blog-subscribed-emails";
+
+function getSubscribedEmails(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem(SUBSCRIBED_EMAILS_KEY) ?? "[]");
+  } catch { return []; }
+}
+
+function saveSubscribedEmail(email: string) {
+  const list = getSubscribedEmails();
+  if (!list.includes(email)) {
+    localStorage.setItem(SUBSCRIBED_EMAILS_KEY, JSON.stringify([...list, email]));
+  }
+}
 
 export default function LiquidGlassBlog() {
   const [theme, setTheme] = useState<Theme>("light");
@@ -151,7 +165,6 @@ export default function LiquidGlassBlog() {
   const showToast = (message: string, type: ToastType) => setToast({ message, type });
   const dismissToast = () => setToast(null);
 
-  // Valida formato no frontend antes de enviar
   const validateEmail = (value: string): string => {
     if (!value.trim()) return "Informe seu e-mail.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value.trim()))
@@ -168,16 +181,24 @@ export default function LiquidGlassBlog() {
     const err = validateEmail(email);
     if (err) { setEmailError(err); return; }
     setEmailError("");
+
+    // Verifica localmente antes de chamar a API
+    const normalized = email.trim().toLowerCase();
+    if (getSubscribedEmails().includes(normalized)) {
+      showToast("Este e-mail já está registrado!", "warning");
+      return;
+    }
+
     setStatus("loading");
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // honeypot enviado junto — API rejeita silenciosamente se preenchido
-        body: JSON.stringify({ email: email.trim(), website: honeypot }),
+        body: JSON.stringify({ email: normalized, website: honeypot }),
       });
       const data = await res.json();
       if (res.ok) {
+        saveSubscribedEmail(normalized);
         setStatus("success");
         confetti({
           particleCount: 120,
@@ -187,6 +208,8 @@ export default function LiquidGlassBlog() {
         });
         showToast("Obrigado pela inscrição! 🚀\nAguarde novidades em breve.", "success");
       } else if (res.status === 409) {
+        // Duplicata confirmada pelo servidor — salva localmente para não bater de novo
+        saveSubscribedEmail(normalized);
         showToast("Este e-mail já está registrado!", "warning");
         setStatus("idle");
       } else {
@@ -491,7 +514,6 @@ export default function LiquidGlassBlog() {
                       placeholder="seu@email.com"
                       value={email}
                       onChange={e => handleEmailChange(e.target.value)}
-                      onBlur={() => setEmailError(validateEmail(email))}
                       onKeyDown={e => e.key === "Enter" && handleSubscribe()}
                       disabled={status === "loading"}
                       style={{

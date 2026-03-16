@@ -64,7 +64,8 @@ A página `/sobre` é renderizada como uma janela flutuante sobre o background a
 - Entrada animada: `opacity 0 → 1` + `scale(0.96) → scale(1)` + `translateY(16px) → 0`
 - Glassmorphism: `background: rgba(3,17,31,0.65)` + `backdrop-filter: blur(12px)`
 - Layout responsivo: coluna (mobile) ou linha lado-a-lado (desktop ≥ 768px)
-- Largura: `96vw` mobile / `80vw` desktop
+- **Mobile**: `left: 62px` (após dock de 54px), `width: calc(100vw - 70px)`, `top: 36px`, `bottom: 8px`
+- **Desktop**: `left: 10vw`, `width: 80vw`, `bottom: 186px`
 
 ### Painel Esquerdo — Foto Holográfica + Info
 
@@ -142,7 +143,7 @@ Todos os textos da página (bio, títulos, labels da timeline, badges, status, b
 
 ### Janela estilo macOS
 
-Mesma estrutura de janela glassmorphism das demais páginas: title bar com traffic lights **decorativos** (vermelho, amarelo, verde sem função ativa), `backdrop-filter: blur(12px)`, entrada animada via classe `window-rise`, responsiva (96vw mobile / 80vw desktop).
+Mesma estrutura de janela glassmorphism das demais páginas: title bar com traffic lights **decorativos** (vermelho, amarelo, verde sem função ativa), `backdrop-filter: blur(12px)`, entrada animada via classe `window-rise`. Responsiva: `left: 62px / width: calc(100vw - 70px)` mobile; `left: 10vw / width: 80vw` desktop.
 
 ### Layout — dois painéis lado a lado
 
@@ -246,7 +247,9 @@ A página `/projetos` apresenta os projetos em um carrossel estilo **Apple Cover
 - **Adjacentes (±1)**: `scale(0.9)`, `translateZ(-100px)`, `opacity: 0.85`
 - **Adjacentes (±2)**: `scale(0.8)`, `translateZ(-300px)`, `opacity: 0.6`
 - **Demais**: `opacity: 0`, invisíveis
-- Todos os cards com `backdrop-filter: blur(8px)` e `border-radius: 20px`
+- **Card central**: fundo `rgba(2,10,22,0.92)` — quase opaco para evitar sangramento dos cards adjacentes
+- Demais cards com fundo `rgba(3,17,31,0.55)` e `backdrop-filter: blur(6px)`
+- `border-radius: 20px` em todos os cards
 - `perspective: 1000px` no container do track
 - Transição suave: `all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)`
 
@@ -269,7 +272,7 @@ A página `/projetos` apresenta os projetos em um carrossel estilo **Apple Cover
 ### Cards de Projeto
 
 Cada card com conteúdo exibe:
-- **Imagem** do projeto cobrindo a parte superior do card (185px desktop) com gradiente de fade para o fundo na base
+- **Imagem** do projeto cobrindo a parte superior do card (185px desktop, 35% da altura do card em mobile) com gradiente de fade para o fundo na base
 - **Subtitle** em ciano pequeno (categoria, ex: "Front-end")
 - **Título** do projeto em destaque
 - **Descrição** com `textAlign: justify`
@@ -342,14 +345,14 @@ Tags, URLs dos CTAs e caminhos de imagem permanecem estáticos.
 
 A página `/contato` renderiza uma janela glassmorphism com:
 - Botões macOS (vermelho, amarelo, verde) **decorativos** — sem função ativa
-- Dimensões: `60vw` largura desktop / `90vw` mobile
-- Posição: `top: calc(20vh - 100px)`, centralizada horizontalmente em `left: 20vw`
+- **Mobile**: `left: 62px`, `width: calc(100vw - 70px)`, `top: 36px`, `bottom: 8px`
+- **Desktop**: `left: 20vw`, `width: 60vw`, `top: calc(20vh - 100px)`, `bottom: calc(20vh + 100px)`
 - Entrada animada via classe `window-rise`
 - Glassmorphism: `background: rgba(3,17,31,0.65)` + `backdrop-filter: blur(12px)` + borda magenta sutil
 
 ### Coluna de Ícones de Contato (40% da janela)
 
-Grid 2×3 com 6 ícones de contato, todos no formato `.webp` (50×50px):
+Grid de contatos — **3×2 em mobile** (36×36px) / **2×3 em desktop** (50×50px), todos no formato `.webp`:
 
 | Ícone | Link | Cor de glow |
 |---|---|---|
@@ -418,6 +421,21 @@ A página `/blog` exibe um card central com mensagem "Em Breve" utilizando:
 
 ## Features Globais
 
+### Loading Screen (Primeira Visita)
+
+Tela de carregamento exibida **somente na primeira visita** do usuário:
+
+- **Script bloqueante** no `<head>` verifica `localStorage` antes de qualquer pintura — adiciona classe `html.fl` se for primeira visita
+- `html.fl body { visibility: hidden }` — conteúdo oculto até o loading terminar (sem flash)
+- **Espiral girassol** com 200 círculos SVG posicionados via ângulo dourado (`GOLDEN_ANGLE = π(3 - √5)`)
+- Cores por fração radial: ciano `#00EAFF` (< 40%), roxo `#BD00FF` (< 75%), rosa `#FF2D78` (restante)
+- Cada ponto anima `r` e `opacity` em `ANIM_DURATION` (3s) com `begin` escalonado por `frac`
+- **Efeito typewriter** — "Iniciando Portfolio" digitado caractere a caractere (55ms/char)
+- **Barra de progresso** animada via `requestAnimationFrame` (2400ms) com gradiente `#00EAFF → #BD00FF → #FF2D78` e glow
+- Saída: remove classe `fl` → body fica visível → fade out 650ms → grava `localStorage` → desmonta
+- Coordenação entre SSR e client via `useState<boolean | null>(null)` — evita hydration mismatch
+- Precisão de float: `Math.round(n * 1000) / 1000` — resultados idênticos entre Node.js e browser
+
 ### Terminal macOS
 
 - **Boot sequence animada** com auto-typing ao abrir
@@ -465,21 +483,26 @@ Ao clicar no ícone de idioma no MenuBar, **todo o site muda de idioma**:
 ### MenuBar
 
 - Título `Portfólio v1.0.0` (traduzível)
-- Relógio em tempo real com formato `Dia Mês HH:MM AM/PM`
-- Ícone de idioma centralizado — alterna PT ↔ EN com indicador textual
+- Relógio em tempo real com formato `Dia Mês HH:MM AM/PM` (oculto em telas `< sm`)
+- Ícone de idioma — alterna PT ↔ EN com indicador textual
 - Oculta automaticamente em `/blog`
+- **Mobile**: posicionada em `left: 54px` (após a dock vertical) até `right: 0`, garantindo visibilidade total — `z-index: 200` acima de todos os elementos
+- **Desktop**: posicionada `left: 0 right: 0` cobrindo a largura total
 
 ### Dock
 
 - 7 ícones: Home, Sobre, Skills, Projetos, Contato, Terminal, Blog
-- **Efeito de zoom** com GSAP ao passar o mouse (magnification)
+- **Desktop (≥ 768px)**: dock horizontal fixa no rodapé centralizada com **efeito de zoom GSAP** (magnification)
+- **Mobile (< 768px)**: dock vertical fixa no lado esquerdo, ocupa 100% da altura, itens distribuídos com `flex-1`; ícone Terminal oculto em mobile
 - Labels traduzíveis via i18n
-- Responsiva — grid 4 colunas em mobile
+- `body` recebe `pl-[54px] md:pl-0` para compensar a largura da dock no mobile
 
 ### Background
 
 - 7 blobs coloridos (`#BD00FF`, `#FF00FF`, `#FF2D78`, `#0052F5`, `#00EAFF`, `#7B00FF`, `#FF6600`)
 - Animados via `requestAnimationFrame` com bounce nas bordas e nudge aleatório
+- **Delta time normalizado** — velocidade constante independentemente do tempo na página (sem aceleração progressiva)
+- `SPEED = 0.12`, `CLAMP = 0.18` — velocidade suave e consistente em todas as telas
 - Base `#03111F`
 
 ### Saudação ao Visitante
@@ -495,6 +518,21 @@ Todas as imagens do projeto estão no formato `.webp` para melhor performance de
 - Imagens em `/public/images/` (ícones de contato, fotos de perfil)
 - Imagens em `/public/images/projetos/` (screenshots dos projetos)
 - Componente `next/image` com `fill` e `objectFit: cover` para carregamento otimizado
+
+### Responsividade
+
+O site é totalmente responsivo de **320px a 1920px+**, seguindo a abordagem mobile-first:
+
+| Elemento | Mobile (< 768px) | Desktop (≥ 768px) |
+|---|---|---|
+| Dock | Vertical, lado esquerdo, 54px largura | Horizontal, rodapé centralizado |
+| MenuBar | `left: 54px → right: 0` | `left: 0 → right: 0` |
+| Janelas (Sobre, Skills) | `left: 62px`, `width: calc(100vw - 70px)` | `left: 10vw`, `width: 80vw` |
+| Janela Contato | `left: 62px`, `width: calc(100vw - 70px)` | `left: 20vw`, `width: 60vw` |
+| Cards Projetos | Altura `(innerHeight - 100) / 1.1`, imagem 35% | Altura fixa 460–580px |
+| Grids Skills | `minmax(80px)` / `minmax(72px)` | `minmax(107px)` / `minmax(88px)` |
+| `<main>` | `w-full` (100% da área sem a dock) | `w-full` |
+| Body padding | `pl-[54px]` | `pl-0` |
 
 ---
 
@@ -582,6 +620,10 @@ Acesse [http://localhost:3000](http://localhost:3000).
 | `v1.3.0` | 2026-03-13 | Página Contato — janela macOS, ícones, formulário, Formspree, confetti, liquid glass |
 | `v1.4.0` | 2026-03-13 | Blog — Particle Assemble, astronauta SVG animado, tema-aware |
 | `v1.5.0` | 2026-03-13 | Projetos — CoverFlow 3D, cards completos, Em Breve, i18n, scroll/swipe/drag |
+| `v1.6.0` | 2026-03-16 | Loading Screen primeira visita (espiral girassol, typewriter, barra de progresso) |
+| `v1.7.0` | 2026-03-16 | Background com delta time normalizado — velocidade constante sem aceleração |
+| `v1.8.0` | 2026-03-16 | Dock vertical mobile (sidebar esquerda), Terminal oculto em mobile |
+| `v1.9.0` | 2026-03-16 | Responsividade completa — w-full, janelas corrigidas, grids, MenuBar, cards projetos |
 
 ---
 

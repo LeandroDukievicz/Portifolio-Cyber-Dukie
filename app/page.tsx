@@ -37,7 +37,7 @@ export default function Page() {
           onClick={dismissToast}
           style={{
             position: "fixed",
-            bottom: 80,
+            bottom: 88,
             left: "50%",
             transform: `translateX(-50%) translateY(${toastVisible ? "0" : "20px"})`,
             opacity: toastVisible ? 1 : 0,
@@ -92,12 +92,12 @@ export default function Page() {
         </div>
       )}
 
-      <div className="absolute inset-0 flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-7 gap-8 lg:gap-0">
+      <div className="absolute inset-0 flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 lg:px-20 pt-7 pb-16 lg:pb-0 gap-8 lg:gap-0">
 
         {/* Left — nome */}
         <div className="flex flex-col gap-4 items-start mx-4 sm:mx-8 md:mx-16 lg:ml-[3vw] xl:ml-[4vw] 2xl:ml-[0px] lg:mr-0 mt-4 lg:-mt-[100px] w-full lg:w-auto min-w-0">
           <h1
-            className="text-[3.15rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6.3rem] font-extrabold leading-tight"
+            className="text-[2.4rem] sm:text-[3.15rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6.3rem] font-extrabold leading-tight"
             style={{
               background: "linear-gradient(160deg, #ffffff 0%, #e2e2e2 40%, #a8a8a8 100%)",
               WebkitBackgroundClip: "text",
@@ -141,7 +141,7 @@ export default function Page() {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-row justify-between w-full mt-2 gap-3">
+          <div className="flex flex-col sm:flex-row justify-between w-full mt-2 gap-3">
             {/* Contrate-me */}
             <div className="cta-btn-wrap flex-1">
               <a href="/contato" className="cta-btn cta-btn-primary w-full">

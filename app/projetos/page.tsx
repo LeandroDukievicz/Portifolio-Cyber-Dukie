@@ -244,7 +244,7 @@ export default function Projetos() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: isMobile ? 0 : 150,
+        marginBottom: isMobile ? 80 : 150,
         marginTop: isMobile ? 72 : 0,
         gap: 32,
       }}>
@@ -254,7 +254,7 @@ export default function Projetos() {
           style={{
             width: "100%",
             maxWidth: 1200,
-            height: isMobile ? 420 : isTablet ? 520 : 640,
+            height: isMobile ? "min(380px, calc(100vh - 240px))" : isTablet ? 520 : 640,
             position: "relative",
             perspective: "1000px",
           }}
@@ -275,7 +275,7 @@ export default function Projetos() {
               const offset   = ((i - current) % TOTAL_CARDS + TOTAL_CARDS) % TOTAL_CARDS;
               const isCenter = offset === 0;
               const cardW    = isMobile ? Math.min(window.innerWidth * 0.78, 280) : isTablet ? 310 : 393;
-              const cardH    = isMobile ? 360 : isTablet ? 460 : 580;
+              const cardH    = isMobile ? Math.min(320, window.innerHeight - 260) : isTablet ? 460 : 580;
               return (
                 <div
                   key={i}

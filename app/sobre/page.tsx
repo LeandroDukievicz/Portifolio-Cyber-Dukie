@@ -214,7 +214,7 @@ export default function Sobre() {
     top: isMobile ? 72 : 48,
     left: isMobile ? "2vw" : "10vw",
     width: isMobile ? "96vw" : "80vw",
-    bottom: isMobile ? 16 : 186,
+    bottom: isMobile ? 80 : 186,
     borderRadius: 12,
     overflow: "hidden",
     background: "rgba(3,17,31,0.65)",
@@ -269,7 +269,7 @@ export default function Sobre() {
           {/* Lado esquerdo — foto + info */}
           <div style={{
             width: isMobile ? "100%" : "clamp(260px, 32%, 420px)",
-            height: isMobile ? "300px" : "auto",
+            height: isMobile ? "min(220px, 33vh)" : "auto",
             flexShrink: 0,
             borderRight: isMobile ? "none" : "1px solid rgba(255,255,255,0.07)",
             borderBottom: isMobile ? "1px solid rgba(255,255,255,0.07)" : "none",
@@ -406,7 +406,7 @@ export default function Sobre() {
               </p>
 
               {/* Links de contato */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 50, marginBottom: 4 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: isMobile ? 12 : 50, marginBottom: 4 }}>
                 <a
                   href="mailto:leandrodukievicz1718@gmail.com"
                   style={{

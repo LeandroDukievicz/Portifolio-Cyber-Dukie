@@ -174,7 +174,7 @@ export default function Contato() {
         <div style={{
           position: "fixed",
           ...(isMobile
-            ? { bottom: 90, left: "50%", transform: "translateX(-50%)", width: "80vw", height: "auto", minHeight: 80 }
+            ? { bottom: 88, left: "50%", transform: "translateX(-50%)", width: "80vw", height: "auto", minHeight: 80 }
             : { top: "calc(20vh - 100px)", left: "calc(80vw + 16px)", transform: "none", width: 160, height: 160 }
           ),
           background: "rgba(3,17,31,0.92)",
@@ -207,7 +207,7 @@ export default function Contato() {
         style={{
           position: "fixed",
           top:    isMobile ? 72     : "calc(20vh - 100px)",
-          bottom: isMobile ? 16    : "calc(20vh + 100px)",
+          bottom: isMobile ? 80    : "calc(20vh + 100px)",
           left:   isMobile ? "5vw"  : "20vw",
           width:  isMobile ? "90vw" : "60vw",
           borderRadius: 12,

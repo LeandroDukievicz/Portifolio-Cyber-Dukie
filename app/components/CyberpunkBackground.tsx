@@ -21,8 +21,12 @@ type Blob = {
   size: number;
 };
 
+const SPEED = 0.12; // velocidade base (% do viewport por frame a 60fps)
+const CLAMP = 0.18; // velocidade máxima absoluta — nunca excedida
+
 function randomVelocity() {
-  return (Math.random() - 0.5) * 0.25;
+  const v = (Math.random() * 0.5 + 0.5) * SPEED; // entre 50% e 100% de SPEED
+  return Math.random() < 0.5 ? -v : v;
 }
 
 export default function CyberpunkBackground() {
@@ -42,25 +46,30 @@ export default function CyberpunkBackground() {
     }));
 
     let raf: number;
+    let lastTime = 0;
 
-    const tick = () => {
+    const tick = (now: number) => {
+      // delta time normalizado a 60fps; cap em 50ms para evitar saltos após tab inativa
+      const dt = lastTime === 0 ? 1 : Math.min((now - lastTime) / 16.667, 3);
+      lastTime = now;
+
       for (const b of blobs) {
-        b.x += b.vx;
-        b.y += b.vy;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
 
-        // bounce nas bordas com pequena aleatoriedade
-        if (b.x < -15) { b.x = -15; b.vx = Math.abs(b.vx) + Math.random() * 0.05; }
-        if (b.x > 115) { b.x = 115; b.vx = -(Math.abs(b.vx) + Math.random() * 0.05); }
-        if (b.y < -15) { b.y = -15; b.vy = Math.abs(b.vy) + Math.random() * 0.05; }
-        if (b.y > 115) { b.y = 115; b.vy = -(Math.abs(b.vy) + Math.random() * 0.05); }
+        // bounce sem acúmulo de velocidade — só inverte a direção
+        if (b.x < -15) { b.x = -15; b.vx =  Math.abs(b.vx); }
+        if (b.x > 115) { b.x = 115; b.vx = -Math.abs(b.vx); }
+        if (b.y < -15) { b.y = -15; b.vy =  Math.abs(b.vy); }
+        if (b.y > 115) { b.y = 115; b.vy = -Math.abs(b.vy); }
 
-        // nudge aleatório ocasional para quebrar padrões
-        if (Math.random() < 0.004) b.vx += (Math.random() - 0.5) * 0.15;
-        if (Math.random() < 0.004) b.vy += (Math.random() - 0.5) * 0.15;
+        // nudge suave e pouco frequente para variar a trajetória
+        if (Math.random() < 0.002) b.vx += (Math.random() - 0.5) * 0.06;
+        if (Math.random() < 0.002) b.vy += (Math.random() - 0.5) * 0.06;
 
-        // clamp velocidade
-        b.vx = Math.max(-0.45, Math.min(0.45, b.vx));
-        b.vy = Math.max(-0.45, Math.min(0.45, b.vy));
+        // clamp estrito — velocidade nunca cresce além de CLAMP
+        b.vx = Math.max(-CLAMP, Math.min(CLAMP, b.vx));
+        b.vy = Math.max(-CLAMP, Math.min(CLAMP, b.vy));
       }
 
       el.style.backgroundImage = blobs

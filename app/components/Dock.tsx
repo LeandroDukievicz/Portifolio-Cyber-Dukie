@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
@@ -35,28 +35,6 @@ export default function Dock() {
   const itemsRef   = useRef<HTMLLIElement[]>([]);
   const { open }   = useTerminal();
   const { t }      = useLanguage();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  // Fecha menu ao redimensionar para desktop
-  useEffect(() => {
-    const onResize = () => { if (window.innerWidth >= 768) setMenuOpen(false); };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  // Bloqueia scroll do body quando menu está aberto
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [menuOpen]);
 
   // GSAP magnification no desktop
   useEffect(() => {
@@ -106,13 +84,13 @@ export default function Dock() {
 
   return (
     <>
-      {/* ── DESKTOP DOCK ── */}
-      <div className="hidden md:flex fixed bottom-[70px] inset-x-auto left-1/2 -translate-x-1/2 justify-center z-[150]">
+      {/* ── DOCK (desktop + mobile) ── */}
+      <div className="flex fixed bottom-3 md:bottom-[70px] inset-x-auto left-1/2 -translate-x-1/2 justify-center z-[150]">
         <ul
           ref={dockRef}
           className="
             w-auto inline-flex items-end justify-center
-            rounded-xl px-4 py-3 m-0 list-none
+            rounded-xl px-3 py-2 md:px-4 md:py-3 m-0 list-none
             bg-white/10 backdrop-blur-md
             border border-white/20
             shadow-[0_-4px_30px_rgba(0,0,0,0.3)]
@@ -122,21 +100,21 @@ export default function Dock() {
             <li
               key={item.labelKey}
               ref={(el) => { if (el) itemsRef.current[i] = el; }}
-              className="w-[67px] h-[67px] mx-1"
+              className={`w-[44px] h-[44px] mx-0.5 md:w-[67px] md:h-[67px] md:mx-1 ${item.kind === "button" ? "hidden md:block" : ""}`}
             >
               {item.kind === "link" ? (
                 <Link href={item.href} className={innerClass}>
-                  <span className="text-[34px]">
+                  <span className="text-[22px] md:text-[34px]">
                     <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
                   </span>
-                  <span className="text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
+                  <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
                 </Link>
               ) : (
                 <button onClick={open} className={`${innerClass} cursor-pointer bg-transparent border-none w-full`}>
-                  <span className="text-[34px]">
+                  <span className="text-[22px] md:text-[34px]">
                     <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
                   </span>
-                  <span className="text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
+                  <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
                 </button>
               )}
             </li>
@@ -144,136 +122,6 @@ export default function Dock() {
         </ul>
       </div>
 
-      {/* ── MOBILE: BOTÃO HAMBURGUER ── */}
-      <button
-        onClick={() => setMenuOpen(o => !o)}
-        aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-        className="md:hidden"
-        style={{
-          position: "fixed",
-          top: 16,
-          right: 16,
-          zIndex: 300,
-          width: 44,
-          height: 44,
-          borderRadius: "50%",
-          background: "rgba(3,17,31,0.85)",
-          backdropFilter: "blur(16px)",
-          border: `1px solid ${menuOpen ? "rgba(0,234,255,0.6)" : "rgba(255,255,255,0.2)"}`,
-          boxShadow: menuOpen
-            ? "0 0 20px rgba(0,234,255,0.35), inset 0 1px 0 rgba(255,255,255,0.15)"
-            : "0 4px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 5,
-          cursor: "pointer",
-          transition: "border-color 0.3s, box-shadow 0.3s",
-        }}
-      >
-        {/* 3 linhas → X animado */}
-        {[0, 1, 2].map(n => (
-          <span
-            key={n}
-            style={{
-              display: "block",
-              width: 18,
-              height: 2,
-              borderRadius: 2,
-              background: "#00EAFF",
-              transformOrigin: "center",
-              transition: "transform 0.3s ease, opacity 0.3s ease, background 0.3s",
-              transform: menuOpen
-                ? n === 0 ? "translateY(7px) rotate(45deg)"
-                : n === 1 ? "scaleX(0)"
-                : "translateY(-7px) rotate(-45deg)"
-                : "none",
-              opacity: menuOpen && n === 1 ? 0 : 1,
-            }}
-          />
-        ))}
-      </button>
-
-      {/* ── MOBILE: OVERLAY MENU ── */}
-      <div
-        className="md:hidden"
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 250,
-          pointerEvents: menuOpen ? "auto" : "none",
-          background: menuOpen ? "rgba(3,17,31,0.92)" : "rgba(3,17,31,0)",
-          backdropFilter: menuOpen ? "blur(20px)" : "blur(0px)",
-          transition: "background 0.35s ease, backdrop-filter 0.35s ease",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 8,
-        }}
-        onClick={(e) => { if (e.target === e.currentTarget) setMenuOpen(false); }}
-      >
-        {NAV_ITEMS.filter(item => !(isMobile && item.kind === "button" && item.action === "terminal")).map((item, i) => {
-          const content = (
-            <>
-              <span style={{ fontSize: 28, color: "#00EAFF", display: "flex", alignItems: "center" }}>
-                <item.icon />
-              </span>
-              <span style={{
-                fontSize: "1rem",
-                fontWeight: 600,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                fontFamily: "'JetBrains Mono', monospace",
-                color: "rgba(255,255,255,0.9)",
-              }}>
-                {t.dock[item.labelKey]}
-              </span>
-            </>
-          );
-
-          const itemStyle: React.CSSProperties = {
-            display: "flex",
-            alignItems: "center",
-            gap: 20,
-            width: "72vw",
-            maxWidth: 320,
-            padding: "14px 24px",
-            borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(255,255,255,0.04)",
-            cursor: "pointer",
-            textDecoration: "none",
-            opacity: menuOpen ? 1 : 0,
-            transform: menuOpen ? "translateY(0)" : "translateY(20px)",
-            transition: `opacity 0.35s ease ${i * 45}ms, transform 0.35s ease ${i * 45}ms`,
-          };
-
-          if (item.kind === "link") {
-            return (
-              <Link
-                key={item.labelKey}
-                href={item.href}
-                style={itemStyle}
-                onClick={() => setMenuOpen(false)}
-              >
-                {content}
-              </Link>
-            );
-          }
-
-          return (
-            <button
-              key={item.labelKey}
-              style={{ ...itemStyle, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
-              onClick={() => { open(); setMenuOpen(false); }}
-            >
-              {content}
-            </button>
-          );
-        })}
-      </div>
     </>
   );
 }

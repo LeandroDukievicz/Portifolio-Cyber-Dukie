@@ -227,7 +227,7 @@ export default function Skills() {
         style={{
           position: "fixed",
           top: isMobile ? 72 : 48,
-          bottom: isMobile ? 16 : 186,
+          bottom: isMobile ? 80 : 186,
           left: isMobile ? "2vw" : "10vw",
           width: isMobile ? "96vw" : "80vw",
           borderRadius: 12,
@@ -408,7 +408,7 @@ export default function Skills() {
           }} />
 
           {/* Soft Skills */}
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: isMobile ? "10px" : "12px 16px", overflow: "hidden" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: isMobile ? "10px" : "12px 16px", overflow: "hidden", minHeight: 0 }}>
             <h2 style={{
               margin: 0, fontSize: "1rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
               background: "linear-gradient(90deg, #BD00FF 0%, #FF2D78 100%)",
@@ -422,9 +422,15 @@ export default function Skills() {
             {/* Grid de flip cards */}
             <div style={{
               flex: 1,
+              minHeight: 0,
               display: "grid",
               gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+              gridAutoRows: isMobile ? "90px" : "1fr",
               gap: isMobile ? 6 : 5,
+              overflowY: isMobile ? "auto" : "hidden",
+              alignContent: "stretch",
+              scrollbarWidth: "thin",
+              scrollbarColor: "rgba(255,255,255,0.1) transparent",
             }}>
               {SOFT_SKILLS.map(({ Icon, color }, i) => {
                 const isFlipped = flippedCard === i;
@@ -444,7 +450,7 @@ export default function Skills() {
                       opacity: 0,
                       animation: "card-in 0.35s ease forwards",
                       animationDelay: `${i * 45}ms`,
-                      ...(i === SOFT_SKILLS.length - 1 ? { gridColumn: isMobile ? "1 / -1" : "2 / 4" } : {}),
+                      ...(i === SOFT_SKILLS.length - 1 ? { gridColumn: "1 / -1" } : {}),
                     }}
                   >
                     <div className={`flip-inner${!isPrincipio && isFlipped ? " flipped" : ""}`}>
@@ -458,7 +464,7 @@ export default function Skills() {
                       >
                         <Icon size={20} style={{ color, flexShrink: 0 }} />
                         <span style={{
-                          fontSize: "1rem", color: "rgba(255,255,255,0.7)",
+                          fontSize: "0.78rem", color: "rgba(255,255,255,0.7)",
                           lineHeight: 1.25, letterSpacing: "0.02em",
                           textAlign: "center",
                         }}>
@@ -480,9 +486,9 @@ export default function Skills() {
                         }}
                       >
                         <p style={{
-                          margin: 0, fontSize: "1rem",
+                          margin: 0, fontSize: "0.75rem",
                           color: "rgba(255,255,255,0.85)",
-                          lineHeight: 1.45, textAlign: "center",
+                          lineHeight: 1.4, textAlign: "center",
                         }}>
                           {s.softSkillsData[i].desc}
                         </p>

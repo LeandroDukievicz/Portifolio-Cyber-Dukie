@@ -5,13 +5,21 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import styles from "./blog.module.css";
 
-type ToastType = "error" | "success";
+type ToastType = "error" | "success" | "warning";
+
+const TOAST_COLORS: Record<ToastType, { border: string; text: string; shadow: string }> = {
+  success: { border: "rgba(0,234,255,0.4)",  text: "#00EAFF", shadow: "rgba(0,234,255,0.15)" },
+  error:   { border: "rgba(255,45,120,0.4)", text: "#FF2D78", shadow: "rgba(255,45,120,0.15)" },
+  warning: { border: "rgba(255,200,0,0.5)",  text: "#FFD700", shadow: "rgba(255,200,0,0.15)" },
+};
 
 function Toast({ message, type, onClose }: { message: string; type: ToastType; onClose: () => void }) {
   useEffect(() => {
     const t = setTimeout(onClose, 4000);
     return () => clearTimeout(t);
   }, [onClose]);
+
+  const colors = TOAST_COLORS[type];
 
   return (
     <motion.div
@@ -27,13 +35,11 @@ function Toast({ message, type, onClose }: { message: string; type: ToastType; o
         zIndex: 9999,
         background: "rgba(3,17,31,0.95)",
         backdropFilter: "blur(16px)",
-        border: `1px solid ${type === "success" ? "rgba(0,234,255,0.4)" : "rgba(255,45,120,0.4)"}`,
+        border: `1px solid ${colors.border}`,
         borderRadius: 12,
         padding: "14px 20px",
         width: 260,
-        boxShadow: type === "success"
-          ? "0 0 24px rgba(0,234,255,0.15), 0 8px 32px rgba(0,0,0,0.5)"
-          : "0 0 24px rgba(255,45,120,0.15), 0 8px 32px rgba(0,0,0,0.5)",
+        boxShadow: `0 0 24px ${colors.shadow}, 0 8px 32px rgba(0,0,0,0.5)`,
         cursor: "pointer",
         textAlign: "center",
       }}
@@ -42,7 +48,7 @@ function Toast({ message, type, onClose }: { message: string; type: ToastType; o
         margin: 0,
         fontFamily: "'JetBrains Mono', monospace",
         fontSize: "0.82rem",
-        color: type === "success" ? "#00EAFF" : "#FF2D78",
+        color: colors.text,
         lineHeight: 1.5,
         letterSpacing: "0.04em",
       }}>
@@ -180,6 +186,9 @@ export default function LiquidGlassBlog() {
           colors: ["#00EAFF", "#BD00FF", "#FF2D78", "#ffffff"],
         });
         showToast("Obrigado pela inscrição! 🚀\nAguarde novidades em breve.", "success");
+      } else if (res.status === 409) {
+        showToast("Este e-mail já está registrado!", "warning");
+        setStatus("idle");
       } else {
         setEmailError(data.error ?? "E-mail inválido.");
         setStatus("idle");

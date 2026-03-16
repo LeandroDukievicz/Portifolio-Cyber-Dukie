@@ -94,6 +94,20 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // ── Verifica duplicata no Notion ─────────────────────────────────────────
+  try {
+    const existing = await notion.databases.query({
+      database_id: DATABASE_ID,
+      filter: { property: "Email", title: { equals: email } },
+      page_size: 1,
+    });
+    if (existing.results.length > 0) {
+      return NextResponse.json({ error: "duplicate" }, { status: 409 });
+    }
+  } catch (err) {
+    console.error("[subscribe] Notion query error:", err);
+  }
+
   // ── Salva no Notion ───────────────────────────────────────────────────────
   try {
     await notion.pages.create({

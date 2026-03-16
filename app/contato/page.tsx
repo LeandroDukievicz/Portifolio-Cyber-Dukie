@@ -117,7 +117,7 @@ export default function Contato() {
   }, []);
 
   return (
-    <main className="w-screen h-screen overflow-hidden relative">
+    <main className="w-full h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
       <style>{`
@@ -174,7 +174,7 @@ export default function Contato() {
         <div style={{
           position: "fixed",
           ...(isMobile
-            ? { bottom: 88, left: "50%", transform: "translateX(-50%)", width: "80vw", height: "auto", minHeight: 80 }
+            ? { bottom: 16, left: "50%", transform: "translateX(-50%)", width: "calc(100vw - 78px)", maxWidth: 320, height: "auto", minHeight: 80 }
             : { top: "calc(20vh - 100px)", left: "calc(80vw + 16px)", transform: "none", width: 160, height: 160 }
           ),
           background: "rgba(3,17,31,0.92)",
@@ -206,10 +206,10 @@ export default function Contato() {
         className="window-rise"
         style={{
           position: "fixed",
-          top:    isMobile ? 72     : "calc(20vh - 100px)",
-          bottom: isMobile ? 80    : "calc(20vh + 100px)",
-          left:   isMobile ? "5vw"  : "20vw",
-          width:  isMobile ? "90vw" : "60vw",
+          top:    isMobile ? 36      : "calc(20vh - 100px)",
+          bottom: isMobile ? 8      : "calc(20vh + 100px)",
+          left:   isMobile ? 62     : "20vw",
+          width:  isMobile ? "calc(100vw - 70px)" : "60vw",
           borderRadius: 12,
           overflow: "hidden",
           background: "rgba(3,17,31,0.65)",
@@ -248,11 +248,11 @@ export default function Contato() {
             height: isMobile ? "auto" : undefined,
             flexShrink: 0,
             display: "grid",
-            gridTemplateColumns: isMobile ? "repeat(6, 1fr)" : "1fr 1fr",
+            gridTemplateColumns: isMobile ? "repeat(3, 1fr)" : "1fr 1fr",
             alignContent: "center",
             justifyItems: "center",
-            gap: isMobile ? 12 : 36,
-            padding: isMobile ? "12px 16px" : "24px",
+            gap: isMobile ? 16 : 36,
+            padding: isMobile ? "14px 16px" : "24px",
             borderBottom: isMobile ? "1px solid rgba(255,255,255,0.07)" : "none",
           }}>
             {CONTACTS.map(({ name, image, href, color }, i) => (

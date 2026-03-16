@@ -181,7 +181,7 @@ export default function Projetos() {
 
   return (
     <main
-      className="w-screen h-screen overflow-hidden relative"
+      className="w-full h-screen overflow-hidden relative"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
@@ -244,8 +244,8 @@ export default function Projetos() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        marginBottom: isMobile ? 80 : 150,
-        marginTop: isMobile ? 72 : 0,
+        marginBottom: isMobile ? 8 : 150,
+        marginTop: isMobile ? 36 : 0,
         gap: 32,
       }}>
 
@@ -274,8 +274,8 @@ export default function Projetos() {
             {PROJECTS.map((project, i) => {
               const offset   = ((i - current) % TOTAL_CARDS + TOTAL_CARDS) % TOTAL_CARDS;
               const isCenter = offset === 0;
-              const cardW    = isMobile ? Math.min(window.innerWidth * 0.78, 280) : isTablet ? 310 : 393;
-              const cardH    = isMobile ? Math.min(320, window.innerHeight - 260) : isTablet ? 460 : 580;
+              const cardW    = isMobile ? Math.min(window.innerWidth - 74, 265) : isTablet ? 310 : 393;
+              const cardH    = isMobile ? Math.min(300, window.innerHeight - 180) : isTablet ? 460 : 580;
               return (
                 <div
                   key={i}

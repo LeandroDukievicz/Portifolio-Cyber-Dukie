@@ -211,10 +211,10 @@ export default function Sobre() {
 
   const windowStyle: React.CSSProperties = {
     position: "fixed",
-    top: isMobile ? 72 : 48,
-    left: isMobile ? "2vw" : "10vw",
-    width: isMobile ? "96vw" : "80vw",
-    bottom: isMobile ? 80 : 186,
+    top: isMobile ? 36 : 48,
+    left: isMobile ? 62 : "10vw",
+    width: isMobile ? "calc(100vw - 70px)" : "80vw",
+    bottom: isMobile ? 8 : 186,
     borderRadius: 12,
     overflow: "hidden",
     background: "rgba(3,17,31,0.65)",
@@ -242,7 +242,7 @@ export default function Sobre() {
   const STACK = s.stack.map((item, i) => ({ ...item, icons: STACK_ICONS[i].icons }));
 
   return (
-    <main className="w-screen h-screen overflow-hidden relative">
+    <main className="w-full h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
       <div style={windowStyle}>

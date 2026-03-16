@@ -191,7 +191,7 @@ export default function Skills() {
   }, []);
 
   return (
-    <main className="w-screen h-screen overflow-hidden relative">
+    <main className="w-full h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
       <style>{`
@@ -226,10 +226,10 @@ export default function Skills() {
         className="window-rise"
         style={{
           position: "fixed",
-          top: isMobile ? 72 : 48,
-          bottom: isMobile ? 80 : 186,
-          left: isMobile ? "2vw" : "10vw",
-          width: isMobile ? "96vw" : "80vw",
+          top: isMobile ? 36 : 48,
+          bottom: isMobile ? 8 : 186,
+          left: isMobile ? 62 : "10vw",
+          width: isMobile ? "calc(100vw - 70px)" : "80vw",
           borderRadius: 12,
           overflow: "hidden",
           background: "rgba(3,17,31,0.65)",
@@ -359,7 +359,7 @@ export default function Skills() {
                     </div>
                     <div style={{
                       display: "grid",
-                      gridTemplateColumns: "repeat(auto-fill, minmax(107px, 1fr))",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
                       gap: 8,
                     }}>
                       {items.map(({ Icon, label, color, cardIndex }) => (
@@ -387,7 +387,7 @@ export default function Skills() {
                   </div>
                   <div style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(88px, 1fr))",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(72px, 1fr))",
                     gap: 7,
                   }}>
                     {items.map(({ Icon, label, color, cardIndex }) => (

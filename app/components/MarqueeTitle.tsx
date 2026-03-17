@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { useLanguage } from "../context/LanguageContext";
 
 const COLOR = "#ffffff";
 
@@ -52,15 +51,8 @@ function setFavicon(href: string) {
 }
 
 export default function MarqueeTitle() {
-  const { t } = useLanguage();
-
   useEffect(() => {
-    const TITLE = t.marquee;
-    let titleIndex = 0;
-    const titleInterval = setInterval(() => {
-      document.title = TITLE.slice(titleIndex) + TITLE.slice(0, titleIndex);
-      titleIndex = (titleIndex + 1) % TITLE.length;
-    }, 150);
+    document.title = "Leandro Dukiévicz";
 
     // Cycling favicons
     let faviconIndex = 0;
@@ -71,10 +63,9 @@ export default function MarqueeTitle() {
     }, 800);
 
     return () => {
-      clearInterval(titleInterval);
       clearInterval(faviconInterval);
     };
-  }, [t.marquee]);
+  }, []);
 
   return null;
 }

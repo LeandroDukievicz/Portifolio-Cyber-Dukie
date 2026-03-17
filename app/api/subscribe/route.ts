@@ -5,9 +5,14 @@ import dns from "dns/promises";
 import isEmail from "validator/lib/isEmail";
 import { isDisposableDomain, isValidEmailFormat } from "@/lib/emailValidation";
 
-const notion = new Client({ auth: process.env.NOTION_TOKEN });
-const DATABASE_ID = process.env.NOTION_BLOG_SUBSCRIBERS_DB!;
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Instanciados dentro do handler para evitar erros durante o build (env vars indisponíveis)
+function getClients() {
+  return {
+    notion: new Client({ auth: process.env.NOTION_TOKEN }),
+    resend: new Resend(process.env.RESEND_API_KEY),
+    databaseId: process.env.NOTION_BLOG_SUBSCRIBERS_DB!,
+  };
+}
 
 // ─── Rate limiting em memória (máx 5 tentativas / minuto por IP) ───────────
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -42,6 +47,8 @@ function sanitizeEmail(raw: string): string {
 }
 
 export async function POST(req: NextRequest) {
+  const { notion, resend, databaseId: DATABASE_ID } = getClients();
+
   // ── Rate limiting por IP ──────────────────────────────────────────────────
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";

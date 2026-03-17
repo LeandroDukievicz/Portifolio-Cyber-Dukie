@@ -1,0 +1,27 @@
+{
+  "site": [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Portfólio - Leandro Dukiévicz",
+      "url": "https://leandrodukievicz.com"
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Portfólio - Leandro Dukiévicz",
+      "url": "https://leandrodukievicz.com"
+    }
+  ],
+  "pages": {
+    "/": [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Leandro Dukiévicz",
+        "url": "https://leandrodukievicz.com",
+        "description": "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end"
+      }
+    ]
+  }
+}

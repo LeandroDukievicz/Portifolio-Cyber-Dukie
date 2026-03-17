@@ -1,0 +1,44 @@
+{
+  "version": "1.0",
+  "generated": "2026-03-17T23:17:55.224Z",
+  "site": {
+    "title": "Portfólio - Leandro Dukiévicz",
+    "description": "",
+    "url": "https://leandrodukievicz.com"
+  },
+  "entries": [
+    {
+      "id": "ce2f77ae07a463bb",
+      "url": "https://leandrodukievicz.com",
+      "title": "Leandro Dukiévicz",
+      "content": "## Leandro\nDukievicz\n\nSou aficionado em tecnologia no geral, desenvolvo interfaces que unem elegância e intuitividade, sendo modernas o bastante para impressionar mas simples o suficiente para desaparecer. Estou em constante evolução no aprendizado e aperfeiçoamento, buscando sempre melhorar performance, fluidez e com muita atenção a todos os detalhes, acredito que a melhor experiência é aquela onde o usuário nem percebe que está tendo !\n\n[Contrate-me](/contato)\n\nBaixar CV",
+      "description": "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end",
+      "keywords": [
+        "ncia",
+        "para",
+        "leandro",
+        "dukievicz",
+        "aficionado",
+        "tecnologia",
+        "geral",
+        "desenvolvo",
+        "interfaces",
+        "unem"
+      ],
+      "metadata": {
+        "chunkIndex": 0,
+        "totalChunks": 1,
+        "sourcePath": "/"
+      }
+    }
+  ],
+  "metadata": {
+    "totalEntries": 1,
+    "generator": "aeo.js",
+    "generatorUrl": "https://aeojs.org",
+    "embedding": {
+      "recommended": "text-embedding-ada-002",
+      "dimensions": 1536
+    }
+  }
+}

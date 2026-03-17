@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "generated": "2026-03-17T23:17:55.220Z",
+  "site": {
+    "title": "Portfólio - Leandro Dukiévicz",
+    "description": "",
+    "url": "https://leandrodukievicz.com"
+  },
+  "documents": [
+    {
+      "url": "https://leandrodukievicz.com",
+      "title": "Leandro Dukiévicz",
+      "description": "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end"
+    }
+  ],
+  "metadata": {
+    "totalDocuments": 1,
+    "generator": "aeo.js",
+    "generatorUrl": "https://aeojs.org"
+  }
+}

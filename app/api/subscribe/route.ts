@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Client } from "@notionhq/client";
-import { Resend } from "resend";
 import dns from "dns/promises";
-import isEmail from "validator/lib/isEmail";
+
+// Força análise dinâmica — impede o Turbopack de avaliar este módulo no build
+export const dynamic = "force-dynamic";
 import { isDisposableDomain, isValidEmailFormat } from "@/lib/emailValidation";
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
@@ -38,7 +38,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Serviço indisponível." }, { status: 503 });
   }
 
-  // ── Instanciação em runtime ───────────────────────────────────────────────
+  // ── Instanciação em runtime via dynamic import (evita avaliação no build) ─
+  const { Client } = await import("@notionhq/client");
+  const { Resend } = await import("resend");
+  const { default: isEmail } = await import("validator/lib/isEmail");
+  const { isDisposableDomain, isValidEmailFormat } = await import("@/lib/emailValidation");
   const notion = new Client({ auth: NOTION_TOKEN });
   const resend = new Resend(RESEND_API_KEY);
 

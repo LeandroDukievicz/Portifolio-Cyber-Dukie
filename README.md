@@ -422,18 +422,17 @@ Três textos animados com efeito de caracteres scramble usando `framer-motion` +
 - 22 frames a 45ms — revelação progressiva da esquerda para a direita
 - Entrada suave via `motion.span` com `opacity 0 → 1` + `translateY 10px → 0`
 - Dispara ao entrar na viewport (`useInView`, `once: true`)
-- **Sensível ao tema**: cor `#000000` (light) ou `#ffffff` (dark/dim)
+- Cor fixa `#ffffff` (apenas temas dark e dim disponíveis)
 - Todos os elementos da página centralizam o texto e usam espaçamento uniforme entre si
 
 **Text-shadow em "Um novo Blog"** seguindo a paleta do astronauta SVG:
-- `light`: glow ciano `rgba(0,234,255,0.45)` + halo externo
-- `dark/dim`: ciano + roxo `#BD00FF` + magenta `#FF00FF` (espelha a animação `astronaut-color`)
+- ciano `rgba(0,234,255,0.6)` + roxo `#BD00FF` + magenta `#FF00FF` (espelha a animação `astronaut-color`)
 
 ### Formulário de Inscrição
 
 Input de email + botão "Cadastrar" com validação multicamadas e estados visuais:
 
-- **Input**: fundo semitransparente, borda sutil, focus acende a borda — theme-aware (light/dark)
+- **Input**: fundo semitransparente, borda sutil, focus acende a borda — estilo dark/dim
 - **Botão**: glassmorphism, hover clareia o fundo, `Enter` também envia
 - **Estado loading**: botão mostra `...` e fica desabilitado
 - **Estado success**: input e botão substituídos por mensagem de confirmação
@@ -503,8 +502,7 @@ RESEND_API_KEY=...
 ### Astronauta SVG animado
 
 - Animação `astronaut-float`: flutuação vertical suave (translateY ±22px em 4s ease-in-out infinite)
-- Animação `astronaut-color`: gradiente ciano → purple → magenta com `filter` (apenas dark/dim)
-- `light`: `drop-shadow(0 4px 12px rgba(0,0,0,0.25))`
+- Animação `astronaut-color`: gradiente ciano → purple → magenta com `filter` CSS (ativa em ambos os temas)
 
 ---
 
@@ -738,12 +736,10 @@ RESEND_API_KEY=sua_api_key_resend
 | `v1.7.0` | 2026-03-16 | Background com delta time normalizado — velocidade constante sem aceleração |
 | `v1.8.0` | 2026-03-16 | Dock vertical mobile (sidebar esquerda), Terminal oculto em mobile |
 | `v1.9.0` | 2026-03-16 | Responsividade completa — w-full, janelas corrigidas, grids, MenuBar, cards projetos |
-| `v2.0.0` | 2026-03-16 | Blog backend — API route `/api/subscribe`, Notion database, Resend notification |
-| `v2.1.0` | 2026-03-16 | Validação robusta de email — rate limiting, honeypot, validator.js, MX record, null MX, disposable domains |
-| `v2.2.0` | 2026-03-16 | Toast warning (gold) para email duplicado; erro inline no input; textos blog centralizados e bold |
-| `v2.0.0` | 2026-03-16 | Blog refatorado — ScrambleText (Framer Motion), formulário de inscrição, integração Notion, toasts, confetti |
-| `v2.1.0` | 2026-03-16 | Skills: flip cards preenchem o espaço (gridAutoRows 1fr, alignContent stretch, último card 1/-1) |
-| `v2.2.0` | 2026-03-16 | Dock posicionada a 30px do bottom; dock mobile vertical lateral esquerda |
+| `v2.0.0` | 2026-03-16 | Blog — ScrambleText (Framer Motion), formulário de inscrição, integração Notion, toasts, confetti |
+| `v2.1.0` | 2026-03-16 | Blog backend — API route `/api/subscribe`, Notion database, Resend notification; validação robusta (rate limiting, honeypot, validator.js, MX record, disposable domains) |
+| `v2.2.0` | 2026-03-16 | Skills: flip cards preenchem o espaço (gridAutoRows 1fr, alignContent stretch, último card 1/-1); Dock 30px do bottom |
+| `v2.3.0` | 2026-03-16 | Blog: remove tema claro — apenas dark e dim disponíveis; astronaut-color ativa em ambos os temas |
 
 ---
 

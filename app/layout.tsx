@@ -8,6 +8,7 @@ import TerminalWindow from "./components/TerminalWindow";
 import LoadingScreen from "./components/LoadingScreen";
 import { TerminalProvider } from "./context/TerminalContext";
 import { LanguageProvider } from "./context/LanguageContext";
+import { Analytics } from "@vercel/analytics/next";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -44,6 +45,7 @@ export default function RootLayout({
           <TerminalWindow />
           <Dock />
           <MarqueeTitle />
+          <Analytics />
         </TerminalProvider>
         </LanguageProvider>
       </body>

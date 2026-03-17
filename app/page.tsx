@@ -1,17 +1,76 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import CyberpunkBackground from "./components/CyberpunkBackground";
 import HeroPhoto from "./components/HeroPhoto";
 import { FaFloppyDisk } from "react-icons/fa6";
 import { useTerminal } from "./context/TerminalContext";
 import { useLanguage } from "./context/LanguageContext";
 
+// ─── Typewriter hook ──────────────────────────────────────────────────────────
+function useTypewriter(text: string, speed = 55, startDelay = 0) {
+  const [displayed, setDisplayed] = useState("");
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    setDisplayed("");
+    setDone(false);
+    let i = 0;
+    const timeout = setTimeout(() => {
+      const interval = setInterval(() => {
+        i++;
+        setDisplayed(text.slice(0, i));
+        if (i >= text.length) {
+          clearInterval(interval);
+          setDone(true);
+        }
+      }, speed);
+      return () => clearInterval(interval);
+    }, startDelay);
+    return () => clearTimeout(timeout);
+  }, [text, speed, startDelay]);
+
+  return { displayed, done };
+}
+
+// ─── Stagger reveal hook ──────────────────────────────────────────────────────
+function useStaggerVisible(count: number, interval = 120, initialDelay = 100) {
+  const [visible, setVisible] = useState<boolean[]>(Array(count).fill(false));
+
+  useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    for (let i = 0; i < count; i++) {
+      timers.push(
+        setTimeout(() => {
+          setVisible(prev => {
+            const next = [...prev];
+            next[i] = true;
+            return next;
+          });
+        }, initialDelay + i * interval)
+      );
+    }
+    return () => timers.forEach(clearTimeout);
+  }, [count, interval, initialDelay]);
+
+  return visible;
+}
+
 export default function Page() {
   const { triggerHireFlow } = useTerminal();
   const { t, lang } = useLanguage();
   const [showToast, setShowToast] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
+
+  // 0: h1, 1: traço, 2: subtítulo (typewriter), 3: bio, 4: CTAs
+  const visible = useStaggerVisible(5, 130, 80);
+
+  // Typewriter no subtítulo — começa só depois que o elemento 2 fica visível
+  const { displayed: subtitleTyped } = useTypewriter(
+    t.subtitle,
+    45,
+    visible[2] ? 0 : 99999
+  );
 
   useEffect(() => {
     if (window.innerWidth >= 768) return;
@@ -27,11 +86,17 @@ export default function Page() {
     setTimeout(() => setShowToast(false), 400);
   };
 
+  const fadeUp = (index: number): React.CSSProperties => ({
+    opacity: visible[index] ? 1 : 0,
+    transform: visible[index] ? "translateY(0)" : "translateY(18px)",
+    transition: "opacity 0.55s ease, transform 0.55s ease",
+  });
+
   return (
     <main className="w-full h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
-      {/* Toast mobile — melhor experiência no desktop */}
+      {/* Toast mobile */}
       {showToast && (
         <div
           onClick={dismissToast}
@@ -96,15 +161,15 @@ export default function Page() {
 
         {/* Left — nome */}
         <div className="flex flex-col gap-2 sm:gap-4 items-start lg:ml-[3vw] xl:ml-[4vw] 2xl:ml-[0px] lg:mr-0 mt-1 sm:mt-4 lg:-mt-[100px] w-full lg:w-auto min-w-0">
+
           <h1
             className="text-[1.9rem] sm:text-[3.15rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6.3rem] font-extrabold leading-tight"
             style={{
-              background: "linear-gradient(160deg, #ffffff 0%, #e2e2e2 40%, #a8a8a8 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              filter:
-                "drop-shadow(4px 5px 1px rgba(0,0,0,0.55)) " +
-                "drop-shadow(0px 12px 20px rgba(0,0,0,0.3))",
+              WebkitFontSmoothing: "antialiased",
+              opacity: visible[0] ? 0.95 : 0,
+              transform: visible[0] ? "translateY(0)" : "translateY(18px)",
+              transition: "opacity 0.55s ease, transform 0.55s ease",
+              textShadow: "0 0 20px rgba(255,255,255,0.15)",
             }}
           >
             Leandro<br />Dukievicz
@@ -116,32 +181,50 @@ export default function Page() {
             style={{
               background: "linear-gradient(90deg, #00EAFF 0%, #BD00FF 50%, #FF2D78 100%)",
               boxShadow: "0 0 8px #BD00FF88",
+              ...fadeUp(1),
             }}
           />
 
           <p
             className="w-full text-justify lg:text-center text-sm lg:text-base font-light tracking-widest uppercase"
-            style={{ color: "rgba(255,255,255,0.5)" }}
+            style={{ color: "rgba(255,255,255,0.5)", ...fadeUp(2) }}
           >
-            {t.subtitle}
+            {subtitleTyped}
+            {/* cursor piscante enquanto digita */}
+            {!visible[2] || subtitleTyped.length < t.subtitle.length ? null : null}
+            <span
+              style={{
+                display: "inline-block",
+                width: "2px",
+                height: "1em",
+                background: "rgba(255,255,255,0.5)",
+                marginLeft: "2px",
+                verticalAlign: "middle",
+                animation: subtitleTyped.length < t.subtitle.length
+                  ? "none"
+                  : "cursor-blink 1s step-end infinite",
+                opacity: subtitleTyped.length < t.subtitle.length ? 1 : 0,
+              }}
+            />
           </p>
 
           <p
             className="max-w-md text-[1.1rem] font-light leading-relaxed text-justify"
             style={{
-              background: "linear-gradient(160deg, #ffffff 0%, #e2e2e2 40%, #a8a8a8 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              filter:
-                "drop-shadow(2px 3px 1px rgba(0,0,0,0.55)) " +
-                "drop-shadow(0px 8px 16px rgba(0,0,0,0.3))",
+              WebkitFontSmoothing: "antialiased",
+              textShadow: "0 0 20px rgba(255,255,255,0.15)",
+              ...fadeUp(3),
+              opacity: visible[3] ? 0.95 : 0,
             }}
           >
             {t.bio}
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row justify-between w-full mt-2 gap-3">
+          <div
+            className="flex flex-col sm:flex-row justify-between w-full mt-2 gap-3"
+            style={fadeUp(4)}
+          >
             {/* Contrate-me */}
             <div className="cta-btn-wrap flex-1">
               <a href="/contato" className="cta-btn cta-btn-primary w-full">

@@ -16,7 +16,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Portfólio - Leandro Dukiévicz",
+  title: "Leandro Dukiévicz",
   description: "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end",
 };
 

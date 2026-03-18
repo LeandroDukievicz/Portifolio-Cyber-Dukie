@@ -233,10 +233,10 @@ export default function Contato() {
         className="window-rise"
         style={{
           position: "fixed",
-          top:    isMobile ? 36      : "calc(20vh - 100px)",
-          bottom: isMobile ? 8      : "calc(20vh + 100px)",
-          left:   isMobile ? 62     : "20vw",
-          width:  isMobile ? "calc(100vw - 70px)" : "60vw",
+          top:    isMobile ? 36      : "calc(11vh - 65px)",
+          bottom: isMobile ? 8      : "calc(11vh + 65px)",
+          left:   isMobile ? 62     : "11vw",
+          width:  isMobile ? "calc(100vw - 70px)" : "78vw",
           borderRadius: 12,
           overflow: "hidden",
           background: "rgba(3,17,31,0.65)",

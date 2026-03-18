@@ -17,7 +17,7 @@ const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
 });
 
-const BASE_URL = "https://leandrodukievicz.com";
+const BASE_URL = "https://devleandro.com.br";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

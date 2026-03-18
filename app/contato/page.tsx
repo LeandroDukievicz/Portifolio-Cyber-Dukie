@@ -297,7 +297,7 @@ export default function Contato() {
                 </h2>
                 <p style={{
                   margin: 0,
-                  fontSize: "0.72rem",
+                  fontSize: "0.94rem",
                   color: "#00EAFF",
                   lineHeight: 1.6,
                   letterSpacing: "0.02em",
@@ -305,7 +305,7 @@ export default function Contato() {
                   Estou disponível para projetos freelance, oportunidades presenciais e remotas e colaborações.
                 </p>
                 <span style={{
-                  fontSize: "0.65rem",
+                  fontSize: "0.85rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.12em",
                   color: "#00EAFF",

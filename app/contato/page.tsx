@@ -288,7 +288,7 @@ export default function Contato() {
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 <h2 style={{
                   margin: 0,
-                  fontSize: "1rem",
+                  fontSize: "1.2rem",
                   fontWeight: 700,
                   color: "#00EAFF",
                   letterSpacing: "0.04em",

@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { downloadCV } from "@/lib/download";
 
 async function fireConfetti() {
   const confetti = (await import("canvas-confetti")).default;
@@ -10,15 +11,6 @@ async function fireConfetti() {
     confetti({ particleCount: 70, angle: 60,  spread: 55, origin: { x: 0, y: 0.6 }, colors });
     confetti({ particleCount: 70, angle: 120, spread: 55, origin: { x: 1, y: 0.6 }, colors });
   }, 150);
-}
-
-function downloadCV() {
-  const a = document.createElement("a");
-  a.href = "/Leandro%20Dukievicz%20-%20Desenvolvedor%20Web.pdf";
-  a.download = "Leandro-Dukievicz-CV.pdf";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
 }
 
 interface TerminalCtx {

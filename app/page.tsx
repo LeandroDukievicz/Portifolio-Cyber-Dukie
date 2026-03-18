@@ -6,55 +6,8 @@ import HeroPhoto from "./components/HeroPhoto";
 import { FaFloppyDisk } from "react-icons/fa6";
 import { useTerminal } from "./context/TerminalContext";
 import { useLanguage } from "./context/LanguageContext";
-
-// ─── Typewriter hook ──────────────────────────────────────────────────────────
-function useTypewriter(text: string, speed = 55, startDelay = 0) {
-  const [displayed, setDisplayed] = useState("");
-  const [done, setDone] = useState(false);
-
-  useEffect(() => {
-    setDisplayed("");
-    setDone(false);
-    let i = 0;
-    const timeout = setTimeout(() => {
-      const interval = setInterval(() => {
-        i++;
-        setDisplayed(text.slice(0, i));
-        if (i >= text.length) {
-          clearInterval(interval);
-          setDone(true);
-        }
-      }, speed);
-      return () => clearInterval(interval);
-    }, startDelay);
-    return () => clearTimeout(timeout);
-  }, [text, speed, startDelay]);
-
-  return { displayed, done };
-}
-
-// ─── Stagger reveal hook ──────────────────────────────────────────────────────
-function useStaggerVisible(count: number, interval = 120, initialDelay = 100) {
-  const [visible, setVisible] = useState<boolean[]>(Array(count).fill(false));
-
-  useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    for (let i = 0; i < count; i++) {
-      timers.push(
-        setTimeout(() => {
-          setVisible(prev => {
-            const next = [...prev];
-            next[i] = true;
-            return next;
-          });
-        }, initialDelay + i * interval)
-      );
-    }
-    return () => timers.forEach(clearTimeout);
-  }, [count, interval, initialDelay]);
-
-  return visible;
-}
+import { useTypewriter } from "@/hooks/useTypewriter";
+import { useStaggerVisible } from "@/hooks/useStaggerVisible";
 
 export default function Page() {
   const { triggerHireFlow } = useTerminal();

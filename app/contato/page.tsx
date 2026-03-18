@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 import { useLanguage } from "../context/LanguageContext";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { isValidEmailFormat } from "@/lib/emailValidation";
 
 const CONTACTS = [
   {
@@ -53,7 +55,7 @@ const CONTACTS = [
 export default function Contato() {
   const { t } = useLanguage();
   const c = t.contato;
-  const [isMobile,   setIsMobile]   = useState(false);
+  const isMobile = useIsMobile();
   const [hovered,    setHovered]    = useState<number | null>(null);
   const [form, setForm] = useState({ nome: "", email: "", assunto: "", mensagem: "" });
   const [showToast, setShowToast]         = useState(false);
@@ -61,7 +63,7 @@ export default function Contato() {
   const [submitted, setSubmitted]         = useState(false);
   const [submitting, setSubmitting]     = useState(false);
 
-  const allFilled = Object.values(form).every(v => v.trim() !== "") && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
+  const allFilled = Object.values(form).every(v => v.trim() !== "") && isValidEmailFormat(form.email);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,13 +113,6 @@ export default function Contato() {
     color: "rgba(0,234,255,0.6)",
   };
 
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
 
   return (
     <main className="w-full h-screen overflow-hidden relative">

@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, useCallback, useLayoutEffect } from "react
 import { useRouter, usePathname } from "next/navigation";
 import { useTerminal } from "../context/TerminalContext";
 import { useLanguage } from "../context/LanguageContext";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { downloadCV } from "@/lib/download";
 
 interface Line {
   kind: "input" | "output" | "error" | "info" | "blank";
@@ -16,15 +18,6 @@ const AFTER_OUTPUT_MS = 480;
 const TITLE_BAR_H     = 38;
 const MIN_W           = 320;
 const MIN_H           = 200;
-
-function downloadCV() {
-  const a = document.createElement("a");
-  a.href = "/Leandro%20Dukievicz%20-%20Desenvolvedor%20Web.pdf";
-  a.download = "Leandro-Dukievicz-CV.pdf";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
 
 type ResizeDir = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 
@@ -45,14 +38,8 @@ export default function TerminalWindow() {
   const [booting, setBooting]       = useState(true);
   const [currentInput, setInput]    = useState("");
   const [isAutoClosing, setIsAutoClosing] = useState(false);
-  const [isMobile, setIsMobile]     = useState(false);
+  const isMobile = useIsMobile();
 
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
   const prevPathname = useRef(pathname);
   const inputRef  = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);

@@ -6,7 +6,7 @@ export type Lang = "pt" | "en";
 
 export const translations = {
   pt: {
-    portfolioTitle: "Portfólio v1.0.0",
+    portfolioTitle: "Portfólio v1.1.0",
     subtitle: "Desenvolvedor Front-End",
     bio: "Sou aficionado em tecnologia no geral, desenvolvo interfaces que unem elegância e intuitividade, sendo modernas o bastante para impressionar mas simples o suficiente para desaparecer. Estou em constante evolução no aprendizado e aperfeiçoamento, buscando sempre melhorar performance, fluidez e com muita atenção a todos os detalhes, acredito que a melhor experiência é aquela onde o usuário nem percebe que está tendo !",
     ctaHire: "Contrate-me",
@@ -49,7 +49,7 @@ export const translations = {
       ],
       cmdArquitetura: [
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-        " STACK — Portfólio Cyber v1.0.0",
+        " STACK — Portfólio Cyber v1.1.0",
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
         " Framework   →  Next.js 15 (App Router)",
         " Linguagem   →  TypeScript",
@@ -78,11 +78,6 @@ export const translations = {
       modalTitle: "Obrigado pelo download!",
       modalMessage: "Fico muito feliz com seu interesse.\nEstou à inteira disposição para conversarmos\npessoalmente — será um prazer!",
       modalClose: "Fechar",
-    },
-    greeting: {
-      default: "Olá! Seja bem-vindo ao meu portfólio.",
-      withLocation: (loc: string) => `Olá, visitante de ${loc}! Seja bem-vindo.`,
-      clickToClose: "clique para fechar",
     },
     marquee: "Bem vindo ao meu portifólio | Leandro Dukievicz | Dev Front End \u00a0\u00a0\u00a0",
     sobre: {
@@ -197,7 +192,7 @@ export const translations = {
     },
   },
   en: {
-    portfolioTitle: "Portfolio v1.0.0",
+    portfolioTitle: "Portfolio v1.1.0",
     subtitle: "Front-End Developer",
     bio: "I am passionate about Technology in general, constantly studying and advancing for continuous improvement in developing interfaces that are elegant, easy to use, intuitive, and highly modern. Always striving to deliver better performance, details, and fluidity — because I believe the best interfaces are those that disappear for the end user, leaving only the experience.",
     ctaHire: "Hire me",
@@ -240,7 +235,7 @@ export const translations = {
       ],
       cmdArquitetura: [
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-        " STACK — Cyber Portfolio v1.0.0",
+        " STACK — Cyber Portfolio v1.1.0",
         "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
         " Framework   →  Next.js 15 (App Router)",
         " Language    →  TypeScript",
@@ -269,11 +264,6 @@ export const translations = {
       modalTitle: "Thanks for the download!",
       modalMessage: "I'm very glad for your interest.\nI'm fully available to chat\nin person — it will be a pleasure!",
       modalClose: "Close",
-    },
-    greeting: {
-      default: "Hello! Welcome to my portfolio.",
-      withLocation: (loc: string) => `Hello, visitor from ${loc}! Welcome.`,
-      clickToClose: "click to close",
     },
     marquee: "Welcome to my portfolio | Leandro Dukievicz | Front End Dev \u00a0\u00a0\u00a0",
     sobre: {

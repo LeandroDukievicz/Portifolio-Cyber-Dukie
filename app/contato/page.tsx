@@ -309,7 +309,7 @@ export default function Contato() {
                   textTransform: "uppercase",
                   letterSpacing: "0.12em",
                   color: "#00EAFF",
-                  marginTop: 4,
+                  marginTop: 24,
                 }}>
                   Formas de contato :
                 </span>

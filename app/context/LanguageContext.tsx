@@ -143,7 +143,7 @@ export const translations = {
       ],
     },
     contato: {
-      windowTitle: "contato.md",
+      windowTitle: "como posso ajudar.txt — leandro-dukievicz",
       toastMsg: "Preencha todos os campos corretamente antes de enviar.",
       labelName: "Nome",
       labelEmail: "E-mail",
@@ -329,7 +329,7 @@ export const translations = {
       ],
     },
     contato: {
-      windowTitle: "contact.md",
+      windowTitle: "how-can-i-help.txt — leandro-dukievicz",
       toastMsg: "Please fill in all fields correctly before sending.",
       labelName: "Name",
       labelEmail: "E-mail",

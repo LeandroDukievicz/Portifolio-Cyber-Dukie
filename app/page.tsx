@@ -15,8 +15,8 @@ export default function Page() {
   const [showToast, setShowToast] = useState(false);
   const [toastVisible, setToastVisible] = useState(false);
 
-  // 0: h1, 1: traço, 2: subtítulo (typewriter), 3: bio, 4: CTAs
-  const visible = useStaggerVisible(5, 130, 80);
+  // 0: h1, 1: traço, 2: subtítulo (typewriter), 3: tagline, 4: bio, 5: CTAs
+  const visible = useStaggerVisible(6, 130, 80);
 
   // Typewriter no subtítulo — começa só depois que o elemento 2 fica visível
   const { displayed: subtitleTyped } = useTypewriter(
@@ -162,12 +162,24 @@ export default function Page() {
           </p>
 
           <p
+            className="max-w-md text-[0.78rem] font-light leading-relaxed"
+            style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              color: "#00EAFF",
+              letterSpacing: "0.03em",
+              ...fadeUp(3),
+            }}
+          >
+            Desenvolvedor focado em performance, acessibilidade e arquitetura de aplicações com React e Next.js.
+          </p>
+
+          <p
             className="max-w-md text-[0.9rem] font-light leading-relaxed text-justify"
             style={{
               WebkitFontSmoothing: "antialiased",
               textShadow: "0 0 20px rgba(255,255,255,0.15)",
-              ...fadeUp(3),
-              opacity: visible[3] ? 0.95 : 0,
+              ...fadeUp(4),
+              opacity: visible[4] ? 0.95 : 0,
             }}
           >
             {t.bio}
@@ -176,7 +188,7 @@ export default function Page() {
           {/* CTAs */}
           <div
             className="flex flex-col sm:flex-row w-full gap-4"
-            style={fadeUp(4)}
+            style={fadeUp(5)}
           >
             {/* Contrate-me */}
             <div className="cta-btn-wrap flex-1">

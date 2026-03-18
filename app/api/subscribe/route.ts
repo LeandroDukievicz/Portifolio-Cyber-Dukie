@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import dns from "dns/promises";
+import { isDisposableDomain, isValidEmailFormat } from "@/lib/emailValidation";
 
 // Força análise dinâmica — impede o Turbopack de avaliar este módulo no build
 export const dynamic = "force-dynamic";
-import { isDisposableDomain, isValidEmailFormat } from "@/lib/emailValidation";
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 5;
@@ -30,6 +30,29 @@ async function hasValidMx(domain: string): Promise<boolean> {
   }
 }
 
+// Notificação via fetch nativo — sem importar o SDK resend
+async function sendNotification(email: string, apiKey: string): Promise<void> {
+  await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "Blog Dukie <onboarding@resend.dev>",
+      to: "leandrodukievicz1718@gmail.com",
+      subject: "🔔 Novo assinante no blog!",
+      html: `<div style="font-family:monospace;padding:24px;background:#03111F;color:#fff;border-radius:8px">
+        <h2 style="color:#00EAFF;margin:0 0 16px">Novo assinante 🚀</h2>
+        <p style="margin:0;font-size:16px">Email: <strong>${email}</strong></p>
+        <p style="margin:8px 0 0;color:rgba(255,255,255,0.5);font-size:12px">
+          ${new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}
+        </p>
+      </div>`,
+    }),
+  });
+}
+
 export async function POST(req: NextRequest) {
   // ── Guard: env vars obrigatórias ──────────────────────────────────────────
   const { RESEND_API_KEY, NOTION_TOKEN, NOTION_BLOG_SUBSCRIBERS_DB } = process.env;
@@ -38,13 +61,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Serviço indisponível." }, { status: 503 });
   }
 
-  // ── Instanciação em runtime via dynamic import (evita avaliação no build) ─
+  // ── Notion instanciado em runtime via dynamic import ───────────────────────
   const { Client } = await import("@notionhq/client");
-  const { Resend } = await import("resend");
-  const { default: isEmail } = await import("validator/lib/isEmail");
-  const { isDisposableDomain, isValidEmailFormat } = await import("@/lib/emailValidation");
   const notion = new Client({ auth: NOTION_TOKEN });
-  const resend = new Resend(RESEND_API_KEY);
 
   // ── Rate limiting ─────────────────────────────────────────────────────────
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
@@ -63,6 +82,7 @@ export async function POST(req: NextRequest) {
 
   // ── Validação de email ────────────────────────────────────────────────────
   const email = (body.email ?? "").trim().toLowerCase();
+  const { default: isEmail } = await import("validator/lib/isEmail");
 
   if (!isValidEmailFormat(email) || !isEmail(email, { allow_utf8_local_part: false, require_tld: true })) {
     return NextResponse.json({ error: "Formato de e-mail inválido." }, { status: 400 });
@@ -102,19 +122,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Erro ao salvar. Tente novamente." }, { status: 500 });
   }
 
-  // ── Notificação (não bloqueia o fluxo) ────────────────────────────────────
-  resend.emails.send({
-    from: "Blog Dukie <onboarding@resend.dev>",
-    to: "leandrodukievicz1718@gmail.com",
-    subject: "🔔 Novo assinante no blog!",
-    html: `<div style="font-family:monospace;padding:24px;background:#03111F;color:#fff;border-radius:8px">
-      <h2 style="color:#00EAFF;margin:0 0 16px">Novo assinante 🚀</h2>
-      <p style="margin:0;font-size:16px">Email: <strong>${email}</strong></p>
-      <p style="margin:8px 0 0;color:rgba(255,255,255,0.5);font-size:12px">
-        ${new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}
-      </p>
-    </div>`,
-  }).catch(err => console.error(JSON.stringify({ event: "resend_error", error: String(err) })));
+  // ── Notificação (fire-and-forget, não bloqueia a resposta) ────────────────
+  sendNotification(email, RESEND_API_KEY)
+    .catch(err => console.error(JSON.stringify({ event: "resend_error", error: String(err) })));
 
   return NextResponse.json({ ok: true });
 }

@@ -269,19 +269,61 @@ export default function Contato() {
         {/* Content */}
         <div style={{ flex: 1, display: "flex", flexDirection: isMobile ? "column" : "row", overflow: "hidden" }}>
 
-          {/* Coluna lateral — ícones 2x3 */}
+          {/* Coluna lateral — cabeçalho + ícones 2x3 */}
           <div style={{
             width: isMobile ? "100%" : "40%",
             height: isMobile ? "auto" : undefined,
             flexShrink: 0,
-            display: "grid",
-            gridTemplateColumns: isMobile ? "repeat(3, 1fr)" : "1fr 1fr",
-            alignContent: "center",
-            justifyItems: "center",
-            gap: isMobile ? 16 : 36,
-            padding: isMobile ? "14px 16px" : "24px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: isMobile ? 12 : 20,
+            padding: isMobile ? "14px 16px" : "24px 28px",
             borderBottom: isMobile ? "1px solid rgba(255,255,255,0.07)" : "none",
+            borderRight: isMobile ? "none" : "1px solid rgba(255,255,255,0.07)",
           }}>
+
+            {/* Texto de apresentação */}
+            {!isMobile && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <h2 style={{
+                  margin: 0,
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  color: "#00EAFF",
+                  letterSpacing: "0.04em",
+                }}>
+                  Vamos trabalhar juntos?
+                </h2>
+                <p style={{
+                  margin: 0,
+                  fontSize: "0.72rem",
+                  color: "rgba(255,255,255,0.55)",
+                  lineHeight: 1.6,
+                  letterSpacing: "0.02em",
+                }}>
+                  Estou disponível para projetos freelance, oportunidades presenciais e remotas e colaborações.
+                </p>
+                <span style={{
+                  fontSize: "0.65rem",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "rgba(0,234,255,0.5)",
+                  marginTop: 4,
+                }}>
+                  Formas de contato :
+                </span>
+              </div>
+            )}
+
+            {/* Grid de ícones */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "repeat(3, 1fr)" : "1fr 1fr",
+              alignContent: "center",
+              justifyItems: "center",
+              gap: isMobile ? 16 : 28,
+            }}>
             {CONTACTS.map(({ name, image, href, color }, i) => (
               <div
                 key={name}
@@ -315,6 +357,7 @@ export default function Contato() {
                 </a>
               </div>
             ))}
+            </div>
           </div>
 
           {/* Formulário de contato */}

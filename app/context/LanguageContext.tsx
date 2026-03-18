@@ -9,8 +9,8 @@ export const translations = {
     portfolioTitle: "Portfólio v1.1.0",
     subtitle: "Desenvolvedor Front-End",
     bio: "Sou aficionado em tecnologia no geral, desenvolvo interfaces que unem elegância e intuitividade, sendo modernas o bastante para impressionar mas simples o suficiente para desaparecer. Estou em constante evolução no aprendizado e aperfeiçoamento, buscando sempre melhorar performance, fluidez e com muita atenção a todos os detalhes, acredito que a melhor experiência é aquela onde o usuário nem percebe que está tendo !",
-    ctaHire: "Contrate-me",
-    ctaCV: "Baixar CV",
+    ctaHire: "Entrar em Contato",
+    ctaCV: "Baixar Currículo",
     dock: {
       home: "Home",
       about: "Sobre",

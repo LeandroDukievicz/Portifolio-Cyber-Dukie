@@ -113,7 +113,7 @@ export default function Page() {
       <div className="absolute inset-0 flex flex-col lg:flex-row items-center justify-between px-4 md:px-12 lg:px-20 pt-7 pb-4 lg:pb-0 gap-4 lg:gap-0 overflow-y-auto lg:overflow-hidden">
 
         {/* Left — nome */}
-        <div className="flex flex-col gap-2 sm:gap-4 items-start lg:ml-[3vw] xl:ml-[4vw] 2xl:ml-[0px] lg:mr-0 mt-1 sm:mt-4 lg:-mt-[100px] w-full lg:w-auto min-w-0">
+        <div className="flex flex-col gap-5 items-start lg:ml-[3vw] xl:ml-[4vw] 2xl:ml-[0px] lg:mr-0 mt-1 sm:mt-4 lg:-mt-[100px] w-full lg:w-auto lg:min-w-[520px] xl:min-w-[560px]">
 
           <h1
             className="text-[1.9rem] sm:text-[3.15rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6.3rem] font-extrabold leading-tight"
@@ -175,7 +175,7 @@ export default function Page() {
 
           {/* CTAs */}
           <div
-            className="flex flex-col sm:flex-row justify-between w-full mt-2 gap-3"
+            className="flex flex-col sm:flex-row w-full gap-4"
             style={fadeUp(4)}
           >
             {/* Contrate-me */}

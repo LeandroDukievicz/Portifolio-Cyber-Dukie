@@ -222,6 +222,7 @@ html[data-blog-theme="light"] {
   text-transform: uppercase;
   padding-inline: 1.5rem;
   padding-block: 0.75rem;
+  white-space: nowrap;
   transition: all 400ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 

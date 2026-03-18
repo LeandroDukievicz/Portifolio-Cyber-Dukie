@@ -290,7 +290,7 @@ export default function Contato() {
                   margin: 0,
                   fontSize: "1rem",
                   fontWeight: 700,
-                  color: "#00EAFF",
+                  color: "rgba(255,255,255,0.75)",
                   letterSpacing: "0.04em",
                 }}>
                   Vamos trabalhar juntos?
@@ -298,7 +298,7 @@ export default function Contato() {
                 <p style={{
                   margin: 0,
                   fontSize: "0.72rem",
-                  color: "rgba(255,255,255,0.55)",
+                  color: "rgba(255,255,255,0.75)",
                   lineHeight: 1.6,
                   letterSpacing: "0.02em",
                 }}>
@@ -308,7 +308,7 @@ export default function Contato() {
                   fontSize: "0.65rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.12em",
-                  color: "rgba(0,234,255,0.5)",
+                  color: "rgba(255,255,255,0.75)",
                   marginTop: 4,
                 }}>
                   Formas de contato :

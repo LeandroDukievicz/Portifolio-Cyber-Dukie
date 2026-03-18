@@ -158,7 +158,7 @@ export const translations = {
       successMsg: "✓ Mensagem enviada!",
     },
     skills: {
-      windowTitle: "skills.txt — Leandro Dukievicz",
+      windowTitle: "Tecnologias que utilizo.txt — leandro-dukievicz",
       hardSkills: "Hard Skills",
       softSkills: "Soft Skills",
       back: "← Voltar",
@@ -344,7 +344,7 @@ export const translations = {
       successMsg: "✓ Message sent!",
     },
     skills: {
-      windowTitle: "skills.txt — Leandro Dukievicz",
+      windowTitle: "Tecnologias que utilizo.txt — leandro-dukievicz",
       hardSkills: "Hard Skills",
       softSkills: "Soft Skills",
       back: "← Back",

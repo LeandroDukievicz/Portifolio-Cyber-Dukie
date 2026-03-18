@@ -81,7 +81,7 @@ export const translations = {
     },
     marquee: "Bem vindo ao meu portifólio | Leandro Dukievicz | Dev Front End \u00a0\u00a0\u00a0",
     sobre: {
-      windowTitle: "sobre.txt — Leandro Dukievicz",
+      windowTitle: "O que eu faço.txt — leandro-dukievicz",
       heading: "Sobre",
       bio1: "Olá, é uma grande satisfação receber a sua visita, espero que esteja gostando da experiência de navegar neste portfólio — me custou algumas boas horas para juntar e sintetizar aqui o meu gosto pessoal e transferir um pouco do que eu sou e curto, além de muitos neurônios queimados no processo!",
       bio2: "Sou desenvolvedor Full Stack, porém meu foco maior é no front, atualmente em transição de carreira, situado em Maringá-PR.",
@@ -267,7 +267,7 @@ export const translations = {
     },
     marquee: "Welcome to my portfolio | Leandro Dukievicz | Front End Dev \u00a0\u00a0\u00a0",
     sobre: {
-      windowTitle: "about.txt — Leandro Dukievicz",
+      windowTitle: "what-i-do.txt — leandro-dukievicz",
       heading: "About",
       bio1: "Hello, it's a great pleasure to have your visit — I hope you're enjoying the experience of navigating this portfolio. It cost me quite a few good hours to gather and synthesize my personal taste here and transfer a bit of who I am and what I enjoy, along with many neurons burned in the process!",
       bio2: "I'm a Full Stack developer, but my main focus is on the front end, currently in career transition, based in Maringá-PR.",

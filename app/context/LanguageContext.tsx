@@ -144,6 +144,9 @@ export const translations = {
     },
     contato: {
       windowTitle: "como posso ajudar.txt — leandro-dukievicz",
+      contactHeading: "Vamos trabalhar juntos?",
+      contactSubheading: "Estou disponível para projetos freelance, oportunidades presenciais e remotas e colaborações.",
+      contactsLabel: "Formas de contato :",
       toastMsg: "Preencha todos os campos corretamente antes de enviar.",
       labelName: "Nome",
       labelEmail: "E-mail",
@@ -195,7 +198,7 @@ export const translations = {
     portfolioTitle: "Portfolio v1.1.0",
     subtitle: "Front-End Developer",
     bio: "I am passionate about Technology in general, constantly studying and advancing for continuous improvement in developing interfaces that are elegant, easy to use, intuitive, and highly modern. Always striving to deliver better performance, details, and fluidity — because I believe the best interfaces are those that disappear for the end user, leaving only the experience.",
-    ctaHire: "Hire me",
+    ctaHire: "Get in Touch",
     ctaCV: "Download CV",
     dock: {
       home: "Home",
@@ -330,6 +333,9 @@ export const translations = {
     },
     contato: {
       windowTitle: "how-can-i-help.txt — leandro-dukievicz",
+      contactHeading: "Let's work together?",
+      contactSubheading: "I'm available for freelance projects, on-site and remote opportunities, and collaborations.",
+      contactsLabel: "Ways to contact :",
       toastMsg: "Please fill in all fields correctly before sending.",
       labelName: "Name",
       labelEmail: "E-mail",
@@ -344,7 +350,7 @@ export const translations = {
       successMsg: "✓ Message sent!",
     },
     skills: {
-      windowTitle: "Tecnologias que utilizo.txt — leandro-dukievicz",
+      windowTitle: "technologies-i-use.txt — leandro-dukievicz",
       hardSkills: "Hard Skills",
       softSkills: "Soft Skills",
       back: "← Back",

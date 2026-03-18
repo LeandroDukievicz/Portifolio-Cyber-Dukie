@@ -293,7 +293,7 @@ export default function Contato() {
                   color: "#00EAFF",
                   letterSpacing: "0.04em",
                 }}>
-                  Vamos trabalhar juntos?
+                  {c.contactHeading}
                 </h2>
                 <p style={{
                   margin: 0,
@@ -302,7 +302,7 @@ export default function Contato() {
                   lineHeight: 1.6,
                   letterSpacing: "0.02em",
                 }}>
-                  Estou disponível para projetos freelance, oportunidades presenciais e remotas e colaborações.
+                  {c.contactSubheading}
                 </p>
                 <span style={{
                   fontSize: "0.85rem",
@@ -311,7 +311,7 @@ export default function Contato() {
                   color: "#00EAFF",
                   marginTop: 24,
                 }}>
-                  Formas de contato :
+                  {c.contactsLabel}
                 </span>
               </div>
             )}

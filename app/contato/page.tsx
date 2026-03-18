@@ -277,7 +277,7 @@ export default function Contato() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            gap: isMobile ? 12 : 20,
+            gap: isMobile ? 12 : 50,
             padding: isMobile ? "14px 16px" : "24px 28px",
             borderBottom: isMobile ? "1px solid rgba(255,255,255,0.07)" : "none",
             borderRight: isMobile ? "none" : "1px solid rgba(255,255,255,0.07)",

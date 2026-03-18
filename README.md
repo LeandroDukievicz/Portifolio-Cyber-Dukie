@@ -562,14 +562,39 @@ Ao clicar no ícone de idioma no MenuBar, **todo o site muda de idioma**:
 | Dock (labels dos ícones) | ✅ |
 | MenuBar (título do portfólio) | ✅ |
 | Greeting de boas-vindas | ✅ |
-| Marquee da aba do browser | ✅ |
 | Página Sobre (bio, timeline, badges, scroll) | ✅ |
 | Página Skills (hard skills, soft skills, princípios) | ✅ |
 | Página Projetos (títulos, descrições, CTAs, Em Breve) | ✅ |
 
+### Favicon e Título da Aba
+
+- **Título estático**: "Leandro Dukiévicz" — definido no metadata do `layout.tsx` e reforçado pelo `MarqueeTitle` client-side
+- **Favicon rotativo**: 4 ícones SVG ciclando a cada 800ms via `setInterval` (código, café, xícara, infinito) — injetados dinamicamente no `<link rel="icon">`
+
+### SEO
+
+Configurado diretamente no `layout.tsx` via Next.js `Metadata` API — sem tags manuais no HTML:
+
+| Campo | Valor |
+|---|---|
+| `title` | "Leandro Dukiévicz — Desenvolvedor Front-End" |
+| `description` | Descrição otimizada para buscadores |
+| `keywords` | React, Next.js, TypeScript, Maringá, Paraná... |
+| `canonical` | `https://devleandro.com.br` |
+| `robots` | `index: true, follow: true` |
+| `openGraph` | title, description, image (`foto-1.webp`), type, siteName |
+| `twitter:card` | `summary_large_image` |
+| **JSON-LD** | Schema `Person` — nome, URL, jobTitle, sameAs (GitHub + LinkedIn), knowsAbout, endereço |
+
+### Analytics
+
+- **Vercel Analytics** — rastreamento de pageviews e eventos via `<Analytics />`
+- **Vercel Speed Insights** — monitoramento de performance (Core Web Vitals) via `<SpeedInsights />`
+- Ambos injetados no `layout.tsx` sem impacto no bundle do cliente
+
 ### MenuBar
 
-- Título `Portfólio v1.0.0` (traduzível)
+- Título traduzível via i18n
 - Relógio em tempo real com formato `Dia Mês HH:MM AM/PM` (oculto em telas `< sm`)
 - Ícone de idioma — alterna PT ↔ EN com indicador textual
 - Oculta automaticamente em `/blog`
@@ -639,6 +664,8 @@ O site é totalmente responsivo de **320px a 1920px+**, seguindo a abordagem mob
 | [react-icons](https://react-icons.github.io/react-icons/) | Ícones (skills, sobre, UI) |
 | [sharp](https://sharp.pixelplumbing.com/) | Conversão de imagens PNG/JPG → WebP |
 | [Formspree](https://formspree.io/) | Backend de formulário de contato (sem servidor) |
+| [@vercel/analytics](https://vercel.com/analytics) | Rastreamento de pageviews e eventos |
+| [@vercel/speed-insights](https://vercel.com/docs/speed-insights) | Monitoramento de Core Web Vitals |
 | `requestAnimationFrame` | Parallax, blobs, glitch, scan sweep |
 | CSS `backdrop-filter` | Glassmorphism em janelas, botões e cards |
 | CSS `transform-style: preserve-3d` | Flip cards 3D nas soft skills |
@@ -659,8 +686,9 @@ app/
 │   ├── Dock.tsx                 # Dock horizontal (desktop, 30px bottom) / vertical (mobile)
 │   ├── HeroPhoto.tsx            # Foto hexagonal com parallax, glitch e bordas animadas
 │   ├── MenuBar.tsx              # Barra superior com relógio e seletor de idioma
-│   ├── MarqueeTitle.tsx         # Marquee animado + favicon rotativo
+│   ├── MarqueeTitle.tsx         # Título estático "Leandro Dukiévicz" + favicon rotativo (4 ícones SVG)
 │   ├── TerminalWindow.tsx       # Terminal interativo com resize e drag
+│   ├── LoadingScreen.tsx        # Loading screen primeira visita (espiral girassol)
 │   └── VisitorGreeting.tsx      # Toast de boas-vindas com geolocalização
 ├── context/
 │   ├── TerminalContext.tsx      # Estado global do terminal e hire flow
@@ -671,7 +699,7 @@ app/
 ├── skills/                      # Janela macOS — hard skills + flip cards preenchidos + princípios
 ├── projetos/                    # CoverFlow 3D carousel com cards de projeto
 ├── contato/                     # Janela macOS — ícones de contato + formulário
-├── layout.tsx                   # Layout global (MenuBar, Dock, Terminal, Providers)
+├── layout.tsx                   # Layout global — metadata SEO, JSON-LD, Analytics, Providers
 └── page.tsx                     # Home — hero, foto hexagonal, CTAs
 public/
 ├── images/
@@ -740,6 +768,8 @@ RESEND_API_KEY=sua_api_key_resend
 | `v2.1.0` | 2026-03-16 | Blog backend — API route `/api/subscribe`, Notion database, Resend notification; validação robusta (rate limiting, honeypot, validator.js, MX record, disposable domains) |
 | `v2.2.0` | 2026-03-16 | Skills: flip cards preenchem o espaço (gridAutoRows 1fr, alignContent stretch, último card 1/-1); Dock 30px do bottom |
 | `v2.3.0` | 2026-03-16 | Blog: remove tema claro — apenas dark e dim disponíveis; astronaut-color ativa em ambos os temas |
+| `v2.4.0` | 2026-03-17 | SEO completo — metadata, OpenGraph, Twitter Card, JSON-LD Person, canonical (`devleandro.com.br`) |
+| `v2.5.0` | 2026-03-17 | Título estático "Leandro Dukiévicz" na aba; favicon rotativo com 4 ícones SVG; Vercel Analytics + Speed Insights |
 
 ---
 

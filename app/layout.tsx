@@ -17,9 +17,54 @@ const roboto = Roboto({
   weight: ["300", "400", "500", "700"],
 });
 
+const BASE_URL = "https://leandrodukievicz.com";
+
 export const metadata: Metadata = {
-  title: "Leandro Dukiévicz",
-  description: "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end",
+  metadataBase: new URL(BASE_URL),
+  title: {
+    default: "Leandro Dukiévicz — Desenvolvedor Front-End",
+    template: "%s | Leandro Dukiévicz",
+  },
+  description: "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.",
+  keywords: ["desenvolvedor front-end", "React", "Next.js", "TypeScript", "portfólio", "Maringá", "Paraná", "Brasil"],
+  authors: [{ name: "Leandro Dukiévicz", url: BASE_URL }],
+  creator: "Leandro Dukiévicz",
+  robots: { index: true, follow: true },
+  alternates: { canonical: BASE_URL },
+  openGraph: {
+    type: "website",
+    url: BASE_URL,
+    title: "Leandro Dukiévicz — Desenvolvedor Front-End",
+    description: "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript.",
+    siteName: "Portfólio Leandro Dukiévicz",
+    images: [{ url: "/images/foto-1.webp", width: 476, height: 476, alt: "Leandro Dukiévicz — Desenvolvedor Front-End" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Leandro Dukiévicz — Desenvolvedor Front-End",
+    description: "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript.",
+    images: ["/images/foto-1.webp"],
+  },
+};
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Leandro Dukiévicz",
+  url: BASE_URL,
+  jobTitle: "Desenvolvedor Front-End",
+  description: "Desenvolvedor Front-End especializado em React, Next.js e TypeScript, com foco em interfaces modernas, performáticas e acessíveis.",
+  sameAs: [
+    "https://github.com/LeandroDukievicz",
+    "https://linkedin.com/in/leandrodukievicz/",
+  ],
+  knowsAbout: ["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Tailwind CSS"],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Maringá",
+    addressRegion: "PR",
+    addressCountry: "BR",
+  },
 };
 
 export default function RootLayout({
@@ -32,6 +77,7 @@ export default function RootLayout({
       <head>
         {/* Script bloqueante: esconde o body antes de qualquer pintura se for primeira visita */}
         <script dangerouslySetInnerHTML={{ __html: `try{if(!localStorage.getItem('portfolio-loaded')){document.documentElement.classList.add('fl')}}catch(e){}` }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       </head>
       <body
         className={`${roboto.variable} antialiased bg-[#03111F] w-full h-full pl-[54px] md:pl-0`}

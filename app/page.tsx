@@ -8,6 +8,7 @@ import { useTerminal } from "./context/TerminalContext";
 import { useLanguage } from "./context/LanguageContext";
 import { useTypewriter } from "@/hooks/useTypewriter";
 import { useStaggerVisible } from "@/hooks/useStaggerVisible";
+import { buildPageSchema } from "@/lib/schema";
 
 export default function Page() {
   const { triggerHireFlow } = useTerminal();
@@ -216,6 +217,70 @@ export default function Page() {
         </div>
 
       </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPageSchema({
+            type: "ProfilePage",
+            name: "Leandro Dukiévicz — Desenvolvedor Full Stack",
+            description: "Portfólio de Leandro Dukiévicz, desenvolvedor Full Stack especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.",
+            url: "https://devleandro.com.br",
+          }))
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Quem é Leandro Dukiévicz?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Leandro Dukiévicz é um desenvolvedor Full Stack com foco em front-end, especializado em React, Next.js e TypeScript. Desenvolve interfaces modernas, performáticas e acessíveis, situado em Maringá, Paraná, Brasil."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Quais tecnologias Leandro Dukiévicz domina?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Leandro trabalha principalmente com React, Next.js e TypeScript no front-end, Node.js e Express no back-end, PostgreSQL e MySQL para banco de dados, além de Tailwind CSS e outras ferramentas modernas de desenvolvimento web."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Leandro Dukiévicz está disponível para projetos?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sim, Leandro está disponível para projetos freelance, oportunidades presenciais e remotas. Você pode entrar em contato pela página de contato do portfólio."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Como baixar o currículo de Leandro Dukiévicz?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "O currículo de Leandro pode ser baixado diretamente pela página inicial do portfólio, clicando no botão 'Baixar Currículo'."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Como entrar em contato com Leandro Dukiévicz?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Você pode entrar em contato com Leandro pelo formulário da página de contato, pelo LinkedIn (linkedin.com/in/leandrodukievicz), GitHub (github.com/LeandroDukievicz) ou por e-mail em leandrodukievicz1718@gmail.com."
+                }
+              }
+            ]
+          })
+        }}
+      />
     </main>
   );
 }

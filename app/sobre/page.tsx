@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 import Link from "next/link";
 import Image from "next/image";
+import { buildPageSchema } from "@/lib/schema";
 import { IoChevronDownOutline, IoChevronUpOutline } from "react-icons/io5";
 import { MdOutlineEmail, MdLocationOn } from "react-icons/md";
 import { FaGithub, FaLinkedin, FaReact, FaNodeJs } from "react-icons/fa";
@@ -605,6 +606,62 @@ export default function Sobre() {
           </div>
         </div>
       </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPageSchema({
+            type: "AboutPage",
+            name: "Sobre — Leandro Dukiévicz",
+            description: "Conheça Leandro Dukiévicz, desenvolvedor Full Stack situado em Maringá-PR, com formação em Sistemas para Internet e experiência em React, Next.js, Node.js, PostgreSQL e MySQL.",
+            url: "https://devleandro.com.br/sobre",
+          }))
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Qual é a formação acadêmica de Leandro Dukiévicz?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Leandro possui Bacharelado em Sistemas para Internet com ênfase em Desenvolvimento Web Full Stack pela Unicesumar (iniciado em janeiro de 2024), Pós-Graduação lato sensu em Desenvolvimento de Sistemas em Python (concluída em março de 2025) e está cursando Pós-Graduação em Negócios Digitais e Inovação."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Em qual cidade Leandro Dukiévicz está localizado?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Leandro está situado em Maringá, Paraná, Brasil. Está disponível para projetos remotos e presenciais."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Qual o stack principal de desenvolvimento de Leandro Dukiévicz?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Leandro desenvolve aplicações web completas com React e Next.js no front-end para interfaces escaláveis e performáticas, Node.js e Express no back-end para APIs robustas, e PostgreSQL e MySQL para modelagem e consultas de dados."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Leandro Dukiévicz tem experiência com inglês técnico?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sim, Leandro possui inglês básico em evolução para intermediário, com ênfase em termos técnicos e vocabulário relacionado à programação, suficiente para comunicação efetiva no ambiente de desenvolvimento de software."
+                }
+              }
+            ]
+          })
+        }}
+      />
     </main>
   );
 }

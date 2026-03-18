@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 import { useLanguage } from "../context/LanguageContext";
+import { buildPageSchema } from "@/lib/schema";
 
 const QUESTION_MARKS = [
   { top: "8%",  left: "12%", size: "1.1rem", opacity: 0.06, rotate: -15 },
@@ -570,6 +571,18 @@ export default function Projetos() {
         </div>
 
       </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPageSchema({
+            type: "CollectionPage",
+            name: "Projetos — Leandro Dukiévicz",
+            description: "Coleção de projetos desenvolvidos por Leandro Dukiévicz: e-commerce front-end com SASS, sites institucionais com Bootstrap, landing pages e projetos em desenvolvimento com React e Next.js.",
+            url: "https://devleandro.com.br/projetos",
+          }))
+        }}
+      />
     </main>
   );
 }

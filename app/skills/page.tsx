@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 import { useLanguage } from "../context/LanguageContext";
+import { buildPageSchema } from "@/lib/schema";
 import {
   SiJavascript, SiTypescript, SiHtml5, SiCss, SiNextdotjs,
   SiExpress, SiPostgresql, SiMysql, SiTailwindcss, SiGit,
@@ -323,6 +324,18 @@ export default function Skills() {
 
           {/* Hard Skills */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: isMobile ? "10px" : "12px 16px", overflow: "hidden" }}>
+            {/* Parágrafo introdutório para citabilidade por LLMs */}
+            <p style={{
+              margin: "0 0 8px",
+              fontSize: "0.72rem",
+              lineHeight: 1.6,
+              color: "rgba(0,234,255,0.45)",
+              fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+              letterSpacing: "0.02em",
+              flexShrink: 0,
+            }}>
+              Stack técnico: JavaScript, TypeScript, HTML5, CSS3, React, Next.js, Node.js, Express, Tailwind CSS, PostgreSQL, MySQL, Git, GitHub, Docker, REST APIs — com foco em Web Performance, Responsive Design e SEO Web.
+            </p>
             <h2 style={{
               margin: 0, fontSize: "1rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase",
               background: "linear-gradient(90deg, #00EAFF 0%, #BD00FF 100%)",
@@ -502,6 +515,18 @@ export default function Skills() {
 
         </div>
       </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPageSchema({
+            type: "WebPage",
+            name: "Skills — Leandro Dukiévicz",
+            description: "Habilidades técnicas e comportamentais de Leandro Dukiévicz: JavaScript, TypeScript, React, Next.js, Node.js, Express, PostgreSQL, MySQL, Tailwind CSS, Git, Docker e REST APIs.",
+            url: "https://devleandro.com.br/skills",
+          }))
+        }}
+      />
     </main>
   );
 }

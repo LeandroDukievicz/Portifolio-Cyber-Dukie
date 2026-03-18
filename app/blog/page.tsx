@@ -1,5 +1,21 @@
 import LiquidGlassBlog from "./LiquidGlassBlog";
+import { buildPageSchema } from "@/lib/schema";
 
 export default function BlogPage() {
-  return <LiquidGlassBlog />;
+  const schema = buildPageSchema({
+    type: "WebPage",
+    name: "Blog — Leandro Dukiévicz",
+    description: "Blog de Leandro Dukiévicz com artigos sobre desenvolvimento web, React, Next.js, TypeScript, performance e boas práticas de engenharia de software.",
+    url: "https://devleandro.com.br/blog",
+  });
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      />
+      <LiquidGlassBlog />
+    </>
+  );
 }

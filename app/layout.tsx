@@ -52,11 +52,12 @@ const personSchema = {
   "@type": "Person",
   name: "Leandro Dukiévicz",
   url: BASE_URL,
-  jobTitle: "Desenvolvedor Front-End",
-  description: "Desenvolvedor Front-End especializado em React, Next.js e TypeScript, com foco em interfaces modernas, performáticas e acessíveis.",
+  image: `${BASE_URL}/images/foto-1.webp`,
+  jobTitle: "Desenvolvedor Full Stack",
+  description: "Desenvolvedor Full Stack especializado em React, Next.js e TypeScript, com foco em interfaces modernas, performáticas e acessíveis.",
   sameAs: [
     "https://github.com/LeandroDukievicz",
-    "https://linkedin.com/in/leandrodukievicz/",
+    "https://linkedin.com/in/leandrodukievicz",
   ],
   knowsAbout: ["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Tailwind CSS"],
   address: {

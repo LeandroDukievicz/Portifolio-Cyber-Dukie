@@ -32,12 +32,16 @@ Portfólio construído para apresentar projetos, habilidades e informações pro
 
 ### Botões CTA
 
-| Botão | Ação |
-|---|---|
-| **Contrate-me** | Navega para `/contato` |
-| **Baixar CV** | Download do CV + confetti + toast + modal de agradecimento |
+| Botão (PT) | Botão (EN) | Ação |
+|---|---|---|
+| **Entrar em Contato** | **Get in Touch** | Navega para `/contato` |
+| **Baixar Currículo** | **Download CV** | Download do CV + confetti + toast + modal de agradecimento |
+
+**Tagline** — parágrafo em ciano (`#00EAFF`, JetBrains Mono) abaixo do subtítulo, descrevendo foco técnico.
 
 **Efeitos visuais dos botões (glassmorphism):**
+- `white-space: nowrap` nos spans dos botões — evita quebra de linha em qualquer tamanho de tela
+- Coluna esquerda com `min-w-[416px] xl:min-w-[448px]` para garantir espaço mínimo aos CTAs
 - Shimmer animado no hover via `span::after` com `mix-blend-mode: screen`
 - Borda conica animada com `conic-gradient` girando entre `#00EAFF`, `#BD00FF` e `#FF2D78`
 - Sombra blur neon abaixo de cada botão intensificando no hover
@@ -45,9 +49,9 @@ Portfólio construído para apresentar projetos, habilidades e informações pro
 - Botão primário: gradiente `#00EAFF → #BD00FF`
 - Botão secundário: outline ciano com ícone de disquete (FaFloppyDisk)
 
-### Fluxo "Hire Me" (Baixar CV)
+### Fluxo "Hire Me" (Baixar Currículo)
 
-Tanto o botão **Baixar CV** quanto o comando `sudo hire-me` do terminal disparam:
+Tanto o botão **Baixar Currículo** quanto o comando `sudo hire-me` do terminal disparam:
 1. Download automático do arquivo `/cv.pdf`
 2. Explosão de confetti colorido neon (canvas-confetti)
 3. Toast "Permissão Autorizada !!" no topo da tela
@@ -60,6 +64,9 @@ Tanto o botão **Baixar CV** quanto o comando `sudo hire-me` do terminal dispara
 ### Janela estilo macOS
 
 A página `/sobre` é renderizada como uma janela flutuante sobre o background animado. Os três botões macOS (vermelho, amarelo, verde) são **decorativos** — sem função ativa, mantidos apenas como elemento estético consistente com o design system do portfólio.
+
+**Título da janela (PT):** `O que eu faço.txt — leandro-dukievicz`
+**Título da janela (EN):** `what-i-do.txt — leandro-dukievicz`
 
 - Entrada animada: `opacity 0 → 1` + `scale(0.96) → scale(1)` + `translateY(16px) → 0`
 - Glassmorphism: `background: rgba(3,17,31,0.65)` + `backdrop-filter: blur(12px)`
@@ -144,6 +151,9 @@ Todos os textos da página (bio, títulos, labels da timeline, badges, status, b
 ### Janela estilo macOS
 
 Mesma estrutura de janela glassmorphism das demais páginas: title bar com traffic lights **decorativos** (vermelho, amarelo, verde sem função ativa), `backdrop-filter: blur(12px)`, entrada animada via classe `window-rise`. Responsiva: `left: 62px / width: calc(100vw - 70px)` mobile; `left: 10vw / width: 80vw` desktop.
+
+**Título da janela (PT):** `Tecnologias que utilizo.txt — leandro-dukievicz`
+**Título da janela (EN):** `technologies-i-use.txt — leandro-dukievicz`
 
 ### Layout — dois painéis lado a lado
 
@@ -347,14 +357,28 @@ Tags, URLs dos CTAs e caminhos de imagem permanecem estáticos.
 
 A página `/contato` renderiza uma janela glassmorphism com:
 - Botões macOS (vermelho, amarelo, verde) **decorativos** — sem função ativa
+- **Título da janela (PT):** `como posso ajudar.txt — leandro-dukievicz`
+- **Título da janela (EN):** `how-can-i-help.txt — leandro-dukievicz`
 - **Mobile**: `left: 62px`, `width: calc(100vw - 70px)`, `top: 36px`, `bottom: 8px`
-- **Desktop**: `left: 20vw`, `width: 60vw`, `top: calc(20vh - 100px)`, `bottom: calc(20vh + 100px)`
+- **Desktop**: `left: 11vw`, `width: 78vw`, `top: calc(11vh - 65px)`, `bottom: calc(11vh + 65px)` — janela ampliada (~30% maior)
 - Entrada animada via classe `window-rise`
 - Glassmorphism: `background: rgba(3,17,31,0.65)` + `backdrop-filter: blur(12px)` + borda magenta sutil
 
-### Coluna de Ícones de Contato (40% da janela)
+### Coluna Esquerda — Header de Texto + Ícones de Contato (40% da janela)
 
-Grid de contatos — **3×2 em mobile** (36×36px) / **2×3 em desktop** (50×50px), todos no formato `.webp`:
+No topo da coluna esquerda, antes dos ícones, há um bloco de texto de apresentação traduzível:
+
+| Campo i18n | PT | EN |
+|---|---|---|
+| `contactHeading` | "Vamos trabalhar juntos?" | "Let's work together?" |
+| `contactSubheading` | "Estou disponível para projetos freelance, oportunidades presenciais e remotas." | "I'm available for freelance projects, on-site and remote opportunities." |
+| `contactsLabel` | "Formas de contato" | "Ways to contact me" |
+
+Todos em ciano (`#00EAFF`), fonte JetBrains Mono.
+
+### Grid de Ícones de Contato
+
+**3×2 em mobile** (36×36px) / **2×3 em desktop** (50×50px), todos no formato `.webp`:
 
 | Ícone | Link | Cor de glow |
 |---|---|---|
@@ -571,9 +595,9 @@ Ao clicar no ícone de idioma no MenuBar, **todo o site muda de idioma**:
 - **Título estático**: "Leandro Dukiévicz" — definido no metadata do `layout.tsx` e reforçado pelo `MarqueeTitle` client-side
 - **Favicon rotativo**: 4 ícones SVG ciclando a cada 800ms via `setInterval` (código, café, xícara, infinito) — injetados dinamicamente no `<link rel="icon">`
 
-### SEO
+### SEO / AEO
 
-Configurado diretamente no `layout.tsx` via Next.js `Metadata` API — sem tags manuais no HTML:
+Configurado via Next.js `Metadata` API — sem tags manuais no HTML:
 
 | Campo | Valor |
 |---|---|
@@ -584,7 +608,54 @@ Configurado diretamente no `layout.tsx` via Next.js `Metadata` API — sem tags 
 | `robots` | `index: true, follow: true` |
 | `openGraph` | title, description, image (`foto-1.webp`), type, siteName |
 | `twitter:card` | `summary_large_image` |
-| **JSON-LD** | Schema `Person` — nome, URL, jobTitle, sameAs (GitHub + LinkedIn), knowsAbout, endereço |
+
+**Metadata por página** — cada rota tem seu próprio `layout.tsx` (server component) exportando `metadata`:
+
+| Rota | `title` | `description` |
+|---|---|---|
+| `/` (home) | Leandro Dukiévicz — Desenvolvedor Front-End | Bio geral |
+| `/sobre` | Sobre Mim | Sobre, trajetória, tecnologias |
+| `/skills` | Skills | Hard skills e soft skills |
+| `/projetos` | Projetos | Portfolio de projetos |
+| `/blog` | Blog | Blog em desenvolvimento |
+| `/contato` | Contato | Disponibilidade e formas de contato |
+
+**JSON-LD Schemas:**
+
+| Schema | Localização | Conteúdo |
+|---|---|---|
+| `Person` | `layout.tsx` (global) | nome, URL, jobTitle, sameAs, knowsAbout, endereço |
+| `ProfilePage` | `page.tsx` (home) | tipo, nome, URL via `buildPageSchema` |
+| `FAQPage` | `page.tsx` (home) | 5 perguntas frequentes sobre o desenvolvedor |
+| `WebPage` | cada `layout.tsx` por rota | título e descrição da página |
+
+### Segurança e Cache (`next.config.ts`)
+
+**Headers de segurança** aplicados globalmente via `withAeo()`:
+
+| Header | Valor |
+|---|---|
+| `Strict-Transport-Security` | `max-age=63072000; includeSubDomains; preload` |
+| `X-Frame-Options` | `DENY` |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+| `Permissions-Policy` | camera, microphone, geolocation desabilitados |
+| `Content-Security-Policy` | policy restritiva com allowlist de domínios confiáveis |
+
+**Headers de cache:**
+
+| Rota | Cache | Revalidação |
+|---|---|---|
+| `/_next/static/*` | 1 ano immutable | — |
+| `/images/*` | 1 dia | stale-while-revalidate 7 dias |
+| `/*.pdf` | 1 dia | — |
+
+### Página 404 Customizada
+
+`app/not-found.tsx` — exibida automaticamente pelo Next.js em qualquer rota inexistente:
+- Fundo `CyberpunkBackground` — consistência visual com o restante do site
+- "404" em gradiente neon `#00EAFF → #BD00FF → #FF2D78`
+- Link de retorno para a home
 
 ### Analytics
 

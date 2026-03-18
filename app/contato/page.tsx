@@ -6,6 +6,7 @@ import CyberpunkBackground from "../components/CyberpunkBackground";
 import { useLanguage } from "../context/LanguageContext";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { isValidEmailFormat } from "@/lib/emailValidation";
+import { buildPageSchema } from "@/lib/schema";
 
 const CONTACTS = [
   {
@@ -428,6 +429,18 @@ export default function Contato() {
         </div>
 
       </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPageSchema({
+            type: "ContactPage",
+            name: "Contato — Leandro Dukiévicz",
+            description: "Entre em contato com Leandro Dukiévicz para projetos freelance, oportunidades presenciais ou remotas. Disponível via WhatsApp, Telegram, LinkedIn, GitHub e e-mail.",
+            url: "https://devleandro.com.br/contato",
+          }))
+        }}
+      />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "generated": "2026-03-18T00:33:12.440Z",
+  "generated": "2026-03-18T03:05:09.002Z",
   "site": {
     "title": "Portfólio - Leandro Dukiévicz",
     "description": "",
@@ -9,8 +9,8 @@
   "documents": [
     {
       "url": "https://leandrodukievicz.com",
-      "title": "Leandro Dukiévicz",
-      "description": "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end"
+      "title": "Leandro Dukiévicz — Desenvolvedor Front-End",
+      "description": "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis."
     }
   ],
   "metadata": {

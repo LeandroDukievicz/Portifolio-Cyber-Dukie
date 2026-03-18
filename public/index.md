@@ -1,20 +1,22 @@
 ---
-title: "Leandro Dukiévicz"
-description: "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end"
+title: "Leandro Dukiévicz — Desenvolvedor Front-End"
+description: "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis."
 url: https://leandrodukievicz.com
 source: https://leandrodukievicz.com
 generated_by: aeo.js
 ---
 
-# Leandro Dukiévicz
+# Leandro Dukiévicz — Desenvolvedor Front-End
 
-Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end
+Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.
 
 ## Leandro
 Dukievicz
 
+Desenvolvedor focado em performance, acessibilidade e arquitetura de aplicações com React e Next.js.
+
 Sou aficionado em tecnologia no geral, desenvolvo interfaces que unem elegância e intuitividade, sendo modernas o bastante para impressionar mas simples o suficiente para desaparecer. Estou em constante evolução no aprendizado e aperfeiçoamento, buscando sempre melhorar performance, fluidez e com muita atenção a todos os detalhes, acredito que a melhor experiência é aquela onde o usuário nem percebe que está tendo !
 
-[Contrate-me](/contato)
+[Entrar em Contato](/contato)
 
-Baixar CV
+Baixar Currículo

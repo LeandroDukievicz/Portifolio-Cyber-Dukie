@@ -52,7 +52,9 @@ export default function MenuBar() {
       <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={toggle}
+          type="button"
           title={lang === "pt" ? "Switch to English" : "Mudar para Português"}
+          aria-label={lang === "pt" ? "Switch to English" : "Mudar para Português"}
           className="flex items-center gap-1.5 cursor-pointer hover:opacity-70 transition-opacity duration-200"
         >
           <IoLanguageOutline size={15} className="text-white" />

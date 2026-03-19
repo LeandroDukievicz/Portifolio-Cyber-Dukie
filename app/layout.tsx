@@ -100,6 +100,7 @@ export default function RootLayout({
       >
         <LanguageProvider>
         <TerminalProvider>
+          <a href="#main-content" className="skip-link">Pular para o conteúdo principal</a>
           <LoadingScreen />
           <MenuBar />
 {children}

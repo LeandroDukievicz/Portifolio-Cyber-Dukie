@@ -96,7 +96,7 @@ export default function Dock() {
           <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
         </Link>
       ) : (
-        <button onClick={open} className={`${innerClass} cursor-pointer bg-transparent border-none w-full`}>
+        <button onClick={open} aria-label={t.dock[item.labelKey]} type="button" className={`${innerClass} cursor-pointer bg-transparent border-none w-full`}>
           <span className="text-[22px] md:text-[34px]">
             <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
           </span>
@@ -109,7 +109,7 @@ export default function Dock() {
   return (
     <>
       {/* ── MOBILE: dock vertical lado esquerdo ── */}
-      <div className="md:hidden fixed left-0 top-0 h-full z-[150] flex">
+      <nav aria-label="Navegação principal" className="md:hidden fixed left-0 top-0 h-full z-[150] flex">
         <ul className="
           flex flex-col items-center justify-evenly h-full w-[54px]
           m-0 list-none py-3
@@ -121,10 +121,10 @@ export default function Dock() {
             renderItem(item, i, "w-full flex-1")
           )}
         </ul>
-      </div>
+      </nav>
 
       {/* ── DESKTOP: dock horizontal bottom center ── */}
-      <div className="hidden md:flex fixed bottom-[30px] inset-x-auto left-1/2 -translate-x-1/2 justify-center z-[150]">
+      <nav aria-label="Navegação principal" className="hidden md:flex fixed bottom-[30px] inset-x-auto left-1/2 -translate-x-1/2 justify-center z-[150]">
         <ul
           ref={dockRef}
           className="
@@ -139,7 +139,7 @@ export default function Dock() {
             renderItem(item, i, "w-[67px] h-[67px] mx-1", (el) => { if (el) itemsRef.current[i] = el; })
           )}
         </ul>
-      </div>
+      </nav>
     </>
   );
 }

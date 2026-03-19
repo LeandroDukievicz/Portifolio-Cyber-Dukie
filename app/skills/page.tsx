@@ -192,7 +192,7 @@ export default function Skills() {
   }, []);
 
   return (
-    <main className="w-full h-screen overflow-hidden relative">
+    <main id="main-content" className="w-full h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
       <style>{`
@@ -251,9 +251,9 @@ export default function Skills() {
           borderBottom: "1px solid rgba(255,255,255,0.07)",
           flexShrink: 0, userSelect: "none",
         }}>
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
             {s.windowTitle}
           </span>
@@ -263,7 +263,12 @@ export default function Skills() {
         <div style={{ flex: 1, display: "flex", flexDirection: isMobile ? "column" : "row", overflow: "hidden", position: "relative" }}>
 
           {/* Painel Princípios de Engenharia */}
-          <div style={{
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Princípios"
+            aria-hidden={!showPrincipios}
+            style={{
             position: "absolute", inset: 0, zIndex: 20,
             background: "rgba(3,17,31,0.97)",
             backdropFilter: "blur(10px)",
@@ -279,6 +284,8 @@ export default function Skills() {
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14, flexShrink: 0 }}>
               <button
+                type="button"
+                aria-label="Fechar painel de princípios"
                 onClick={() => setShowPrincipios(false)}
                 style={{
                   background: "rgba(0,234,255,0.08)", border: "1px solid rgba(0,234,255,0.3)",
@@ -451,9 +458,19 @@ export default function Skills() {
                 return (
                   <div
                     key={i}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={s.softSkillsData[i].label}
                     onClick={() => {
                       if (isPrincipio) { setShowPrincipios(true); }
                       else if (isMobile) { setFlippedCard(isFlipped ? null : i); }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        if (isPrincipio) { setShowPrincipios(true); }
+                        else if (isMobile) { setFlippedCard(isFlipped ? null : i); }
+                      }
                     }}
                     onMouseEnter={() => { if (!isPrincipio && !isMobile) setFlippedCard(i); }}
                     onMouseLeave={() => { if (!isPrincipio && !isMobile) setFlippedCard(null); }}

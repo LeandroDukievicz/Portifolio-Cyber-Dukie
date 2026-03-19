@@ -243,7 +243,7 @@ export default function Sobre() {
   const STACK = s.stack.map((item, i) => ({ ...item, icons: STACK_ICONS[i].icons }));
 
   return (
-    <main className="w-full h-screen overflow-hidden relative">
+    <main id="main-content" className="w-full h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
       <div style={windowStyle}>
@@ -256,9 +256,9 @@ export default function Sobre() {
           borderBottom: "1px solid rgba(255,255,255,0.07)",
           flexShrink: 0, userSelect: "none",
         }}>
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
             {s.windowTitle}
           </span>
@@ -410,6 +410,7 @@ export default function Sobre() {
               <div style={{ display: "flex", flexWrap: "wrap", gap: isMobile ? 12 : 50, marginBottom: 4 }}>
                 <a
                   href="mailto:leandrodukievicz1718@gmail.com"
+                  aria-label="Enviar email para leandrodukievicz1718@gmail.com"
                   style={{
                     display: "flex", alignItems: "center", gap: 7,
                     padding: "7px 14px", borderRadius: 8,
@@ -428,6 +429,7 @@ export default function Sobre() {
                   href="https://github.com/LeandroDukievicz"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Perfil do GitHub de Leandro Dukievicz (abre em nova aba)"
                   style={{
                     display: "flex", alignItems: "center", gap: 7,
                     padding: "7px 14px", borderRadius: 8,
@@ -446,6 +448,7 @@ export default function Sobre() {
                   href="https://www.linkedin.com/in/leandrodukievicz/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Perfil do LinkedIn de Leandro Dukievicz (abre em nova aba)"
                   style={{
                     display: "flex", alignItems: "center", gap: 7,
                     padding: "7px 14px", borderRadius: 8,
@@ -570,6 +573,8 @@ export default function Sobre() {
               background: "rgba(3,17,31,0.4)",
             }}>
               <button
+                type="button"
+                aria-label={atBottom ? "Voltar ao topo" : "Rolar para baixo"}
                 onClick={() => {
                   const el = document.getElementById("sobre-content");
                   if (!el) return;

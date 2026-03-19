@@ -291,3 +291,39 @@ html[data-blog-theme="light"] {
 .cta-btn-wrap:has(.cta-btn:hover) .cta-btn-shadow::after { top: calc(var(--shadow-cutoff) - 14px); }
 .cta-btn-wrap:has(.cta-btn:active) .cta-btn-shadow::after { opacity: 0.6; }
 
+/* ========== ACESSIBILIDADE ========== */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: #03111F;
+  color: #00EAFF;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  border: 1px solid #00EAFF;
+  border-radius: 4px;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+}
+
+:focus-visible {
+  outline: 2px solid #00EAFF;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

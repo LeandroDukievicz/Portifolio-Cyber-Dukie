@@ -47,12 +47,14 @@ export default function Page() {
   });
 
   return (
-    <main className="w-full h-screen overflow-hidden relative">
+    <main id="main-content" className="w-full h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
       {/* Toast mobile */}
       {showToast && (
         <div
+          role="alert"
+          aria-live="assertive"
           onClick={dismissToast}
           style={{
             position: "fixed",
@@ -77,7 +79,7 @@ export default function Page() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: "1.1rem" }}>🖥️</span>
+            <span aria-hidden="true" style={{ fontSize: "1.1rem" }}>🖥️</span>
             <span style={{
               fontSize: "0.72rem",
               fontFamily: "'JetBrains Mono', monospace",

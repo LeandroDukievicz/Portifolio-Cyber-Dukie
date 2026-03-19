@@ -296,7 +296,12 @@ export default function TerminalWindow() {
           }}
         >
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="hire-modal-title"
+            tabIndex={-1}
             onClick={e => e.stopPropagation()}
+            onKeyDown={(e) => { if (e.key === 'Escape') closeHireModal(); }}
             style={{
               background: "rgba(3,17,31,0.88)",
               backdropFilter: "blur(20px)",
@@ -313,14 +318,15 @@ export default function TerminalWindow() {
               height: 2, borderRadius: 2, marginBottom: 28,
               background: "linear-gradient(90deg, #00EAFF, #BD00FF, #FF2D78)",
             }} />
-            <p style={{ fontSize: 28, margin: "0 0 12px", lineHeight: 1 }}>🤝</p>
-            <h2 style={{ margin: "0 0 16px", fontSize: 18, fontWeight: 700, color: "#fff", letterSpacing: "0.02em" }}>
+            <p aria-hidden="true" style={{ fontSize: 28, margin: "0 0 12px", lineHeight: 1 }}>🤝</p>
+            <h2 id="hire-modal-title" style={{ margin: "0 0 16px", fontSize: 18, fontWeight: 700, color: "#fff", letterSpacing: "0.02em" }}>
               {tt.modalTitle}
             </h2>
             <p style={{ margin: "0 0 24px", fontSize: 13, lineHeight: 1.7, color: "rgba(255,255,255,0.65)", whiteSpace: "pre-line" }}>
               {tt.modalMessage}
             </p>
             <button
+              type="button"
               onClick={() => closeHireModal()}
               style={{
                 background: "linear-gradient(90deg, #BD00FF, #FF00FF)",
@@ -338,7 +344,10 @@ export default function TerminalWindow() {
 
       {/* Toast */}
       {toast && (
-        <div style={{
+        <div
+          role="status"
+          aria-live="polite"
+          style={{
           position: "fixed", top: 48, left: "50%", transform: "translateX(-50%)",
           zIndex: 9999, pointerEvents: "none",
           background: "rgba(3,17,31,0.75)",
@@ -387,11 +396,11 @@ export default function TerminalWindow() {
             cursor: "grab",
           }}
         >
-          <span onClick={close} onMouseDown={e => e.stopPropagation()} title="Fechar"
+          <span role="button" tabIndex={0} onClick={close} onMouseDown={e => e.stopPropagation()} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); close(); } }} title="Fechar" aria-label="Fechar terminal"
             style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", cursor: "pointer", flexShrink: 0 }} />
-          <span onClick={minimize} onMouseDown={e => e.stopPropagation()} title="Minimizar"
+          <span role="button" tabIndex={0} onClick={minimize} onMouseDown={e => e.stopPropagation()} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); minimize(); } }} title="Minimizar" aria-label="Minimizar terminal"
             style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", cursor: "pointer", flexShrink: 0 }} />
-          <span onClick={toggleLarge} onMouseDown={e => e.stopPropagation()} title={isLarge ? "Tamanho normal" : "Dobrar tamanho"}
+          <span role="button" tabIndex={0} onClick={toggleLarge} onMouseDown={e => e.stopPropagation()} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleLarge(); } }} title={isLarge ? "Tamanho normal" : "Dobrar tamanho"} aria-label={isLarge ? "Restaurar tamanho normal do terminal" : "Expandir terminal"}
             style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", cursor: "pointer", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
             {tt.header}
@@ -447,6 +456,7 @@ export default function TerminalWindow() {
                   <span style={{ color: "#FF00FF", flexShrink: 0 }}>&gt;_</span>
                   <input
                     ref={inputRef}
+                    aria-label="Terminal input"
                     value={currentInput}
                     onChange={e => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}

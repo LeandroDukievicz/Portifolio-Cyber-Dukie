@@ -116,7 +116,7 @@ export default function Contato() {
 
 
   return (
-    <main className="w-full h-screen overflow-hidden relative">
+    <main id="main-content" className="w-full h-screen overflow-hidden relative">
       <CyberpunkBackground />
 
       <style>{`
@@ -170,7 +170,10 @@ export default function Contato() {
 
       {/* Toast */}
       {showToast && (
-        <div style={{
+        <div
+          role="status"
+          aria-live="polite"
+          style={{
           position: "fixed",
           top: 100,
           right: 50,
@@ -195,13 +198,16 @@ export default function Contato() {
           textAlign: "center",
           gap: 10,
         }}>
-          <span style={{ fontSize: "1.6rem" }}>⚠</span>
+          <span aria-hidden="true" style={{ fontSize: "1.6rem" }}>⚠</span>
           <span>{c.toastMsg}</span>
         </div>
       )}
 
       {showSuccessToast && (
-        <div style={{
+        <div
+          role="status"
+          aria-live="polite"
+          style={{
           position: "fixed",
           top: 100,
           right: 50,
@@ -225,7 +231,7 @@ export default function Contato() {
           textAlign: "center",
           gap: 10,
         }}>
-          <span style={{ fontSize: "1.6rem" }}>✓</span>
+          <span aria-hidden="true" style={{ fontSize: "1.6rem" }}>✓</span>
           <span>{c.successMsg}</span>
         </div>
       )}
@@ -259,9 +265,9 @@ export default function Contato() {
           borderBottom: "1px solid rgba(255,255,255,0.07)",
           flexShrink: 0, userSelect: "none",
         }}>
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
-          <span style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ff5f56", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#ffbd2e", display: "block", flexShrink: 0 }} />
+          <span aria-hidden="true" style={{ width: 12, height: 12, borderRadius: "50%", background: "#27c93f", display: "block", flexShrink: 0 }} />
           <span style={{ flex: 1, textAlign: "center", fontSize: 11, color: "rgba(255,255,255,0.3)", letterSpacing: "0.05em" }}>
             {c.windowTitle}
           </span>
@@ -339,6 +345,7 @@ export default function Contato() {
                   target="_blank"
                   rel="noopener noreferrer"
                   title={name}
+                  aria-label={`${name} (abre em nova aba)`}
                   onMouseEnter={() => setHovered(i)}
                   onMouseLeave={() => setHovered(null)}
                   style={{
@@ -370,8 +377,9 @@ export default function Contato() {
               {/* Nome + Email */}
               <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 12 }}>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-                  <label style={labelStyle}>{c.labelName}</label>
+                  <label htmlFor="contact-name" style={labelStyle}>{c.labelName}</label>
                   <input
+                    id="contact-name"
                     placeholder={c.placeholderName}
                     style={inputStyle}
                     value={form.nome}
@@ -379,8 +387,9 @@ export default function Contato() {
                   />
                 </div>
                 <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 6 }}>
-                  <label style={labelStyle}>{c.labelEmail}</label>
+                  <label htmlFor="contact-email" style={labelStyle}>{c.labelEmail}</label>
                   <input
+                    id="contact-email"
                     type="email"
                     placeholder={c.placeholderEmail}
                     style={inputStyle}
@@ -392,8 +401,9 @@ export default function Contato() {
 
               {/* Assunto */}
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <label style={labelStyle}>{c.labelSubject}</label>
+                <label htmlFor="contact-subject" style={labelStyle}>{c.labelSubject}</label>
                 <input
+                  id="contact-subject"
                   placeholder={c.placeholderSubject}
                   style={inputStyle}
                   value={form.assunto}
@@ -403,8 +413,9 @@ export default function Contato() {
 
               {/* Mensagem */}
               <div style={{ display: "flex", flexDirection: "column", gap: 6, flex: 1 }}>
-                <label style={labelStyle}>{c.labelMessage}</label>
+                <label htmlFor="contact-message" style={labelStyle}>{c.labelMessage}</label>
                 <textarea
+                  id="contact-message"
                   placeholder={c.placeholderMessage}
                   style={{ ...inputStyle, flex: 1, resize: "none", minHeight: 90 }}
                   value={form.mensagem}

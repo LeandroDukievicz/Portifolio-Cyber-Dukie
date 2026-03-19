@@ -166,6 +166,7 @@ export default function HeroPhoto({ size = 476 }: { size?: number }) {
             alt="Leandro Dukievicz"
             width={size}
             height={size}
+            sizes="(max-width: 768px) 0px, (max-width: 1280px) 40vw, 476px"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
             priority
           />

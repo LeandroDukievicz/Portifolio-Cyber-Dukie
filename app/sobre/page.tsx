@@ -122,6 +122,7 @@ function HoloPhoto() {
             alt="Leandro Dukievicz"
             width={416}
             height={640}
+            sizes="(max-width: 1024px) 0px, (max-width: 1280px) 35vw, 416px"
             style={{
               width: "100%", height: "100%",
               objectFit: "contain",

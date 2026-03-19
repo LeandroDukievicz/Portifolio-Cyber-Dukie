@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+export const revalidate = 3600; // 1 hora (blog muda mais frequentemente)
+
 export const metadata: Metadata = {
   title: "Blog",
   description: "Blog de Leandro Dukiévicz sobre desenvolvimento web, React, Next.js, TypeScript, performance e boas práticas de engenharia de software.",

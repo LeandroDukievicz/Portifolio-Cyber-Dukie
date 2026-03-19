@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import Script from "next/script";
+import dynamic from "next/dynamic";
 import "./globals.css";
 import Dock from "./components/Dock";
 import MarqueeTitle from "./components/MarqueeTitle";
 import MenuBar from "./components/MenuBar";
-import TerminalWindow from "./components/TerminalWindow";
 import LoadingScreen from "./components/LoadingScreen";
 import { TerminalProvider } from "./context/TerminalContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+const TerminalWindow = dynamic(() => import("./components/TerminalWindow"), { ssr: false });
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -89,9 +92,15 @@ export default function RootLayout({
     <html lang="pt-br" suppressHydrationWarning>
       <head>
         {/* Script bloqueante: esconde o body antes de qualquer pintura se for primeira visita */}
-        <script dangerouslySetInnerHTML={{ __html: `try{if(!localStorage.getItem('portfolio-loaded')){document.documentElement.classList.add('fl')}}catch(e){}` }} />
+        <Script
+          id="portfolio-loader"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: `try{if(!localStorage.getItem('portfolio-loaded')){document.documentElement.classList.add('fl')}}catch(e){}` }}
+        />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
+        <link rel="preconnect" href="https://vitals.vercel-insights.com" />
+        <link rel="dns-prefetch" href="https://formspree.io" />
       </head>
       <body
         className={`${roboto.variable} antialiased bg-[#03111F] w-full h-full pl-[54px] md:pl-0`}

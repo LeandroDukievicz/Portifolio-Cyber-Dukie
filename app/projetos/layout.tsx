@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+export const revalidate = 604800; // 7 dias
+
 export const metadata: Metadata = {
   title: "Projetos",
   description: "Projetos de desenvolvimento web de Leandro Dukiévicz: e-commerce front-end, landing pages institucionais e aplicações React/Next.js. Veja o código no GitHub.",

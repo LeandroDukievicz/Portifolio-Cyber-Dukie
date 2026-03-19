@@ -67,6 +67,13 @@ export default withAeo({
           { key: "Cache-Control", value: "public, max-age=86400" },
         ],
       },
+      // Cache para páginas HTML — 5 min browser, 1h CDN
+      { source: "/", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
+      { source: "/sobre", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
+      { source: "/skills", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
+      { source: "/projetos", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
+      { source: "/contato", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
+      { source: "/blog", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
     ];
   },
 });

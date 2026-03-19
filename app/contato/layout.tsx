@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+export const revalidate = 604800; // 7 dias
+
 export const metadata: Metadata = {
   title: "Contato",
   description: "Entre em contato com Leandro Dukiévicz para propostas de projeto, contratação PJ ou freelance. Disponível via WhatsApp, Telegram, LinkedIn, GitHub e e-mail.",

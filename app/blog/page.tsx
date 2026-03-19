@@ -1,6 +1,8 @@
 import LiquidGlassBlog from "./LiquidGlassBlog";
 import { buildPageSchema } from "@/lib/schema";
 
+export const revalidate = 3600; // 1 hora (blog muda mais frequentemente)
+
 export default function BlogPage() {
   const schema = buildPageSchema({
     type: "WebPage",

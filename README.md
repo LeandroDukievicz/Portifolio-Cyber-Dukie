@@ -650,6 +650,7 @@ Configurado via Next.js `Metadata` API — sem tags manuais no HTML:
 
 | Schema | Localização | Conteúdo |
 |---|---|---|
+| `Organization` | `layout.tsx` (global) | nome, URL, logo (`foto-1.webp`), sameAs |
 | `Person` | `layout.tsx` (global) | nome, URL, jobTitle, sameAs, knowsAbout, endereço |
 | `ProfilePage` | `page.tsx` (home) | tipo, nome, URL via `buildPageSchema` |
 | `FAQPage` | `page.tsx` (home) | 5 perguntas frequentes sobre o desenvolvedor |
@@ -739,6 +740,90 @@ O site é totalmente responsivo de **320px a 1920px+**, seguindo a abordagem mob
 | Terminal | Oculto (`useIsMobile`) | Visível |
 | `<main>` | `w-full` (100% da área sem a dock) | `w-full` |
 | Body padding | `pl-[54px]` | `pl-0` |
+
+---
+
+## Acessibilidade (A11Y)
+
+O portfólio implementa acessibilidade completa seguindo as diretrizes **WCAG 2.1 AA** em todas as páginas e componentes.
+
+### Skip Link
+
+- Link invisível `"Pular para o conteúdo principal"` no topo do `layout.tsx`
+- Torna-se visível ao receber foco via teclado (posição `left: 8px, top: 8px`)
+- Leva o foco diretamente ao `<main id="main-content">` de cada página
+
+### Focus Visible
+
+- Todas as páginas têm `:focus-visible` com `outline: 2px solid #00EAFF` e `outline-offset: 2px`
+- Garante indicador de foco visível para usuários que navegam por teclado
+- Não interfere no visual para usuários de mouse (`:focus-visible` só ativa com teclado/seleção)
+
+### Prefers Reduced Motion
+
+- `@media (prefers-reduced-motion: reduce)` aplicado globalmente em `globals.css`
+- Desativa **todas** as animações e transições para usuários que configuram essa preferência no sistema operacional
+- Cobre `animation`, `animation-iteration-count` e `scroll-behavior`
+
+### ARIA — Landmarks e Roles
+
+| Elemento | ARIA aplicado |
+|---|---|
+| `<main>` em todas as páginas | `id="main-content"` para skip link |
+| Dock (desktop e mobile) | `<nav aria-label="Navegação principal">` |
+| Toast mobile da home | `role="alert" aria-live="assertive"` |
+| Toast do terminal | `role="status" aria-live="polite"` |
+| Toasts da página de contato | `role="status" aria-live="polite"` |
+| Modal "Hire Me" | `role="dialog" aria-modal="true" aria-labelledby="hire-modal-title"` |
+| Modal Princípios (Skills) | `role="dialog" aria-modal="true" aria-label="Princípios"` |
+| Flip cards (Skills) | `role="button" tabIndex={0}` |
+| Cards do carousel (Projetos) | `role="button" tabIndex={0}` (0 para o central, -1 para os demais) |
+| Dots de navegação (Projetos) | `role="button" aria-label="Ir para projeto N" aria-current` |
+| Input do terminal | `aria-label="Terminal input"` |
+
+### ARIA — Labels Descritivos
+
+| Elemento | `aria-label` |
+|---|---|
+| Botões de controle do terminal (vermelho/amarelo/verde) | "Fechar terminal", "Minimizar terminal", "Expandir/Restaurar tamanho normal do terminal" |
+| Botão do terminal no Dock | Label traduzível via `t.dock[item.labelKey]` |
+| Botão de troca de idioma (MenuBar) | "Mudar idioma para Inglês" / "Mudar idioma para Português" |
+| Botão de scroll (Sobre) | "Rolar para baixo" / "Voltar ao topo" — dinâmico conforme estado |
+| Links de contato (Sobre, Contato) | `"{nome} (abre em nova aba)"` |
+| Links de contato externos (Contato) | `aria-label="{name} (abre em nova aba)"` |
+| Modal "Hire Me" | `<h2 id="hire-modal-title">` referenciado via `aria-labelledby` |
+
+### Formulário Acessível (Contato)
+
+- Todos os `<label>` têm `htmlFor` associado ao `id` do input correspondente
+- IDs dos campos: `contact-name`, `contact-email`, `contact-subject`, `contact-message`
+- Botão de envio com `type="submit"` explícito
+- Toasts de erro/sucesso com `role="status" aria-live="polite"`
+
+### Elementos Decorativos
+
+Todos os elementos puramente visuais têm `aria-hidden="true"` para não poluir a árvore de acessibilidade:
+
+- Emojis decorativos (`🖥️`, `🤝`, `⚠`, `✓`) em toasts e modais
+- Bolinhas coloridas estilo macOS (vermelho/amarelo/verde) nas janelas Sobre, Skills e Contato
+- Question marks animados nos cards "Em Breve" (Projetos)
+- SVGs inline de ícones dentro de links que já têm texto (GitHub, link externo)
+
+### Navegação por Teclado
+
+- **Flip cards** (Skills): ativados com `Enter` e `Space` via `onKeyDown`
+- **Cards do carousel** (Projetos): ativados com `Enter` e `Space`
+- **Dots de navegação** (Projetos): ativados com `Enter` e `Space`
+- **Botões do terminal** (fechar/minimizar/expandir): ativados com `Enter` e `Space`
+- **Modal "Hire Me"**: fechado com `Escape` via `onKeyDown`
+- Todos os `<button>` têm `type="button"` ou `type="submit"` explícito
+
+### Semântica HTML
+
+- `<html lang="pt-br">` definido globalmente
+- `<main>` presente em todas as páginas (`/`, `/sobre`, `/skills`, `/projetos`, `/contato`)
+- `<nav aria-label="Navegação principal">` envolvendo o Dock
+- `<h1>` único por página, hierarquia de headings respeitada
 
 ---
 
@@ -882,6 +967,7 @@ RESEND_API_KEY=sua_api_key_resend
 | `v2.9.0` | 2026-03-18 | Metadata SEO por rota via `layout.tsx` server components; JSON-LD ProfilePage e FAQPage na home; `lib/schema.ts` |
 | `v3.0.0` | 2026-03-18 | Headers de segurança (HSTS, CSP, X-Frame-Options) e cache headers (`next.config.ts`); página 404 customizada com CyberpunkBackground |
 | `v3.1.0` | 2026-03-19 | Animação de entrada stagger na home (useStaggerVisible + useTypewriter); terminal centralizado no gap hero; toast mobile desktop-hint; hooks `useIsMobile`, `useStaggerVisible`, `useTypewriter`; `lib/download.ts` |
+| `v3.2.0` | 2026-03-19 | Acessibilidade completa (WCAG 2.1 AA): skip link, focus-visible, prefers-reduced-motion, ARIA landmarks, labels, modais, aria-live, teclado, aria-hidden em decorativos, formulário com htmlFor/id |
 
 ---
 

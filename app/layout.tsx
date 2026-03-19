@@ -47,6 +47,18 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Leandro Dukiévicz",
+  url: BASE_URL,
+  logo: `${BASE_URL}/images/foto-1.webp`,
+  sameAs: [
+    "https://github.com/LeandroDukievicz",
+    "https://linkedin.com/in/leandrodukievicz",
+  ],
+};
+
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -78,6 +90,7 @@ export default function RootLayout({
       <head>
         {/* Script bloqueante: esconde o body antes de qualquer pintura se for primeira visita */}
         <script dangerouslySetInnerHTML={{ __html: `try{if(!localStorage.getItem('portfolio-loaded')){document.documentElement.classList.add('fl')}}catch(e){}` }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
       </head>
       <body

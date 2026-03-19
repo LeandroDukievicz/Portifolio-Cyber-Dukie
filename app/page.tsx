@@ -114,7 +114,7 @@ export default function Page() {
       <div className="absolute inset-0 flex flex-col lg:flex-row items-center justify-between px-4 md:px-12 lg:px-20 pt-7 pb-4 lg:pb-0 gap-4 lg:gap-0 overflow-y-auto lg:overflow-hidden">
 
         {/* Left — nome */}
-        <div className="flex flex-col gap-4 items-start lg:ml-[3vw] xl:ml-[4vw] 2xl:ml-[0px] lg:mr-0 mt-1 sm:mt-4 lg:-mt-[100px] w-full lg:w-auto lg:min-w-[416px] xl:min-w-[448px]">
+        <div data-home-left className="flex flex-col gap-4 items-start lg:ml-[3vw] xl:ml-[4vw] 2xl:ml-[0px] lg:mr-0 mt-1 sm:mt-4 lg:-mt-[100px] w-full lg:w-auto lg:min-w-[416px] xl:min-w-[448px]">
 
           <h1
             className="text-[1.5rem] sm:text-[2.5rem] md:text-[3.4rem] lg:text-[4rem] xl:text-[5rem] font-extrabold leading-tight"
@@ -210,7 +210,7 @@ export default function Page() {
         </div>
 
         {/* Right — foto hexagonal com parallax */}
-        <div className="hidden lg:flex items-start justify-center flex-shrink-0 lg:mr-[3vw] xl:mr-[4vw] 2xl:mr-[0px] lg:-mt-[100px]">
+        <div data-home-right className="hidden lg:flex items-start justify-center flex-shrink-0 lg:mr-[3vw] xl:mr-[4vw] 2xl:mr-[0px] lg:-mt-[100px]">
           <div className="scale-90 2xl:scale-120 origin-center">
             <HeroPhoto size={476} />
           </div>

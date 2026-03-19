@@ -80,9 +80,18 @@ export default function TerminalWindow() {
 
   useLayoutEffect(() => {
     const termH = isMinimized ? TITLE_BAR_H : effectiveH + TITLE_BAR_H;
-    // Align horizontally with dock (centered) and vertically with hero content (-100px from center)
+
+    // Center the terminal in the gap between the left text block and the right photo
+    const leftEl  = document.querySelector("[data-home-left]");
+    const rightEl = document.querySelector("[data-home-right]");
+    let centerX = window.innerWidth / 2 - effectiveW / 2;
+    if (leftEl && rightEl) {
+      const gapCenter = (leftEl.getBoundingClientRect().right + rightEl.getBoundingClientRect().left) / 2;
+      centerX = gapCenter - effectiveW / 2 - 60;
+    }
+
     setPos({
-      x: window.innerWidth  / 2 - effectiveW / 2,
+      x: centerX,
       y: clampY(window.innerHeight / 2 - termH / 2 - 100, termH),
     });
   }, [W, H, isOpen]);

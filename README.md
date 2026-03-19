@@ -14,11 +14,27 @@ Portfólio construído para apresentar projetos, habilidades e informações pro
 
 ### Hero Layout
 
-- **Nome** em gradiente branco/cinza com drop-shadow, tamanho responsivo (`6.3rem` desktop)
+- **Nome** em gradiente branco/cinza com drop-shadow, tamanho responsivo (`1.5rem` mobile → `5rem` xl)
 - **Traço degradê** abaixo do nome com gradiente `#00EAFF → #BD00FF → #FF2D78` e leve glow
-- **Subtítulo** ("Desenvolvedor Front-End") centralizado abaixo do traço
-- **Parágrafo de bio** com mesmo gradiente e estilo do nome, fonte `1.1rem`
-- Layout da coluna esquerda posicionado com `ml-[200px]` e `-mt-[100px]`
+- **Subtítulo** ("Desenvolvedor Front-End") com efeito typewriter via `useTypewriter` — cursor piscante durante a digitação
+- **Tagline** — parágrafo em ciano (`#00EAFF`, JetBrains Mono) abaixo do subtítulo: `"Desenvolvedor focado em performance, acessibilidade e arquitetura de aplicações com React e Next.js."` (hardcoded, sem tradução)
+- **Parágrafo de bio** traduzível via i18n, `font-size 0.9rem`, `text-align justify`
+- Layout da coluna esquerda com `lg:min-w-[416px] xl:min-w-[448px]` e `lg:-mt-[100px]`
+
+### Animação de Entrada — Stagger
+
+Os 6 elementos da coluna esquerda entram em sequência via `useStaggerVisible(6, 130, 80)`:
+
+| Índice | Elemento |
+|---|---|
+| 0 | `<h1>` — nome |
+| 1 | Traço degradê |
+| 2 | Subtítulo (dispara o typewriter) |
+| 3 | Tagline ciano |
+| 4 | Bio |
+| 5 | CTAs |
+
+Cada elemento anima `opacity 0 → 1` + `translateY(18px) → 0` em 0.55s ease.
 
 ### Foto Hexagonal
 
@@ -28,7 +44,8 @@ Portfólio construído para apresentar projetos, habilidades e informações pro
 - **Cursor customizado** (mira ciano) que aparece apenas ao entrar na foto, sincronizado com o glitch
 - **Bordas hexagonais duplas** que oscilam de cor (`#00EAFF → #BD00FF → #FF2D78`) a cada 4s sem sombra
 - Ao fazer hover, as bordas **tremem junto** com o glitch via `url(#rgb-glitch)` filter
-- Foto avançada `mr-[100px]` e alinhada verticalmente com o nome (`items-start`, `-mt-[100px]`)
+- Foto `scale-90 2xl:scale-120` e alinhada verticalmente com o nome (`lg:-mt-[100px]`)
+- Oculta em mobile (`hidden lg:flex`)
 
 ### Botões CTA
 
@@ -37,11 +54,9 @@ Portfólio construído para apresentar projetos, habilidades e informações pro
 | **Entrar em Contato** | **Get in Touch** | Navega para `/contato` |
 | **Baixar Currículo** | **Download CV** | Download do CV + confetti + toast + modal de agradecimento |
 
-**Tagline** — parágrafo em ciano (`#00EAFF`, JetBrains Mono) abaixo do subtítulo, descrevendo foco técnico.
-
 **Efeitos visuais dos botões (glassmorphism):**
 - `white-space: nowrap` nos spans dos botões — evita quebra de linha em qualquer tamanho de tela
-- Coluna esquerda com `min-w-[416px] xl:min-w-[448px]` para garantir espaço mínimo aos CTAs
+- Coluna esquerda com `lg:min-w-[416px] xl:min-w-[448px]` para garantir espaço mínimo aos CTAs
 - Shimmer animado no hover via `span::after` com `mix-blend-mode: screen`
 - Borda conica animada com `conic-gradient` girando entre `#00EAFF`, `#BD00FF` e `#FF2D78`
 - Sombra blur neon abaixo de cada botão intensificando no hover
@@ -52,10 +67,14 @@ Portfólio construído para apresentar projetos, habilidades e informações pro
 ### Fluxo "Hire Me" (Baixar Currículo)
 
 Tanto o botão **Baixar Currículo** quanto o comando `sudo hire-me` do terminal disparam:
-1. Download automático do arquivo `/cv.pdf`
+1. Download automático do arquivo `/Leandro Dukievicz - Desenvolvedor Web.pdf` via `lib/download.ts`
 2. Explosão de confetti colorido neon (canvas-confetti)
 3. Toast "Permissão Autorizada !!" no topo da tela
 4. Modal de agradecimento com gradiente animado
+
+### Toast Mobile
+
+Ao carregar a home em dispositivos mobile (< 768px), um toast aparece após 1,2s no rodapé da tela sugerindo navegar pelo portfólio na versão desktop. Clique/toque fecha o toast com fade. Texto traduzível inline via `lang`.
 
 ---
 
@@ -508,7 +527,7 @@ API route server-side que persiste o email no database **"assinantes do blog"** 
 
 ### Notificação por Email — Resend
 
-Após cada cadastro bem-sucedido, envia um email de notificação via **Resend**:
+Após cada cadastro bem-sucedido, envia um email de notificação via **Resend** (implementado com `fetch` nativo — sem SDK):
 
 - **De**: `Blog Dukie <onboarding@resend.dev>`
 - **Para**: `leandrodukievicz1718@gmail.com`
@@ -549,14 +568,17 @@ Tela de carregamento exibida **somente na primeira visita** do usuário:
 
 ### Terminal macOS
 
-- **Boot sequence animada** com auto-typing ao abrir
+- **Boot sequence animada** com auto-typing ao abrir (re-executa ao trocar de idioma)
 - **Drag & drop** — arrastar pela title bar
 - **Resize livre** — handles em todos os 8 lados e cantos (N, S, E, W, NE, NW, SE, SW) com cursor direcional e glow ciano no hover
-- **Minimizar / Maximizar** via botões amarelo e verde
-- **Largura** alinhada com o dock (557px) e posição vertical alinhada com o hero
-- **Auto-abre** sempre que o usuário retorna para a home (`/`)
-- **Auto-fecha** com animação macOS (shrink + fade) ao navegar para outras rotas
+- **Minimizar / Maximizar** via botões amarelo e verde da title bar
+- **Botão vermelho** fecha o terminal
+- **Posicionamento automático**: centralizado no gap entre o bloco de texto e a foto hexagonal usando `data-home-left` e `data-home-right` como marcadores — recalculado ao abrir
+- **Auto-abre** sempre que o usuário navega para `/` (home)
+- **Auto-fecha** com animação macOS (shrink + fade, `scale(0.05)` em 280ms) ao navegar para outras rotas
 - Em outras páginas, o terminal só abre ao clicar no ícone do dock
+- **Invisível em mobile** (`useIsMobile` — retorna `null` se `< 768px`)
+- Tamanho padrão: 557px × 340px; maximizado: 860px × 620px; resize livre sobrepõe o tamanho fixo
 
 **Comandos disponíveis:**
 
@@ -569,6 +591,7 @@ Tela de carregamento exibida **somente na primeira visita** do usuário:
 | `contato` / `contact` | Entrar em contato |
 | `blog` | Meu blog |
 | `cv` | Baixar currículo |
+| `arquitetura` | Exibe a stack do portfólio |
 | `sudo hire-me` | 🎉 Confetti + download + modal |
 | `hacker` | Tema hacker *(em breve)* |
 | `clear` | Limpar terminal |
@@ -584,16 +607,19 @@ Ao clicar no ícone de idioma no MenuBar, **todo o site muda de idioma**:
 | Hero (subtítulo, bio, CTAs) | ✅ |
 | Terminal (boot, help, outputs, modal, toast) | ✅ |
 | Dock (labels dos ícones) | ✅ |
-| MenuBar (título do portfólio) | ✅ |
-| Greeting de boas-vindas | ✅ |
-| Página Sobre (bio, timeline, badges, scroll) | ✅ |
-| Página Skills (hard skills, soft skills, princípios) | ✅ |
+| MenuBar (título do portfólio via `portfolioTitle`) | ✅ |
+| Página Sobre (bio, timeline, badges, scroll, windowTitle) | ✅ |
+| Página Skills (hard skills, soft skills, princípios, windowTitle) | ✅ |
 | Página Projetos (títulos, descrições, CTAs, Em Breve) | ✅ |
+| Página Contato (heading, subheading, contactsLabel, windowTitle) | ✅ |
+| Toast mobile da home (inline via `lang`) | ✅ |
+
+> Nota: a tagline da home ("Desenvolvedor focado em performance...") está **hardcoded em PT** e não é traduzida.
 
 ### Favicon e Título da Aba
 
-- **Título estático**: "Leandro Dukiévicz" — definido no metadata do `layout.tsx` e reforçado pelo `MarqueeTitle` client-side
-- **Favicon rotativo**: 4 ícones SVG ciclando a cada 800ms via `setInterval` (código, café, xícara, infinito) — injetados dinamicamente no `<link rel="icon">`
+- **Título estático**: "Leandro Dukiévicz" — definido client-side pelo `MarqueeTitle` via `document.title` (sobrepõe o metadata do servidor)
+- **Favicon rotativo**: 4 ícones SVG ciclando a cada 800ms via `setInterval` (VscCode, CgCoffee, VscCoffee, TfiInfinite) — injetados dinamicamente no `<link rel="icon">`
 
 ### SEO / AEO
 
@@ -635,8 +661,9 @@ Configurado via Next.js `Metadata` API — sem tags manuais no HTML:
 
 | Header | Valor |
 |---|---|
+| `X-DNS-Prefetch-Control` | `on` |
 | `Strict-Transport-Security` | `max-age=63072000; includeSubDomains; preload` |
-| `X-Frame-Options` | `DENY` |
+| `X-Frame-Options` | `SAMEORIGIN` |
 | `X-Content-Type-Options` | `nosniff` |
 | `Referrer-Policy` | `strict-origin-when-cross-origin` |
 | `Permissions-Policy` | camera, microphone, geolocation desabilitados |
@@ -665,18 +692,18 @@ Configurado via Next.js `Metadata` API — sem tags manuais no HTML:
 
 ### MenuBar
 
-- Título traduzível via i18n
+- Título traduzível via i18n (`t.portfolioTitle`)
 - Relógio em tempo real com formato `Dia Mês HH:MM AM/PM` (oculto em telas `< sm`)
 - Ícone de idioma — alterna PT ↔ EN com indicador textual
-- Oculta automaticamente em `/blog`
+- Oculta automaticamente em `/blog` (e qualquer rota que começa com `/blog`)
 - **Mobile**: posicionada em `left: 54px` (após a dock vertical) até `right: 0`, garantindo visibilidade total — `z-index: 200` acima de todos os elementos
 - **Desktop**: posicionada `left: 0 right: 0` cobrindo a largura total
 
 ### Dock
 
 - 7 ícones: Home, Sobre, Skills, Projetos, Contato, Terminal, Blog
-- **Desktop (≥ 768px)**: dock horizontal fixa no rodapé centralizada com **efeito de zoom GSAP** (magnification)
-- **Mobile (< 768px)**: dock vertical fixa no lado esquerdo, ocupa 100% da altura, itens distribuídos com `flex-1`; ícone Terminal oculto em mobile
+- **Desktop (≥ 768px)**: dock horizontal fixa no rodapé com `bottom: 30px`, centralizada, **efeito de zoom GSAP** (magnification com `transformOrigin: "50% 120%"`)
+- **Mobile (< 768px)**: dock vertical fixa no lado esquerdo, ocupa 100% da altura, itens distribuídos com `justify-evenly`; ícone Terminal **excluído** do mobile (filtrado por `item.kind === "link"`)
 - Labels traduzíveis via i18n
 - `body` recebe `pl-[54px] md:pl-0` para compensar a largura da dock no mobile
 
@@ -687,12 +714,6 @@ Configurado via Next.js `Metadata` API — sem tags manuais no HTML:
 - **Delta time normalizado** — velocidade constante independentemente do tempo na página (sem aceleração progressiva)
 - `SPEED = 0.12`, `CLAMP = 0.18` — velocidade suave e consistente em todas as telas
 - Base `#03111F`
-
-### Saudação ao Visitante
-
-- Toast personalizado com cidade do visitante via geolocalização IP (ipapi.co)
-- Aparece apenas uma vez por sessão (sessionStorage)
-- Textos traduzíveis via i18n
 
 ### Otimização de Imagens
 
@@ -708,12 +729,14 @@ O site é totalmente responsivo de **320px a 1920px+**, seguindo a abordagem mob
 
 | Elemento | Mobile (< 768px) | Desktop (≥ 768px) |
 |---|---|---|
-| Dock | Vertical, lado esquerdo, 54px largura | Horizontal, rodapé centralizado |
+| Dock | Vertical, lado esquerdo, 54px largura | Horizontal, rodapé `bottom: 30px` centralizado |
 | MenuBar | `left: 54px → right: 0` | `left: 0 → right: 0` |
 | Janelas (Sobre, Skills) | `left: 62px`, `width: calc(100vw - 70px)` | `left: 10vw`, `width: 80vw` |
-| Janela Contato | `left: 62px`, `width: calc(100vw - 70px)` | `left: 20vw`, `width: 60vw` |
+| Janela Contato | `left: 62px`, `width: calc(100vw - 70px)` | `left: 11vw`, `width: 78vw` |
 | Cards Projetos | Altura `(innerHeight - 100) / 1.1`, imagem 35% | Altura fixa 460–580px |
 | Grids Skills | `minmax(80px)` / `minmax(72px)` | `minmax(107px)` / `minmax(88px)` |
+| Foto hexagonal (home) | Oculta | Visível |
+| Terminal | Oculto (`useIsMobile`) | Visível |
 | `<main>` | `w-full` (100% da área sem a dock) | `w-full` |
 | Body padding | `pl-[54px]` | `pl-0` |
 
@@ -731,7 +754,7 @@ O site é totalmente responsivo de **320px a 1920px+**, seguindo a abordagem mob
 | [@notionhq/client](https://github.com/makenotion/notion-sdk-js) | Integração com Notion API (assinantes do blog) |
 | [canvas-confetti](https://github.com/catdad/canvas-confetti) | Efeito de confete (CV download, formulário de contato e inscrição no blog) |
 | [validator.js](https://github.com/validatorjs/validator.js) | Validação de email RFC-compliant no backend |
-| [Resend](https://resend.com/) | Envio de email de notificação por novo assinante |
+| [Resend](https://resend.com/) | Envio de email de notificação por novo assinante (via `fetch` nativo) |
 | [react-icons](https://react-icons.github.io/react-icons/) | Ícones (skills, sobre, UI) |
 | [sharp](https://sharp.pixelplumbing.com/) | Conversão de imagens PNG/JPG → WebP |
 | [Formspree](https://formspree.io/) | Backend de formulário de contato (sem servidor) |
@@ -754,24 +777,33 @@ app/
 │       └── route.ts             # POST /api/subscribe — salva email no Notion
 ├── components/
 │   ├── CyberpunkBackground.tsx  # Background animado com blobs neon (delta time)
-│   ├── Dock.tsx                 # Dock horizontal (desktop, 30px bottom) / vertical (mobile)
+│   ├── Dock.tsx                 # Dock horizontal (desktop, bottom 30px) / vertical (mobile)
 │   ├── HeroPhoto.tsx            # Foto hexagonal com parallax, glitch e bordas animadas
 │   ├── MenuBar.tsx              # Barra superior com relógio e seletor de idioma
 │   ├── MarqueeTitle.tsx         # Título estático "Leandro Dukiévicz" + favicon rotativo (4 ícones SVG)
-│   ├── TerminalWindow.tsx       # Terminal interativo com resize e drag
-│   ├── LoadingScreen.tsx        # Loading screen primeira visita (espiral girassol)
-│   └── VisitorGreeting.tsx      # Toast de boas-vindas com geolocalização
+│   ├── TerminalWindow.tsx       # Terminal interativo com resize, drag e auto-posicionamento
+│   └── LoadingScreen.tsx        # Loading screen primeira visita (espiral girassol)
 ├── context/
 │   ├── TerminalContext.tsx      # Estado global do terminal e hire flow
 │   └── LanguageContext.tsx      # Estado global de idioma e traduções (PT/EN)
 ├── blog/
+│   ├── layout.tsx               # Metadata SEO da rota /blog
 │   └── LiquidGlassBlog.tsx      # ScrambleText + formulário de inscrição + integração Notion
-├── sobre/                       # Janela macOS — foto holográfica + timeline
-├── skills/                      # Janela macOS — hard skills + flip cards preenchidos + princípios
-├── projetos/                    # CoverFlow 3D carousel com cards de projeto
-├── contato/                     # Janela macOS — ícones de contato + formulário
-├── layout.tsx                   # Layout global — metadata SEO, JSON-LD, Analytics, Providers
-└── page.tsx                     # Home — hero, foto hexagonal, CTAs
+├── sobre/
+│   └── layout.tsx               # Metadata SEO da rota /sobre
+├── skills/
+│   └── layout.tsx               # Metadata SEO da rota /skills
+├── projetos/
+│   └── layout.tsx               # Metadata SEO da rota /projetos
+├── contato/
+│   └── layout.tsx               # Metadata SEO da rota /contato
+├── not-found.tsx                # Página 404 customizada com CyberpunkBackground
+├── layout.tsx                   # Layout global — metadata SEO, JSON-LD Person, Analytics, Providers, security headers
+└── page.tsx                     # Home — hero, foto hexagonal, CTAs, toast mobile, JSON-LD ProfilePage + FAQPage
+hooks/
+├── useIsMobile.ts               # Detecta mobile (< 768px) para ocultar terminal
+├── useTypewriter.ts             # Efeito typewriter caractere a caractere com delay configurável
+└── useStaggerVisible.ts         # Array de booleanos para animações de entrada em stagger
 public/
 ├── images/
 │   ├── projetos/                # Screenshots dos projetos (.webp)
@@ -779,9 +811,12 @@ public/
 │   ├── foto-1.webp              # Foto da home (hexagonal)
 │   ├── foto-sobre.webp          # Foto holográfica (sobre)
 │   └── *.webp                   # Ícones de contato (GitHub, LinkedIn, etc.)
-└── cv.pdf                       # Currículo para download
+└── Leandro Dukievicz - Desenvolvedor Web.pdf  # Currículo para download
 lib/
-└── emailValidation.ts           # Regex, lista de domínios descartáveis, helpers de validação
+├── download.ts                  # downloadCV() — cria link temporário e dispara o download
+├── emailValidation.ts           # Regex, lista de domínios descartáveis, helpers de validação
+├── schema.ts                    # buildPageSchema() — gera JSON-LD WebPage/ProfilePage por rota
+└── version.ts                   # Constante VERSION (usada internamente)
 ```
 
 ---
@@ -837,10 +872,16 @@ RESEND_API_KEY=sua_api_key_resend
 | `v1.9.0` | 2026-03-16 | Responsividade completa — w-full, janelas corrigidas, grids, MenuBar, cards projetos |
 | `v2.0.0` | 2026-03-16 | Blog — ScrambleText (Framer Motion), formulário de inscrição, integração Notion, toasts, confetti |
 | `v2.1.0` | 2026-03-16 | Blog backend — API route `/api/subscribe`, Notion database, Resend notification; validação robusta (rate limiting, honeypot, validator.js, MX record, disposable domains) |
-| `v2.2.0` | 2026-03-16 | Skills: flip cards preenchem o espaço (gridAutoRows 1fr, alignContent stretch, último card 1/-1); Dock 30px do bottom |
+| `v2.2.0` | 2026-03-16 | Skills: flip cards preenchem o espaço (gridAutoRows 1fr, alignContent stretch, último card 1/-1); Dock bottom 30px |
 | `v2.3.0` | 2026-03-16 | Blog: remove tema claro — apenas dark e dim disponíveis; astronaut-color ativa em ambos os temas |
 | `v2.4.0` | 2026-03-17 | SEO completo — metadata, OpenGraph, Twitter Card, JSON-LD Person, canonical (`devleandro.com.br`) |
 | `v2.5.0` | 2026-03-17 | Título estático "Leandro Dukiévicz" na aba; favicon rotativo com 4 ícones SVG; Vercel Analytics + Speed Insights |
+| `v2.6.0` | 2026-03-18 | CTAs renomeados (Entrar em Contato / Baixar Currículo / Get in Touch); tagline na home; `white-space: nowrap` nos botões; `min-w` na coluna esquerda |
+| `v2.7.0` | 2026-03-18 | Títulos das janelas renomeados (O que eu faço / Tecnologias que utilizo / como posso ajudar) com suporte PT/EN completo |
+| `v2.8.0` | 2026-03-18 | Janela de contato ampliada ~30%; header de texto acima dos ícones (Vamos trabalhar juntos?) com i18n PT/EN |
+| `v2.9.0` | 2026-03-18 | Metadata SEO por rota via `layout.tsx` server components; JSON-LD ProfilePage e FAQPage na home; `lib/schema.ts` |
+| `v3.0.0` | 2026-03-18 | Headers de segurança (HSTS, CSP, X-Frame-Options) e cache headers (`next.config.ts`); página 404 customizada com CyberpunkBackground |
+| `v3.1.0` | 2026-03-19 | Animação de entrada stagger na home (useStaggerVisible + useTypewriter); terminal centralizado no gap hero; toast mobile desktop-hint; hooks `useIsMobile`, `useStaggerVisible`, `useTypewriter`; `lib/download.ts` |
 
 ---
 

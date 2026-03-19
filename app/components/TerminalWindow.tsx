@@ -87,7 +87,7 @@ export default function TerminalWindow() {
     let centerX = window.innerWidth / 2 - effectiveW / 2;
     if (leftEl && rightEl) {
       const gapCenter = (leftEl.getBoundingClientRect().right + rightEl.getBoundingClientRect().left) / 2;
-      centerX = gapCenter - effectiveW / 2 - 60;
+      centerX = gapCenter - effectiveW / 2 - 40;
     }
 
     setPos({

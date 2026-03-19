@@ -1,4 +1,4 @@
-# Portfólio Cyberpunk — Leandro Dukievicz
+# Portfólio — Leandro Dukievicz
 
 > Portfólio pessoal desenvolvido com estética cyberpunk, interatividade avançada e animações fluidas.
 
@@ -6,7 +6,7 @@
 
 ## Visão Geral
 
-Portfólio construído para apresentar projetos, habilidades e informações profissionais de forma imersiva. A interface combina elementos visuais cyberpunk com componentes interativos inspirados no macOS — dock animada, terminal funcional e parallax na foto de perfil.
+Opa blz ?  eu construí isso aqui para apresentar projetos, habilidades e informações profissionais de forma imersiva. A interface combina elementos visuais cyberpunk com componentes interativos inspirados no macOS — dock animada, terminal funcional e parallax na foto de perfil.
 
 ---
 

@@ -74,11 +74,19 @@ export default function Contato() {
       return;
     }
     setSubmitting(true);
-    await fetch("https://formspree.io/f/maqpbbor", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ nome: form.nome, email: form.email, assunto: form.assunto, mensagem: form.mensagem }),
-    });
+    try {
+      const res = await fetch("https://formspree.io/f/maqpbbor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ nome: form.nome, email: form.email, assunto: form.assunto, mensagem: form.mensagem }),
+      });
+      if (!res.ok) throw new Error("Falha no envio");
+    } catch {
+      setSubmitting(false);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+      return;
+    }
     setSubmitting(false);
     setSubmitted(true);
     setShowSuccessToast(true);

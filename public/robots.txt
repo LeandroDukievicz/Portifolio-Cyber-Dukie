@@ -163,11 +163,11 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://leandrodukievicz.com/sitemap.xml
+Sitemap: https://devleandro.com.br/sitemap.xml
 
 # AEO (Answer Engine Optimization) files
 # These help LLMs understand your content better
-# https://leandrodukievicz.com/llms.txt
-# https://leandrodukievicz.com/llms-full.txt
-# https://leandrodukievicz.com/docs.json
-# https://leandrodukievicz.com/ai-index.json
+# https://devleandro.com.br/llms.txt
+# https://devleandro.com.br/llms-full.txt
+# https://devleandro.com.br/docs.json
+# https://devleandro.com.br/ai-index.json

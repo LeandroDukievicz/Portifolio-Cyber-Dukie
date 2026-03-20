@@ -4,13 +4,13 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Portfólio - Leandro Dukiévicz",
-      "url": "https://leandrodukievicz.com"
+      "url": "https://devleandro.com.br"
     },
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Portfólio - Leandro Dukiévicz",
-      "url": "https://leandrodukievicz.com"
+      "url": "https://devleandro.com.br"
     }
   ],
   "pages": {
@@ -19,7 +19,7 @@
         "@context": "https://schema.org",
         "@type": "WebPage",
         "name": "Leandro Dukiévicz — Desenvolvedor Front-End",
-        "url": "https://leandrodukievicz.com",
+        "url": "https://devleandro.com.br",
         "description": "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis."
       }
     ]

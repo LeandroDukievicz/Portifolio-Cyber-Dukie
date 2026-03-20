@@ -37,7 +37,7 @@ export default withAeo({
   aeo: {
     title: "Portfólio - Leandro Dukiévicz",
     description: "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end",
-    url: "https://leandrodukievicz.com",
+    url: "https://devleandro.com.br",
   },
   async headers() {
     return [

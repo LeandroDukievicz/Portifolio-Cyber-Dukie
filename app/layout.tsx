@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import Script from "next/script";
-import dynamic from "next/dynamic";
 import "./globals.css";
 import Dock from "./components/Dock";
 import MarqueeTitle from "./components/MarqueeTitle";
 import MenuBar from "./components/MenuBar";
 import LoadingScreen from "./components/LoadingScreen";
+import TerminalWindowLazy from "./components/TerminalWindowLazy";
 import { TerminalProvider } from "./context/TerminalContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-
-const TerminalWindow = dynamic(() => import("./components/TerminalWindow"), { ssr: false });
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -113,7 +111,7 @@ export default function RootLayout({
           <LoadingScreen />
           <MenuBar />
 {children}
-          <TerminalWindow />
+          <TerminalWindowLazy />
           <Dock />
           <MarqueeTitle />
           <Analytics />

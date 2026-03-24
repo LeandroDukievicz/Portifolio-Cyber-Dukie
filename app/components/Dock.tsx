@@ -13,17 +13,18 @@ import { useTerminal } from "../context/TerminalContext";
 import { useLanguage } from "../context/LanguageContext";
 
 type NavItem =
-  | { kind: "link";   labelKey: keyof ReturnType<typeof useLanguage>["t"]["dock"]; href: string;    icon: React.ElementType }
-  | { kind: "button"; labelKey: keyof ReturnType<typeof useLanguage>["t"]["dock"]; action: "terminal"; icon: React.ElementType };
+  | { kind: "link";     labelKey: keyof ReturnType<typeof useLanguage>["t"]["dock"]; href: string;    icon: React.ElementType }
+  | { kind: "external"; labelKey: keyof ReturnType<typeof useLanguage>["t"]["dock"]; href: string;    icon: React.ElementType }
+  | { kind: "button";   labelKey: keyof ReturnType<typeof useLanguage>["t"]["dock"]; action: "terminal"; icon: React.ElementType };
 
 const NAV_ITEMS: NavItem[] = [
-  { kind: "link",   labelKey: "home",     href: "/",        icon: IoHomeOutline           },
-  { kind: "link",   labelKey: "about",    href: "/sobre",    icon: BsPerson                },
-  { kind: "link",   labelKey: "skills",   href: "/skills",   icon: MdOutlineDesignServices },
-  { kind: "link",   labelKey: "projects", href: "/projetos", icon: GoProject               },
-  { kind: "link",   labelKey: "contact",  href: "/contato",  icon: MdOutlineContactMail    },
-  { kind: "button", labelKey: "terminal", action: "terminal", icon: BsTerminal             },
-  { kind: "link",   labelKey: "blog",     href: "/blog",     icon: FaBlogger               },
+  { kind: "link",     labelKey: "home",     href: "/",                       icon: IoHomeOutline           },
+  { kind: "link",     labelKey: "about",    href: "/sobre",                   icon: BsPerson                },
+  { kind: "link",     labelKey: "skills",   href: "/skills",                  icon: MdOutlineDesignServices },
+  { kind: "link",     labelKey: "projects", href: "/projetos",                icon: GoProject               },
+  { kind: "link",     labelKey: "contact",  href: "/contato",                 icon: MdOutlineContactMail    },
+  { kind: "button",   labelKey: "terminal", action: "terminal",               icon: BsTerminal             },
+  { kind: "external", labelKey: "blog",     href: "https://devsaderiva.com.br", icon: FaBlogger             },
 ];
 
 const MIN = 67;
@@ -95,6 +96,13 @@ export default function Dock() {
           </span>
           <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
         </Link>
+      ) : item.kind === "external" ? (
+        <a href={item.href} target="_blank" rel="noopener noreferrer" className={innerClass}>
+          <span className="text-[22px] md:text-[34px]">
+            <item.icon style={{ color: "var(--dock-icon-color)", filter: "var(--dock-icon-filter)" }} suppressHydrationWarning />
+          </span>
+          <span className="text-[8px] md:text-[10px] font-medium" style={{ color: "var(--dock-text-color)" }}>{t.dock[item.labelKey]}</span>
+        </a>
       ) : (
         <button onClick={open} aria-label={t.dock[item.labelKey]} type="button" className={`${innerClass} cursor-pointer bg-transparent border-none w-full`}>
           <span className="text-[22px] md:text-[34px]">

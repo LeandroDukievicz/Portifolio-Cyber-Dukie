@@ -29,8 +29,6 @@ export default function MenuBar() {
     return () => clearInterval(interval);
   }, []);
 
-  if (pathname.startsWith("/blog")) return null;
-
   return (
     <div
       className="fixed top-0 left-[54px] md:left-0 right-0 z-[200] flex items-center justify-between px-3"

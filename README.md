@@ -143,6 +143,7 @@ Configurado via Next.js `Metadata` API — sem tags manuais no HTML:
 | `/projetos` | Projetos | Portfolio de projetos |
 | `/blog` | Blog | Blog em desenvolvimento |
 | `/contato` | Contato | Disponibilidade e formas de contato |
+| `/faq` | FAQ | Perguntas frequentes sobre o desenvolvedor |
 
 **JSON-LD Schemas:**
 
@@ -175,6 +176,20 @@ Configurado via Next.js `Metadata` API — sem tags manuais no HTML:
 | `/_next/static/*` | 1 ano immutable | — |
 | `/images/*` | 1 dia | stale-while-revalidate 7 dias |
 | `/*.pdf` | 1 dia | — |
+
+### Página FAQ
+
+`app/faq/page.tsx` — perguntas e respostas frequentes sobre o desenvolvedor:
+- Accordion interativo com `IoChevronDownOutline` / `IoChevronUpOutline`
+- Suporte a i18n PT/EN via `useLanguage` (perguntas e respostas traduzidas)
+- Fundo `CyberpunkBackground` — consistência visual com o restante do site
+- Perguntas disponíveis:
+  - Quem é Leandro e o que ele faz?
+  - Qual é o stack deste portfólio?
+  - Leandro está disponível para novos projetos?
+  - Como posso entrar em contato?
+  - Como baixar o currículo?
+  - Você trabalha sozinho ou em equipe?
 
 ### Página 404 Customizada
 
@@ -355,6 +370,8 @@ app/
 │   └── layout.tsx               # Metadata SEO da rota /projetos
 ├── contato/
 │   └── layout.tsx               # Metadata SEO da rota /contato
+├── faq/
+│   └── page.tsx                 # Página FAQ — accordion PT/EN com CyberpunkBackground
 ├── not-found.tsx                # Página 404 customizada com CyberpunkBackground
 ├── layout.tsx                   # Layout global — metadata SEO, JSON-LD Person, Analytics, Providers, security headers
 └── page.tsx                     # Home — hero, foto hexagonal, CTAs, toast mobile, JSON-LD ProfilePage + FAQPage

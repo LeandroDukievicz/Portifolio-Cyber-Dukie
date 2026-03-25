@@ -200,7 +200,7 @@ export default function FaqPage() {
                     <div style={{
                       padding: isMobile ? "0 16px 16px 16px" : "0 20px 18px 44px",
                       fontSize: isMobile ? "0.82rem" : "0.9rem",
-                      color: "rgba(255,255,255,0.65)",
+                      color: "#00EAFF",
                       lineHeight: 1.8,
                       borderTop: "1px solid rgba(255,255,255,0.05)",
                       paddingTop: 14,

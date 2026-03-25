@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
-import Dock from "./components/Dock";
+import DockLazy from "./components/DockLazy";
 import MarqueeTitle from "./components/MarqueeTitle";
 import MenuBar from "./components/MenuBar";
 import LoadingScreen from "./components/LoadingScreen";
@@ -112,7 +112,7 @@ export default function RootLayout({
           <MenuBar />
 {children}
           <TerminalWindowLazy />
-          <Dock />
+          <DockLazy />
           <MarqueeTitle />
           <Analytics />
           <SpeedInsights />

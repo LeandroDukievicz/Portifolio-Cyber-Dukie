@@ -23,10 +23,6 @@ const FAQ_PT = [
     a: "Você pode entrar em contato através da página /contato do portfólio, pelo e-mail leandrodukievicz1718@gmail.com, pelo LinkedIn (linkedin.com/in/leandrodukievicz) ou pelo GitHub (github.com/LeandroDukievicz).",
   },
   {
-    q: "O que é o Dev's à Deriva?",
-    a: "Dev's à Deriva é o blog pessoal de Leandro, onde são publicados artigos sobre desenvolvimento web, tecnologia e experiências da carreira. Acesse em devsaderiva.com.br.",
-  },
-  {
     q: "Como baixar o currículo?",
     a: "O currículo pode ser baixado diretamente pela página inicial do portfólio, clicando no botão 'Baixar Currículo', ou digitando 'cv' no terminal.",
   },
@@ -48,10 +44,6 @@ const FAQ_EN = [
   {
     q: "How can I get in touch?",
     a: "You can get in touch through the /contact page, via email at leandrodukievicz1718@gmail.com, LinkedIn (linkedin.com/in/leandrodukievicz), or GitHub (github.com/LeandroDukievicz).",
-  },
-  {
-    q: "What is Dev's à Deriva?",
-    a: "Dev's à Deriva is Leandro's personal blog, where articles about web development, technology, and career experiences are published. Visit it at devsaderiva.com.br.",
   },
   {
     q: "How do I download the resume?",

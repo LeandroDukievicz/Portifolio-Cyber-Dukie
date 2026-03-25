@@ -229,7 +229,7 @@ export default function TerminalWindow() {
     const NAV: Record<string, string> = {
       home: "/", sobre: "/sobre", about: "/sobre",
       skills: "/skills", projetos: "/projetos", projects: "/projetos",
-      contato: "/contato", contact: "/contato",
+      contato: "/contato", contact: "/contato", faq: "/faq",
     };
 
     if (cmd === "blog") {

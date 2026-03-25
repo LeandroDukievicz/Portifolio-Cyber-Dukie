@@ -232,7 +232,10 @@ export default function TerminalWindow() {
       contato: "/contato", contact: "/contato",
     };
 
-    if (cmd === "arquitetura") {
+    if (cmd === "blog") {
+      window.open("https://devsaderiva.com.br", "_blank", "noopener,noreferrer");
+      addLines([{ kind: "output", text: tt.cmdBlog }]);
+    } else if (cmd === "arquitetura") {
       addLines(tt.cmdArquitetura.map(text => ({ kind: "info" as const, text })));
     } else if (cmd === "cv") {
       addLines([{ kind: "output", text: tt.cmdDownloading }]);

@@ -9,6 +9,7 @@ import { MdOutlineDesignServices } from "react-icons/md";
 import { GoProject } from "react-icons/go";
 import { MdOutlineContactMail } from "react-icons/md";
 import { FaBlogger } from "react-icons/fa";
+import { BsQuestionCircle } from "react-icons/bs";
 import { useTerminal } from "../context/TerminalContext";
 import { useLanguage } from "../context/LanguageContext";
 
@@ -24,6 +25,7 @@ const NAV_ITEMS: NavItem[] = [
   { kind: "link",     labelKey: "projects", href: "/projetos",                icon: GoProject               },
   { kind: "link",     labelKey: "contact",  href: "/contato",                 icon: MdOutlineContactMail    },
   { kind: "button",   labelKey: "terminal", action: "terminal",               icon: BsTerminal             },
+  { kind: "link",     labelKey: "faq",      href: "/faq",                     icon: BsQuestionCircle       },
   { kind: "external", labelKey: "blog",     href: "https://devsaderiva.com.br", icon: FaBlogger             },
 ];
 

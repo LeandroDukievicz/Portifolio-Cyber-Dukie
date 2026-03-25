@@ -18,6 +18,7 @@ export const translations = {
       projects: "Projetos",
       contact: "Contato",
       terminal: "Terminal",
+      faq: "FAQ",
       blog: "Blog",
     },
     terminal: {
@@ -208,6 +209,7 @@ export const translations = {
       projects: "Projects",
       contact: "Contact",
       terminal: "Terminal",
+      faq: "FAQ",
       blog: "Blog",
     },
     terminal: {

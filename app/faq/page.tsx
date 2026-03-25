@@ -7,8 +7,8 @@ import { useLanguage } from "../context/LanguageContext";
 
 const FAQ_PT = [
   {
-    q: "O que é este portfólio?",
-    a: "Este é o portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. O objetivo é apresentar projetos, habilidades e formas de contato de maneira interativa e moderna.",
+    q: "Quem é Leandro e o que ele faz?",
+    a: "Sou um desenvolvedor Full Stack com foco em construção de aplicações escaláveis, que também sejam performáticas e com uma marcante experiência de usuário, trabalhando com todo o ciclo de desenvolvimento, desde a arquitetura e modelagem dos dados até o deploy em produção e monitoramento pós-lançamento.",
   },
   {
     q: "Qual é o stack deste portfólio?",
@@ -34,8 +34,8 @@ const FAQ_PT = [
 
 const FAQ_EN = [
   {
-    q: "What is this portfolio?",
-    a: "This is the portfolio of Leandro Dukiévicz, a Front-End developer specialized in React, Next.js, and TypeScript. The goal is to present projects, skills, and contact information in an interactive and modern way.",
+    q: "Who is Leandro and what does he do?",
+    a: "I am a Full Stack developer focused on building scalable applications that are also performant and deliver a remarkable user experience, working across the entire development cycle — from architecture and data modeling to production deployment and post-launch monitoring.",
   },
   {
     q: "What is this portfolio's stack?",

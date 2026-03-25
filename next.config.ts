@@ -33,7 +33,9 @@ const securityHeaders = [
 ];
 
 export default withAeo({
-  turbopack: {},
+  turbopack: {
+    root: __dirname,
+  },
   aeo: {
     title: "Portfólio - Leandro Dukiévicz",
     description: "Portifólio de projetos pessoais e profissionais - Leandro Dukiévicz - Desenvolvedor Front-end",
@@ -73,7 +75,6 @@ export default withAeo({
       { source: "/skills", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
       { source: "/projetos", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
       { source: "/contato", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
-      { source: "/blog", headers: [{ key: "Cache-Control", value: "public, max-age=300, s-maxage=3600, stale-while-revalidate=86400" }] },
     ];
   },
 });

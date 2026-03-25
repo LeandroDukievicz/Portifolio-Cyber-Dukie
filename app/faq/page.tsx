@@ -150,7 +150,7 @@ export default function FaqPage() {
           <div style={{ height: 1, background: "linear-gradient(90deg, transparent, #00EAFF55, #BD00FF55, transparent)", marginBottom: 28 }} />
 
           {/* FAQ accordion */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 860, margin: "0 auto" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "85%", margin: "0 auto" }}>
             {items.map((item, i) => {
               const isOpen = openIndex === i;
               return (

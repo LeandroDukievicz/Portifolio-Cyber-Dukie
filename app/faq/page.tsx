@@ -26,6 +26,10 @@ const FAQ_PT = [
     q: "Como baixar o currículo?",
     a: "O currículo pode ser baixado diretamente pela página inicial do portfólio, clicando no botão 'Baixar Currículo', ou digitando 'cv' no terminal.",
   },
+  {
+    q: "Você trabalha sozinho ou em equipe?",
+    a: "Eu trabalho bem nos dois cenários. Posso trabalhar com squads ágeis (Scrum, Kanban) e comunicação assíncrona com times distribuídos, mas também tenho autonomia suficiente para tocar meus projetos como desenvolvedor independente, consigo gerenciar o escopo, prazos e entregas sem supervisão constante.",
+  },
 ];
 
 const FAQ_EN = [
@@ -48,6 +52,10 @@ const FAQ_EN = [
   {
     q: "How do I download the resume?",
     a: "The resume can be downloaded directly from the portfolio's home page by clicking the 'Download CV' button, or by typing 'cv' in the terminal.",
+  },
+  {
+    q: "Do you work alone or in a team?",
+    a: "I work well in both scenarios. I can work with agile squads (Scrum, Kanban) and async communication with distributed teams, but I also have enough autonomy to run my own projects as an independent developer — managing scope, deadlines, and deliverables without constant supervision.",
   },
 ];
 

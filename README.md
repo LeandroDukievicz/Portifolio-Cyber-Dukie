@@ -6,7 +6,7 @@ Acesse em: [devleandro.com.br](https://devleandro.com.br)
 
 ---
 
-## O que tem dentro
+## Rotas / Páginas do Projeto
 
 **Home** — Hero com foto hexagonal (parallax + glitch), terminal macOS interativo, animações de entrada em stagger e CTAs para contato/currículo.
 

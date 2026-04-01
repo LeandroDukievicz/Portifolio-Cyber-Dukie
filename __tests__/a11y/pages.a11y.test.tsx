@@ -226,6 +226,93 @@ describe("A11y — PROBLEMA IDENTIFICADO no formulário de produção", () => {
   });
 });
 
+describe("A11y — FAQ Accordion", () => {
+  function IsolatedFaqAccordion() {
+    const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+
+    const items = [
+      { q: "Quem é Leandro?", a: "Sou um Desenvolvedor Full Stack focado em construir produtos digitais." },
+      { q: "Você é Freelancer ou trabalha em projetos de longo prazo?", a: "Ambos." },
+      { q: "Qual sua disponibilidade atual?", a: "Trabalho com alocações flexíveis." },
+    ];
+
+    return (
+      <section aria-label="Perguntas Frequentes">
+        <h1>Perguntas Frequentes</h1>
+        {items.map((item, i) => (
+          <div key={i}>
+            <button
+              type="button"
+              aria-expanded={openIndex === i}
+              aria-controls={`faq-answer-${i}`}
+              onClick={() => setOpenIndex(openIndex === i ? null : i)}
+            >
+              {item.q}
+            </button>
+            {openIndex === i && (
+              <div id={`faq-answer-${i}`} role="region" aria-label={item.q}>
+                {item.a}
+              </div>
+            )}
+          </div>
+        ))}
+      </section>
+    );
+  }
+
+  function IsolatedFaqCta() {
+    return (
+      <a href="/contato" aria-label="Vamos conversar sobre seu Projeto?">
+        Vamos conversar sobre seu Projeto?
+      </a>
+    );
+  }
+
+  it("accordion sem violações de acessibilidade", async () => {
+    const { container } = render(<IsolatedFaqAccordion />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("botões do accordion têm aria-expanded", () => {
+    const { container } = render(<IsolatedFaqAccordion />);
+    const buttons = container.querySelectorAll("button[aria-expanded]");
+    expect(buttons.length).toBeGreaterThan(0);
+  });
+
+  it("botões têm type='button' (não disparam submit de form)", () => {
+    const { container } = render(<IsolatedFaqAccordion />);
+    const buttons = container.querySelectorAll("button");
+    buttons.forEach((btn) => {
+      expect(btn.getAttribute("type")).toBe("button");
+    });
+  });
+
+  it("heading da seção está presente", () => {
+    const { container } = render(<IsolatedFaqAccordion />);
+    expect(container.querySelector("h1")).toBeInTheDocument();
+    expect(container.querySelector("h1")?.textContent).toBe("Perguntas Frequentes");
+  });
+
+  it("CTA não tem violações de acessibilidade", async () => {
+    const { container } = render(<IsolatedFaqCta />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("CTA tem texto descritivo (não é link vazio)", () => {
+    const { container } = render(<IsolatedFaqCta />);
+    const link = container.querySelector("a");
+    expect(link?.textContent?.trim()).not.toBe("");
+  });
+
+  it("CTA aponta para a rota correta", () => {
+    const { container } = render(<IsolatedFaqCta />);
+    const link = container.querySelector("a");
+    expect(link?.getAttribute("href")).toBe("/contato");
+  });
+});
+
 describe("A11y — Estrutura semântica da página", () => {
   it("hero section tem heading principal", () => {
     const { container } = render(

@@ -234,6 +234,120 @@ test.describe("Responsividade Mobile", () => {
   });
 });
 
+// ── FAQ ─────────────────────────────────────────────────────────────────────
+
+test.describe("FAQ Page (/faq)", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/faq");
+    await waitForLoad(page);
+  });
+
+  test("carrega sem erros de JavaScript", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.goto("/faq");
+    await waitForLoad(page);
+    expect(errors).toHaveLength(0);
+  });
+
+  test("exibe heading 'Perguntas Frequentes'", async ({ page }) => {
+    await expect(page.getByText("Perguntas Frequentes")).toBeVisible({ timeout: 10000 });
+  });
+
+  test("exibe 13 botões de pergunta", async ({ page }) => {
+    const buttons = page.getByRole("button");
+    await expect(buttons).toHaveCount(13, { timeout: 10000 });
+  });
+
+  test("accordion abre ao clicar em uma pergunta", async ({ page }) => {
+    const firstQuestion = page.getByText("Quem é Leandro?");
+    await expect(firstQuestion).toBeVisible({ timeout: 10000 });
+    await firstQuestion.click();
+    await expect(
+      page.getByText(/Sou um Desenvolvedor Full Stack focado/i)
+    ).toBeVisible({ timeout: 5000 });
+  });
+
+  test("accordion fecha ao clicar novamente na pergunta aberta", async ({ page }) => {
+    const firstQuestion = page.getByText("Quem é Leandro?");
+    await firstQuestion.click();
+    await expect(page.getByText(/Sou um Desenvolvedor Full Stack focado/i)).toBeVisible();
+    await firstQuestion.click();
+    await expect(page.getByText(/Sou um Desenvolvedor Full Stack focado/i)).not.toBeVisible();
+  });
+
+  test("apenas um item do accordion fica aberto por vez", async ({ page }) => {
+    await page.getByText("Quem é Leandro?").click();
+    await expect(page.getByText(/Sou um Desenvolvedor Full Stack focado/i)).toBeVisible();
+
+    await page.getByText("Você é Freelancer ou trabalha em projetos de longo prazo?").click();
+    await expect(page.getByText(/Sou um Desenvolvedor Full Stack focado/i)).not.toBeVisible();
+    await expect(page.getByText(/Além de atuar como freelancer/i)).toBeVisible();
+  });
+
+  test("botão CTA 'Vamos conversar' está visível", async ({ page }) => {
+    await expect(
+      page.getByText(/Vamos conversar sobre seu Projeto\?/i)
+    ).toBeVisible({ timeout: 10000 });
+  });
+
+  test("botão CTA redireciona para /contato", async ({ page }) => {
+    const cta = page.getByText(/Vamos conversar sobre seu Projeto\?/i);
+    await expect(cta).toBeVisible({ timeout: 10000 });
+    await cta.click();
+    await expect(page).toHaveURL(/\/contato/);
+  });
+
+  test("toggle de idioma muda para 'Frequently Asked Questions'", async ({ page }) => {
+    const langButton = page.getByTitle(/Switch to English/i);
+    await expect(langButton).toBeVisible({ timeout: 5000 });
+    await langButton.click();
+    await expect(page.getByText("Frequently Asked Questions")).toBeVisible({ timeout: 5000 });
+  });
+
+  test("perguntas mudam para inglês após toggle", async ({ page }) => {
+    const langButton = page.getByTitle(/Switch to English/i);
+    await langButton.click();
+    await expect(page.getByText("Who is Leandro?")).toBeVisible({ timeout: 5000 });
+  });
+
+  test("CTA em inglês aparece após toggle", async ({ page }) => {
+    const langButton = page.getByTitle(/Switch to English/i);
+    await langButton.click();
+    await expect(
+      page.getByText(/Let's talk about your Project\?/i)
+    ).toBeVisible({ timeout: 5000 });
+  });
+});
+
+test.describe("FAQ Page — Mobile", () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test("carrega corretamente em mobile", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.goto("/faq");
+    await waitForLoad(page);
+    expect(errors).toHaveLength(0);
+  });
+
+  test("accordion funciona em mobile", async ({ page }) => {
+    await page.goto("/faq");
+    await waitForLoad(page);
+    await page.getByText("Quem é Leandro?").click();
+    await expect(
+      page.getByText(/Sou um Desenvolvedor Full Stack focado/i)
+    ).toBeVisible({ timeout: 5000 });
+  });
+
+  test("CTA está visível em mobile", async ({ page }) => {
+    await page.goto("/faq");
+    await waitForLoad(page);
+    const cta = page.getByText(/Vamos conversar sobre seu Projeto\?/i);
+    await expect(cta).toBeVisible({ timeout: 10000 });
+  });
+});
+
 // ── Performance básica ──────────────────────────────────────────────────────
 
 test.describe("Performance", () => {

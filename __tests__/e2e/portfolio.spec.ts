@@ -122,6 +122,60 @@ test.describe("Navegação", () => {
 
     expect(errors).toHaveLength(0);
   });
+});
+
+// ── Skills Page ──────────────────────────────────────────────────────────────
+
+test.describe("Skills Page (/skills)", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/skills");
+    await waitForLoad(page);
+  });
+
+  test("janela exibe título experiencia.txt", async ({ page }) => {
+    await expect(page.getByText("experiencia.txt")).toBeVisible({ timeout: 10000 });
+  });
+
+  test("exibe os 4 cards de especialização", async ({ page }) => {
+    await expect(page.getByText("Frontend & UI Performance")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Backend & APIs")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Banco de Dados")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("DevOps & Tooling")).toBeVisible({ timeout: 10000 });
+  });
+
+  test("exibe seção de princípios de engenharia", async ({ page }) => {
+    await expect(page.getByText(/princípios de engenharia/i)).toBeVisible({ timeout: 10000 });
+  });
+
+  test("exibe itens da stack completa", async ({ page }) => {
+    await expect(page.getByText("React")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("TypeScript")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Next.js")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Docker")).toBeVisible({ timeout: 10000 });
+  });
+
+  test("exibe seção de soft skills", async ({ page }) => {
+    await expect(page.getByText(/Resolução de problemas/i)).toBeVisible({ timeout: 10000 });
+  });
+
+  test("janela está visível e ocupa a tela", async ({ page }) => {
+    const window = page.locator(".window-rise");
+    await expect(window).toBeVisible({ timeout: 10000 });
+    const box = await window.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.width).toBeGreaterThan(400);
+    expect(box!.height).toBeGreaterThan(200);
+  });
+
+  test("não tem erros de recursos falhando", async ({ page }) => {
+    const failedRequests: string[] = [];
+    page.on("requestfailed", (req) => {
+      if (!req.url().includes("hot-update")) failedRequests.push(req.url());
+    });
+    await page.goto("/skills");
+    await waitForLoad(page);
+    expect(failedRequests).toHaveLength(0);
+  });
 
   test("rota inexistente retorna 404 sem crash", async ({ page }) => {
     const response = await page.goto("/pagina-que-nao-existe");

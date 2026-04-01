@@ -313,6 +313,83 @@ describe("A11y — FAQ Accordion", () => {
   });
 });
 
+describe("A11y — Skills Page", () => {
+  function IsolatedSkillsWindow() {
+    return (
+      <main id="main-content">
+        <div role="region" aria-label="Janela de skills">
+          {/* Title bar */}
+          <div>
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span aria-hidden="true" />
+            <span>experiencia.txt</span>
+          </div>
+          {/* Specialty cards */}
+          <section aria-label="Especializações">
+            {["Frontend & UI Performance", "Backend & APIs", "Banco de Dados", "DevOps & Tooling"].map((title) => (
+              <article key={title} aria-label={title}>
+                <h3>{title}</h3>
+              </article>
+            ))}
+          </section>
+          {/* Principles */}
+          <section aria-label="Princípios de engenharia">
+            <h2>princípios de engenharia</h2>
+            <ul>
+              <li>Componentes com responsabilidade única e interfaces explícitas</li>
+              <li>Performance como requisito, não otimização tardia</li>
+            </ul>
+          </section>
+          {/* Stack */}
+          <section aria-label="Stack completa">
+            <h2>stack completa</h2>
+            <ul>
+              {["JavaScript", "TypeScript", "React", "Next.js"].map((s) => (
+                <li key={s}>{s}</li>
+              ))}
+            </ul>
+          </section>
+          {/* Soft skills */}
+          <section aria-label="Soft skills">
+            <p>Resolução de problemas com foco em tradeoffs reais.</p>
+          </section>
+        </div>
+      </main>
+    );
+  }
+
+  it("estrutura da janela de skills não tem violações de acessibilidade", async () => {
+    const { container } = render(<IsolatedSkillsWindow />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("cards de especialização têm headings identificáveis", () => {
+    const { container } = render(<IsolatedSkillsWindow />);
+    const headings = container.querySelectorAll("h3");
+    expect(headings.length).toBe(4);
+    const titles = Array.from(headings).map((h) => h.textContent);
+    expect(titles).toContain("Frontend & UI Performance");
+    expect(titles).toContain("Backend & APIs");
+    expect(titles).toContain("Banco de Dados");
+    expect(titles).toContain("DevOps & Tooling");
+  });
+
+  it("seções têm aria-label descritivo", () => {
+    const { container } = render(<IsolatedSkillsWindow />);
+    const sections = container.querySelectorAll("section[aria-label]");
+    expect(sections.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("lista da stack contém itens", () => {
+    const { container } = render(<IsolatedSkillsWindow />);
+    const stackSection = container.querySelector("section[aria-label='Stack completa']");
+    const items = stackSection?.querySelectorAll("li");
+    expect(items?.length).toBeGreaterThan(0);
+  });
+});
+
 describe("A11y — Estrutura semântica da página", () => {
   it("hero section tem heading principal", () => {
     const { container } = render(

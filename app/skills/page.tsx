@@ -26,7 +26,7 @@ export default function Skills() {
         style={{
           position: "fixed",
           top: isMobile ? 36 : 48,
-          bottom: isMobile ? 8 : 48,
+          bottom: isMobile ? 8 : 151,
           left: isMobile ? 62 : "7.5vw",
           width: isMobile ? "calc(100vw - 70px)" : "85vw",
           borderRadius: 12,

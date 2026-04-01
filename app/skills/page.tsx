@@ -5,57 +5,12 @@ import CyberpunkBackground from "../components/CyberpunkBackground";
 import { useLanguage } from "../context/LanguageContext";
 import { buildPageSchema } from "@/lib/schema";
 
-const SPECIALTIES = [
-  {
-    accent: "#4ecdc4",
-    badge: "4+ anos",
-    title: "Frontend & UI Performance",
-    desc: "SPAs, SSR/SSG, design systems e Web Vitals em produção.",
-    tags: [
-      { label: "React",      color: "cyan" },
-      { label: "Next.js",    color: "cyan" },
-      { label: "TypeScript", color: "cyan" },
-      { label: "Tailwind",   color: "cyan" },
-      { label: "Web Vitals", color: "gray" },
-    ],
-  },
-  {
-    accent: "#f06292",
-    badge: "3+ anos",
-    title: "Backend & APIs",
-    desc: "APIs REST, arquitetura MVC, autenticação e integrações.",
-    tags: [
-      { label: "PHP",     color: "pink" },
-      { label: "Laravel", color: "pink" },
-      { label: "Node.js", color: "pink" },
-      { label: "Express", color: "pink" },
-      { label: "JWT/Auth",color: "gray" },
-    ],
-  },
-  {
-    accent: "#ffb347",
-    badge: "2+ anos",
-    title: "Banco de Dados",
-    desc: "Modelagem relacional, queries otimizadas e migrações.",
-    tags: [
-      { label: "PostgreSQL", color: "amber" },
-      { label: "MySQL",      color: "amber" },
-      { label: "Eloquent",   color: "gray" },
-      { label: "SQL tuning", color: "gray" },
-    ],
-  },
-  {
-    accent: "#b39ddb",
-    badge: "em evolução",
-    title: "DevOps & Tooling",
-    desc: "Containerização, CI/CD, versionamento e automação.",
-    tags: [
-      { label: "Docker",         color: "purple" },
-      { label: "Git",            color: "purple" },
-      { label: "GitHub Actions", color: "gray" },
-      { label: "pnpm",           color: "gray" },
-    ],
-  },
+const SPECIALTY_ACCENTS = ["#4ecdc4", "#f06292", "#ffb347", "#b39ddb"];
+const SPECIALTY_TAG_COLORS = [
+  ["cyan", "cyan", "cyan", "cyan", "gray"],
+  ["pink", "pink", "pink", "pink", "gray"],
+  ["amber", "amber", "gray", "gray"],
+  ["purple", "purple", "gray", "gray"],
 ];
 
 const TAG_STYLES: Record<string, React.CSSProperties> = {
@@ -65,15 +20,6 @@ const TAG_STYLES: Record<string, React.CSSProperties> = {
   purple: { background: "#1a1a2a", color: "#b39ddb", border: "1px solid #3a2a4a" },
   gray:   { background: "#0f1a22", color: "#6a8a9a", border: "1px solid #1a2a3a" },
 };
-
-const PRINCIPLES = [
-  "Componentes com responsabilidade única e interfaces explícitas",
-  "Performance como requisito, não otimização tardia",
-  "Nomear pelo que faz, não pelo que é",
-  "Code review como transferência de conhecimento",
-  "Abstrações só quando o padrão se repete 3+ vezes",
-  "Documentar decisões de arquitetura, não o óbvio",
-];
 
 const STACK = [
   "JavaScript","TypeScript","HTML5","CSS3","React","Next.js",
@@ -175,7 +121,7 @@ export default function Skills() {
             textTransform: "uppercase", marginBottom: "0.75rem",
             display: "flex", alignItems: "center", gap: 8,
           }}>
-            especializações
+            {s.sectionSpecialties}
           </div>
 
           {/* Row 1 — 4 specialty cards */}
@@ -185,12 +131,21 @@ export default function Skills() {
             gap: 10,
             marginBottom: "1.75rem",
           }}>
-            {SPECIALTIES.map(({ accent, badge, title, desc, tags }) => (
+            {s.specialties.map(({ badge, title, desc, tags }, si) => {
+              const accent = SPECIALTY_ACCENTS[si];
+              const tagColors = SPECIALTY_TAG_COLORS[si];
+              const rgbMap: Record<string, string> = {
+                "#4ecdc4": "78,205,196",
+                "#f06292": "240,98,146",
+                "#ffb347": "255,179,71",
+                "#b39ddb": "179,157,219",
+              };
+              return (
               <div
                 key={title}
                 className="sp-card-bar"
                 style={{
-                  background: `linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(${accent === "#4ecdc4" ? "78,205,196" : accent === "#f06292" ? "240,98,146" : accent === "#ffb347" ? "255,179,71" : "179,157,219"},0.08) 100%)`,
+                  background: `linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(${rgbMap[accent]},0.08) 100%)`,
                   border: `1px solid ${accent}22`,
                   borderTop: `2px solid ${accent}`,
                   borderRadius: 8,
@@ -212,17 +167,18 @@ export default function Skills() {
                   {desc}
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                  {tags.map(({ label, color }) => (
+                  {tags.map((label, ti) => (
                     <span key={label} style={{
                       fontSize: 8, padding: "2px 6px", borderRadius: 3,
-                      letterSpacing: "0.04em", ...TAG_STYLES[color],
+                      letterSpacing: "0.04em", ...TAG_STYLES[tagColors[ti] ?? "gray"],
                     }}>
                       {label}
                     </span>
                   ))}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Row 2 — Principles + Stack */}
@@ -248,7 +204,7 @@ export default function Skills() {
                 fontSize: 12, fontWeight: 800, color: "#4ecdc4",
                 marginBottom: "0.8rem", display: "flex", alignItems: "center",
               }}>
-                princípios de engenharia
+                {s.sectionPrinciples}
               </div>
               <ul style={{
                 listStyle: "none", padding: 0, margin: 0,
@@ -256,7 +212,7 @@ export default function Skills() {
                 gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
                 gap: 7,
               }}>
-                {PRINCIPLES.map((p, i) => (
+                {s.principles.map((p, i) => (
                   <li key={i} className="sp-principle-item" style={{
                     fontSize: 9, color: "#6a9a8a",
                     display: "flex", alignItems: "flex-start", gap: 5, lineHeight: 1.5,
@@ -282,7 +238,7 @@ export default function Skills() {
                 textTransform: "uppercase", marginBottom: "0.75rem",
                 display: "flex", alignItems: "center", gap: 8,
               }}>
-                stack completa
+                {s.sectionStack}
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
                 {STACK.map(item => (
@@ -304,7 +260,7 @@ export default function Skills() {
             textTransform: "uppercase", marginBottom: "0.75rem",
             display: "flex", alignItems: "center", gap: 8,
           }}>
-            soft skills
+            {s.sectionSoftSkills}
           </div>
           <div style={{
             background: "linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(100,120,180,0.06) 100%)",
@@ -316,11 +272,11 @@ export default function Skills() {
             boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
           }}>
             <p style={{ fontSize: 9, color: "#4a6a7a", lineHeight: 1.9, margin: 0 }}>
-              <strong style={{ color: "#6a9aaa", fontWeight: 400 }}>Resolução de problemas</strong> com foco em tradeoffs reais —{" "}
-              <strong style={{ color: "#6a9aaa", fontWeight: 400 }}>comunicação clara</strong> com times técnicos e não-técnicos —{" "}
-              <strong style={{ color: "#6a9aaa", fontWeight: 400 }}>aprendizado contínuo</strong> aplicado diretamente em projetos —{" "}
-              <strong style={{ color: "#6a9aaa", fontWeight: 400 }}>atenção a detalhes</strong> tanto em código quanto em UX —{" "}
-              <strong style={{ color: "#6a9aaa", fontWeight: 400 }}>adaptabilidade</strong> em contextos ágeis com requisitos em mudança.
+              {s.softSkillsParagraph.map(({ label, rest }, i) => (
+                <React.Fragment key={i}>
+                  <strong style={{ color: "#6a9aaa", fontWeight: 400 }}>{label}</strong>{rest}
+                </React.Fragment>
+              ))}
             </p>
           </div>
 

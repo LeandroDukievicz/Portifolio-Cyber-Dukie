@@ -108,17 +108,19 @@ export default function Skills() {
         {/* Content */}
         <div style={{
           flex: 1,
-          overflowY: "auto",
-          padding: isMobile ? "16px 12px" : "20px 24px",
-          scrollbarWidth: "thin",
-          scrollbarColor: "rgba(255,255,255,0.08) transparent",
+          minHeight: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          padding: isMobile ? "14px 12px" : "16px 20px",
           color: "#c8d8e8",
+          overflow: "hidden",
         }}>
 
           {/* Section label — especializações */}
           <div className="sp-section-line" style={{
             fontSize: 9, letterSpacing: "0.25em", color: "#3a5a6a",
-            textTransform: "uppercase", marginBottom: "0.75rem",
+            textTransform: "uppercase", flexShrink: 0,
             display: "flex", alignItems: "center", gap: 8,
           }}>
             {s.sectionSpecialties}
@@ -129,7 +131,7 @@ export default function Skills() {
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
             gap: 10,
-            marginBottom: "1.75rem",
+            flexShrink: 0,
           }}>
             {s.specialties.map(({ badge, title, desc, tags }, si) => {
               const accent = SPECIALTY_ACCENTS[si];
@@ -186,7 +188,8 @@ export default function Skills() {
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr" : "1.6fr 1fr",
             gap: 10,
-            marginBottom: "1.75rem",
+            flex: 1,
+            minHeight: 0,
           }}>
             {/* Principles */}
             <div style={{
@@ -198,6 +201,7 @@ export default function Skills() {
               backdropFilter: "blur(12px) saturate(150%)",
               WebkitBackdropFilter: "blur(12px) saturate(150%)",
               boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(78,205,196,0.07)",
+              overflow: "hidden",
             }}>
               <div className="sp-principles-title" style={{
                 fontFamily: "'Syne', 'JetBrains Mono', sans-serif",
@@ -257,7 +261,7 @@ export default function Skills() {
           {/* Row 3 — Soft skills */}
           <div className="sp-section-line" style={{
             fontSize: 9, letterSpacing: "0.25em", color: "#3a5a6a",
-            textTransform: "uppercase", marginBottom: "0.75rem",
+            textTransform: "uppercase", flexShrink: 0,
             display: "flex", alignItems: "center", gap: 8,
           }}>
             {s.sectionSoftSkills}
@@ -270,11 +274,12 @@ export default function Skills() {
             backdropFilter: "blur(12px) saturate(150%)",
             WebkitBackdropFilter: "blur(12px) saturate(150%)",
             boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
+            flexShrink: 0,
           }}>
-            <p style={{ fontSize: 9, color: "#4a6a7a", lineHeight: 1.9, margin: 0 }}>
+            <p style={{ fontSize: 9, color: "#00EAFF", lineHeight: 1.9, margin: 0 }}>
               {s.softSkillsParagraph.map(({ label, rest }, i) => (
                 <React.Fragment key={i}>
-                  <strong style={{ color: "#6a9aaa", fontWeight: 400 }}>{label}</strong>{rest}
+                  <strong style={{ color: "#FF00FF", fontWeight: 400 }}>{label}</strong>{rest}
                 </React.Fragment>
               ))}
             </p>

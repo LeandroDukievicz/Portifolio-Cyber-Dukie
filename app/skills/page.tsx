@@ -238,7 +238,7 @@ export default function Skills() {
                   background: `linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(${rgbMap[accent]},0.08) 100%)`,
                   border: "1px solid rgba(255,255,255,0.07)",
                   borderRadius: 8,
-                  padding: "0.8rem 1rem",
+                  padding: "1.05rem 1.3rem",
                   position: "relative",
                   overflow: "hidden",
                   display: "flex",
@@ -250,18 +250,18 @@ export default function Skills() {
               >
                 <div style={{
                   fontFamily: "'Syne', 'JetBrains Mono', sans-serif",
-                  fontSize: 14, fontWeight: 700, color: "#e0f0f8", marginBottom: 6,
+                  fontSize: 18, fontWeight: 700, color: "#e0f0f8", marginBottom: 8,
                   flexShrink: 0,
                 }}>
                   {title}
                 </div>
-                <div style={{ fontSize: 11, color: "#4a7a8a", lineHeight: 1.55, marginBottom: 10, flex: 1 }}>
+                <div style={{ fontSize: 14, color: "#4a7a8a", lineHeight: 1.55, marginBottom: 13, flex: 1 }}>
                   {desc}
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 4, flexShrink: 0 }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 5, flexShrink: 0 }}>
                   {tags.map((label, ti) => (
                     <span key={label} style={{
-                      fontSize: 10, padding: "2px 7px", borderRadius: 3,
+                      fontSize: 13, padding: "3px 9px", borderRadius: 3,
                       letterSpacing: "0.04em",
                       background: "#0d1e2a", color: "#4ecdc4", border: "1px solid rgba(78,205,196,0.2)",
                     }}>

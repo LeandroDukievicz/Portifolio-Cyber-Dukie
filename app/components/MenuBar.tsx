@@ -31,6 +31,7 @@ export default function MenuBar() {
 
   return (
     <div
+      suppressHydrationWarning
       className="fixed top-0 left-[54px] md:left-0 right-0 z-[200] flex items-center justify-between px-3"
       style={{
         height: "28px",

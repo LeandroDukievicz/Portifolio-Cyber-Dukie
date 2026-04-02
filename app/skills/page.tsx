@@ -170,6 +170,7 @@ export default function Skills() {
       `}</style>
 
       <div
+        suppressHydrationWarning
         className="window-rise"
         style={{
           position: "fixed",

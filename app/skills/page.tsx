@@ -151,7 +151,7 @@ export default function Skills() {
                   border: `1px solid ${accent}22`,
                   borderTop: `2px solid ${accent}`,
                   borderRadius: 8,
-                  padding: "1rem",
+                  padding: "1.56rem",
                   position: "relative",
                   overflow: "hidden",
                   backdropFilter: "blur(12px) saturate(150%)",
@@ -161,17 +161,17 @@ export default function Skills() {
               >
                 <div style={{
                   fontFamily: "'Syne', 'JetBrains Mono', sans-serif",
-                  fontSize: 12, fontWeight: 700, color: "#e0f0f8", marginBottom: 5,
+                  fontSize: 19, fontWeight: 700, color: "#e0f0f8", marginBottom: 8,
                 }}>
                   {title}
                 </div>
-                <div style={{ fontSize: 9, color: "#4a7a8a", lineHeight: 1.6, marginBottom: 10 }}>
+                <div style={{ fontSize: 14, color: "#4a7a8a", lineHeight: 1.6, marginBottom: 16 }}>
                   {desc}
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                   {tags.map((label, ti) => (
                     <span key={label} style={{
-                      fontSize: 8, padding: "2px 6px", borderRadius: 3,
+                      fontSize: 12, padding: "4px 10px", borderRadius: 3,
                       letterSpacing: "0.04em", ...TAG_STYLES[tagColors[ti] ?? "gray"],
                     }}>
                       {label}

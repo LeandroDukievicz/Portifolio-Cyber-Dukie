@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  SiJavascript, SiTypescript, SiHtml5, SiCss, SiReact, SiNextdotjs,
+  SiNodedotjs, SiExpress, SiPhp, SiLaravel, SiTailwindcss,
+  SiPostgresql, SiMysql, SiDocker, SiGit,
+} from "react-icons/si";
+import { TbApi, TbSeo } from "react-icons/tb";
 import CyberpunkBackground from "../components/CyberpunkBackground";
 import { useLanguage } from "../context/LanguageContext";
 import { buildPageSchema } from "@/lib/schema";
@@ -27,6 +33,26 @@ const STACK = [
   "PostgreSQL","MySQL","Docker","Git","REST APIs","SEO Web",
 ];
 
+const STACK_ICONS: Record<string, React.ElementType> = {
+  "JavaScript": SiJavascript,
+  "TypeScript": SiTypescript,
+  "HTML5":      SiHtml5,
+  "CSS3":       SiCss,
+  "React":      SiReact,
+  "Next.js":    SiNextdotjs,
+  "Node.js":    SiNodedotjs,
+  "Express":    SiExpress,
+  "PHP":        SiPhp,
+  "Laravel":    SiLaravel,
+  "Tailwind":   SiTailwindcss,
+  "PostgreSQL": SiPostgresql,
+  "MySQL":      SiMysql,
+  "Docker":     SiDocker,
+  "Git":        SiGit,
+  "REST APIs":  TbApi,
+  "SEO Web":    TbSeo,
+};
+
 export default function Skills() {
   const { t } = useLanguage();
   const s = t.skills;
@@ -37,6 +63,56 @@ export default function Skills() {
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const stackCardRef = useRef<HTMLDivElement>(null);
+  const badgeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const svgLineRefs = useRef<(SVGLineElement | null)[]>([]);
+
+  const RING_CONFIG = [
+    { startIdx: 0,  count: 6, rxF: 0.32, ryF: 0.28, speed: 0.22 },
+    { startIdx: 6,  count: 6, rxF: 0.52, ryF: 0.40, speed: 0.15 },
+    { startIdx: 12, count: 5, rxF: 0.72, ryF: 0.50, speed: 0.10 },
+  ];
+
+  const BADGE_CFG = STACK.map((_, i) => {
+    const ring = i < 6 ? 0 : i < 12 ? 1 : 2;
+    const cfg = RING_CONFIG[ring];
+    const idxInRing = i - cfg.startIdx;
+    return { ring, startAngle: (idxInRing / cfg.count) * 2 * Math.PI, rxF: cfg.rxF, ryF: cfg.ryF, speed: cfg.speed };
+  });
+
+  useEffect(() => {
+    const angles = BADGE_CFG.map(b => b.startAngle);
+    const RING_SCALE = [0.38, 0.66, 1.0];
+    let rafId: number;
+    const update = () => {
+      const card = stackCardRef.current;
+      if (!card) { rafId = requestAnimationFrame(update); return; }
+      const { width, height } = card.getBoundingClientRect();
+      const cx = width / 2;
+      const cy = height / 2;
+      // Safe max radius: leave room for badge circle (30px diameter → 18px margin)
+      const maxRx = Math.max(20, cx - 18);
+      const maxRy = Math.max(10, cy - 18);
+      BADGE_CFG.forEach((cfg, i) => {
+        angles[i] += (cfg.speed * Math.PI) / 180;
+        const scale = RING_SCALE[cfg.ring];
+        const x = cx + maxRx * scale * Math.cos(angles[i]);
+        const y = cy + maxRy * scale * Math.sin(angles[i]);
+        const badge = badgeRefs.current[i];
+        if (badge) { badge.style.left = `${x}px`; badge.style.top = `${y}px`; }
+        const line = svgLineRefs.current[i];
+        if (line) {
+          line.setAttribute("x1", String(cx)); line.setAttribute("y1", String(cy));
+          line.setAttribute("x2", String(x));  line.setAttribute("y2", String(y));
+        }
+      });
+      rafId = requestAnimationFrame(update);
+    };
+    rafId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(rafId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -67,6 +143,17 @@ export default function Skills() {
           font-weight: 400;
           margin-right: 6px;
         }
+        @keyframes sp-badge-pulse {
+          0%, 100% { box-shadow: 0 0 4px var(--badge-glow); opacity: 0.85; }
+          50%       { box-shadow: 0 0 10px var(--badge-glow); opacity: 1; }
+        }
+        .sp-orbit-badge { animation: sp-badge-pulse 2.8s ease-in-out infinite; }
+        .sp-orbit-badge:nth-child(odd)  { animation-delay: -1.4s; }
+        @keyframes sp-center-pulse {
+          0%, 100% { text-shadow: 0 0 6px rgba(78,205,196,0.25), 0 0 14px rgba(78,205,196,0.1); }
+          50%       { text-shadow: 0 0 10px rgba(78,205,196,0.4), 0 0 22px rgba(78,205,196,0.18); }
+        }
+        .sp-orbit-center { animation: sp-center-pulse 3s ease-in-out infinite; }
       `}</style>
 
       <div
@@ -111,8 +198,8 @@ export default function Skills() {
           minHeight: 0,
           display: "flex",
           flexDirection: "column",
-          gap: 10,
-          padding: isMobile ? "14px 12px" : "16px 20px",
+          gap: 8,
+          padding: isMobile ? "10px 10px" : "12px 16px",
           color: "#c8d8e8",
           overflow: "hidden",
         }}>
@@ -130,7 +217,7 @@ export default function Skills() {
           <div style={{
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
-            gap: 10,
+            gap: 8,
             flexShrink: 0,
           }}>
             {s.specialties.map(({ badge, title, desc, tags }, si) => {
@@ -148,12 +235,13 @@ export default function Skills() {
                 className="sp-card-bar"
                 style={{
                   background: `linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(${rgbMap[accent]},0.08) 100%)`,
-                  border: `1px solid ${accent}22`,
-                  borderTop: `2px solid ${accent}`,
+                  border: "1px solid rgba(255,255,255,0.07)",
                   borderRadius: 8,
-                  padding: "1.56rem",
+                  padding: "0.8rem 1rem",
                   position: "relative",
                   overflow: "hidden",
+                  display: "flex",
+                  flexDirection: "column",
                   backdropFilter: "blur(12px) saturate(150%)",
                   WebkitBackdropFilter: "blur(12px) saturate(150%)",
                   boxShadow: `0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px ${accent}11`,
@@ -161,18 +249,20 @@ export default function Skills() {
               >
                 <div style={{
                   fontFamily: "'Syne', 'JetBrains Mono', sans-serif",
-                  fontSize: 19, fontWeight: 700, color: "#e0f0f8", marginBottom: 8,
+                  fontSize: 14, fontWeight: 700, color: "#e0f0f8", marginBottom: 6,
+                  flexShrink: 0,
                 }}>
                   {title}
                 </div>
-                <div style={{ fontSize: 14, color: "#4a7a8a", lineHeight: 1.6, marginBottom: 16 }}>
+                <div style={{ fontSize: 11, color: "#4a7a8a", lineHeight: 1.55, marginBottom: 10, flex: 1 }}>
                   {desc}
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 4, flexShrink: 0 }}>
                   {tags.map((label, ti) => (
                     <span key={label} style={{
-                      fontSize: 12, padding: "4px 10px", borderRadius: 3,
-                      letterSpacing: "0.04em", ...TAG_STYLES[tagColors[ti] ?? "gray"],
+                      fontSize: 10, padding: "2px 7px", borderRadius: 3,
+                      letterSpacing: "0.04em",
+                      background: "#0d1e2a", color: "#4ecdc4", border: "1px solid rgba(78,205,196,0.2)",
                     }}>
                       {label}
                     </span>
@@ -183,43 +273,45 @@ export default function Skills() {
             })}
           </div>
 
-          {/* Row 2 — Principles + Stack */}
+          {/* Row 2 — Principles + Stack + Soft Skills */}
           <div style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1.6fr 1fr",
-            gap: 10,
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+            gap: 8,
             flex: 1,
             minHeight: 0,
           }}>
             {/* Principles */}
             <div style={{
               background: "linear-gradient(135deg, rgba(10,21,32,0.55) 0%, rgba(78,205,196,0.06) 100%)",
-              border: "1px solid rgba(78,205,196,0.15)",
-              borderLeft: "3px solid #4ecdc4",
+              border: "1px solid rgba(255,255,255,0.07)",
               borderRadius: 8,
-              padding: "1rem 1.1rem",
+              padding: "0.8rem 1rem",
               backdropFilter: "blur(12px) saturate(150%)",
               WebkitBackdropFilter: "blur(12px) saturate(150%)",
               boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(78,205,196,0.07)",
               overflow: "hidden",
+              display: "flex",
+              flexDirection: "column",
             }}>
               <div className="sp-principles-title" style={{
                 fontFamily: "'Syne', 'JetBrains Mono', sans-serif",
-                fontSize: 12, fontWeight: 800, color: "#4ecdc4",
-                marginBottom: "0.8rem", display: "flex", alignItems: "center",
+                fontSize: 14, fontWeight: 800, color: "#4ecdc4",
+                marginBottom: "0.6rem", display: "flex", alignItems: "center", flexShrink: 0,
               }}>
                 {s.sectionPrinciples}
               </div>
               <ul style={{
                 listStyle: "none", padding: 0, margin: 0,
-                display: "grid",
-                gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-                gap: 7,
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
               }}>
                 {s.principles.map((p, i) => (
                   <li key={i} className="sp-principle-item" style={{
-                    fontSize: 9, color: "#6a9a8a",
-                    display: "flex", alignItems: "flex-start", gap: 5, lineHeight: 1.5,
+                    fontSize: 11, color: "#4ecdc4",
+                    display: "flex", alignItems: "flex-start", gap: 5, lineHeight: 1.45,
                   }}>
                     {p}
                   </li>
@@ -227,62 +319,112 @@ export default function Skills() {
               </ul>
             </div>
 
-            {/* Stack */}
-            <div style={{
-              background: "linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(100,120,180,0.06) 100%)",
-              border: "1px solid rgba(255,255,255,0.07)",
-              borderRadius: 8,
-              padding: "1rem",
-              backdropFilter: "blur(12px) saturate(150%)",
-              WebkitBackdropFilter: "blur(12px) saturate(150%)",
-              boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
-            }}>
-              <div className="sp-section-line" style={{
-                fontSize: 9, letterSpacing: "0.25em", color: "#3a5a6a",
-                textTransform: "uppercase", marginBottom: "0.75rem",
-                display: "flex", alignItems: "center", gap: 8,
-              }}>
-                {s.sectionStack}
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
-                {STACK.map(item => (
-                  <span key={item} style={{
-                    fontSize: 9, padding: "2px 8px",
-                    background: "#0a1218", border: "1px solid #1a2a3a",
-                    borderRadius: 3, color: "#5a8a9a", letterSpacing: "0.04em",
-                  }}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+            {/* Stack — orbital */}
+            <div
+              ref={stackCardRef}
+              style={{
+                background: "linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(78,205,196,0.04) 100%)",
+                border: "1px solid rgba(255,255,255,0.07)",
+                borderRadius: 8,
+                overflow: "hidden",
+                position: "relative",
+                backdropFilter: "blur(12px) saturate(150%)",
+                WebkitBackdropFilter: "blur(12px) saturate(150%)",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
+              }}
+            >
+              {/* SVG connecting lines */}
+              <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 1 }}>
+                <defs>
+                  <radialGradient id="lineGrad0" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#4ecdc4" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#4ecdc4" stopOpacity="0.05" />
+                  </radialGradient>
+                  <radialGradient id="lineGrad1" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#f06292" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="#f06292" stopOpacity="0.04" />
+                  </radialGradient>
+                  <radialGradient id="lineGrad2" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stopColor="#ffb347" stopOpacity="0.35" />
+                    <stop offset="100%" stopColor="#ffb347" stopOpacity="0.04" />
+                  </radialGradient>
+                </defs>
+                {STACK.map((_, i) => {
+                  const ring = i < 6 ? 0 : i < 12 ? 1 : 2;
+                  const strokeColors = ["rgba(78,205,196,0.3)", "rgba(240,98,146,0.22)", "rgba(255,179,71,0.18)"];
+                  return (
+                    <line
+                      key={i}
+                      ref={el => { svgLineRefs.current[i] = el; }}
+                      x1="50%" y1="50%" x2="50%" y2="50%"
+                      stroke={strokeColors[ring]}
+                      strokeWidth="0.7"
+                      strokeDasharray="2 3"
+                    />
+                  );
+                })}
+              </svg>
 
-          {/* Row 3 — Soft skills */}
-          <div className="sp-section-line" style={{
-            fontSize: 9, letterSpacing: "0.25em", color: "#3a5a6a",
-            textTransform: "uppercase", flexShrink: 0,
-            display: "flex", alignItems: "center", gap: 8,
-          }}>
-            {s.sectionSoftSkills}
-          </div>
-          <div style={{
-            background: "linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(100,120,180,0.06) 100%)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            borderRadius: 8,
-            padding: "0.8rem 1rem",
-            backdropFilter: "blur(12px) saturate(150%)",
-            WebkitBackdropFilter: "blur(12px) saturate(150%)",
-            boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
-            flexShrink: 0,
-          }}>
-            <p style={{ fontSize: 9, color: "#00EAFF", lineHeight: 1.9, margin: 0 }}>
-              {s.softSkillsParagraph.map(({ label, rest }, i) => (
-                <React.Fragment key={i}>
-                  <strong style={{ color: "#FF00FF", fontWeight: 400 }}>{label}</strong>{rest}
-                </React.Fragment>
-              ))}
-            </p>
+              {/* Center label */}
+              <div className="sp-orbit-center" style={{
+                position: "absolute", top: "50%", left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 3,
+                textAlign: "center",
+                fontFamily: "'Syne', 'JetBrains Mono', sans-serif",
+                fontSize: 7, fontWeight: 800, color: "#4ecdc4",
+                letterSpacing: "0.08em", textTransform: "uppercase",
+                background: "rgba(3,12,22,0.9)",
+                width: 43, height: 43,
+                padding: 2,
+                borderRadius: "50%",
+                display: "flex", flexDirection: "column",
+                alignItems: "center", justifyContent: "center",
+                border: "1px solid rgba(78,205,196,0.2)",
+                pointerEvents: "none",
+                lineHeight: 1.35,
+              }}>
+                <div>stack</div>
+                <div>completa</div>
+              </div>
+
+              {/* Orbital badges */}
+              {STACK.map((item, i) => {
+                const ring = i < 6 ? 0 : i < 12 ? 1 : 2;
+                const ringStyles = [
+                  { bg: "rgba(8,28,28,0.92)", color: "#4ecdc4", border: "1px solid rgba(78,205,196,0.45)", glow: "rgba(78,205,196,0.4)" },
+                  { bg: "rgba(28,8,18,0.92)", color: "#f06292", border: "1px solid rgba(240,98,146,0.4)",  glow: "rgba(240,98,146,0.35)" },
+                  { bg: "rgba(28,18,6,0.92)",  color: "#ffb347", border: "1px solid rgba(255,179,71,0.38)", glow: "rgba(255,179,71,0.3)" },
+                ];
+                const rs = ringStyles[ring];
+                const Icon = STACK_ICONS[item];
+                return (
+                  <div
+                    key={item}
+                    ref={el => { badgeRefs.current[i] = el; }}
+                    className="sp-orbit-badge"
+                    title={item}
+                    style={{
+                      position: "absolute",
+                      left: "50%", top: "50%",
+                      transform: "translate(-50%, -50%)",
+                      background: rs.bg,
+                      border: rs.border,
+                      borderRadius: "50%",
+                      width: 30, height: 30,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      color: rs.color,
+                      zIndex: 2,
+                      pointerEvents: "none",
+                      ["--badge-glow" as string]: rs.glow,
+                    }}
+                  >
+                    {Icon && <Icon size={15} />}
+                  </div>
+                );
+              })}
+            </div>
+
           </div>
 
         </div>

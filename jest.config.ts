@@ -15,6 +15,7 @@ const config: Config = {
   moduleNameMapper: {
     "^next/image$": "<rootDir>/__mocks__/next/image.tsx",
     "^next/link$": "<rootDir>/__mocks__/next/link.tsx",
+    "^react-icons/(.*)$": "<rootDir>/__mocks__/react-icons.js",
     "^@/(.*)$": "<rootDir>/$1",
   },
   collectCoverageFrom: [

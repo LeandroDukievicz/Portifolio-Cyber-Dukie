@@ -1,8 +1,7 @@
 /**
  * Testes Unitários — Skills Page
  *
- * Valida a renderização e estrutura do conteúdo da página /skills
- * após a refatoração para o novo layout com glassmorphism.
+ * Valida a renderização e estrutura do conteúdo da página /skills.
  */
 
 import React from "react";
@@ -17,6 +16,7 @@ jest.mock("@/app/components/CyberpunkBackground", () => ({
 jest.mock("@/lib/schema", () => ({
   buildPageSchema: jest.fn().mockReturnValue({}),
 }));
+
 
 function renderSkills() {
   return render(
@@ -82,40 +82,29 @@ describe("Skills — Princípios de engenharia", () => {
   });
 });
 
-// ── Stack completa ───────────────────────────────────────────────────────────
+// ── Stack completa — badge central ───────────────────────────────────────────
 
 describe("Skills — Stack completa", () => {
-  it("exibe o label da seção", () => {
+  it("exibe as duas linhas do label central: stack e completa", () => {
     renderSkills();
-    expect(screen.getByText(/stack completa/i)).toBeInTheDocument();
+    expect(screen.getByText("stack")).toBeInTheDocument();
+    expect(screen.getByText("completa")).toBeInTheDocument();
   });
 
-  it("renderiza os itens principais da stack", () => {
+  it("renderiza os badges orbitais com title para os itens principais da stack", () => {
     renderSkills();
-    expect(screen.getByText("JavaScript")).toBeInTheDocument();
-    expect(screen.getByText("TypeScript")).toBeInTheDocument();
-    expect(screen.getByText("Next.js")).toBeInTheDocument();
-    expect(screen.getByText("Node.js")).toBeInTheDocument();
-    expect(screen.getByText("MySQL")).toBeInTheDocument();
-    expect(screen.getByText("Git")).toBeInTheDocument();
-  });
-});
-
-// ── Soft Skills ──────────────────────────────────────────────────────────────
-
-describe("Skills — Soft Skills", () => {
-  it("exibe o label da seção", () => {
-    renderSkills();
-    expect(screen.getByText(/soft skills/i)).toBeInTheDocument();
+    expect(screen.getByTitle("JavaScript")).toBeInTheDocument();
+    expect(screen.getByTitle("TypeScript")).toBeInTheDocument();
+    expect(screen.getByTitle("Next.js")).toBeInTheDocument();
+    expect(screen.getByTitle("Node.js")).toBeInTheDocument();
+    expect(screen.getByTitle("MySQL")).toBeInTheDocument();
+    expect(screen.getByTitle("Git")).toBeInTheDocument();
   });
 
-  it("renderiza os termos em destaque do parágrafo", () => {
-    renderSkills();
-    expect(screen.getByText(/Resolução de problemas/i)).toBeInTheDocument();
-    expect(screen.getByText(/comunicação clara/i)).toBeInTheDocument();
-    expect(screen.getByText(/aprendizado contínuo/i)).toBeInTheDocument();
-    expect(screen.getByText(/atenção a detalhes/i)).toBeInTheDocument();
-    expect(screen.getByText(/adaptabilidade/i)).toBeInTheDocument();
+  it("renderiza todos os 17 badges orbitais", () => {
+    const { container } = renderSkills();
+    const badges = container.querySelectorAll("[title]");
+    expect(badges.length).toBeGreaterThanOrEqual(17);
   });
 });
 

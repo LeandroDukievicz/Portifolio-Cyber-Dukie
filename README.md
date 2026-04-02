@@ -70,15 +70,6 @@ npm run dev
 
 Acesse [http://localhost:3000](http://localhost:3000).
 
-### Variáveis de ambiente
-
-```env
-NOTION_TOKEN=seu_token_de_integracao_notion
-NOTION_BLOG_SUBSCRIBERS_DB=id_do_database_notion
-RESEND_API_KEY=sua_api_key_resend
-```
-
----
 
 ## Autor
 

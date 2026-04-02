@@ -53,6 +53,19 @@ const STACK_ICONS: Record<string, React.ElementType> = {
   "SEO Web":    TbSeo,
 };
 
+const RING_CONFIG = [
+  { startIdx: 0,  count: 6, rxF: 0.32, ryF: 0.28, speed: 0.22 },
+  { startIdx: 6,  count: 6, rxF: 0.52, ryF: 0.40, speed: 0.15 },
+  { startIdx: 12, count: 5, rxF: 0.72, ryF: 0.50, speed: 0.10 },
+];
+
+const BADGE_CFG = STACK.map((_, i) => {
+  const ring = i < 6 ? 0 : i < 12 ? 1 : 2;
+  const cfg = RING_CONFIG[ring];
+  const idxInRing = i - cfg.startIdx;
+  return { ring, startAngle: (idxInRing / cfg.count) * 2 * Math.PI, speed: cfg.speed };
+});
+
 export default function Skills() {
   const { t } = useLanguage();
   const s = t.skills;
@@ -68,19 +81,6 @@ export default function Skills() {
   const stackCardRef = useRef<HTMLDivElement>(null);
   const badgeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const svgLineRefs = useRef<(SVGLineElement | null)[]>([]);
-
-  const RING_CONFIG = [
-    { startIdx: 0,  count: 6, rxF: 0.32, ryF: 0.28, speed: 0.22 },
-    { startIdx: 6,  count: 6, rxF: 0.52, ryF: 0.40, speed: 0.15 },
-    { startIdx: 12, count: 5, rxF: 0.72, ryF: 0.50, speed: 0.10 },
-  ];
-
-  const BADGE_CFG = STACK.map((_, i) => {
-    const ring = i < 6 ? 0 : i < 12 ? 1 : 2;
-    const cfg = RING_CONFIG[ring];
-    const idxInRing = i - cfg.startIdx;
-    return { ring, startAngle: (idxInRing / cfg.count) * 2 * Math.PI, rxF: cfg.rxF, ryF: cfg.ryF, speed: cfg.speed };
-  });
 
   useEffect(() => {
     const angles = BADGE_CFG.map(b => b.startAngle);
@@ -144,12 +144,24 @@ export default function Skills() {
           margin-right: 6px;
         }
 
-        @keyframes sp-badge-pulse {
-          0%, 100% { box-shadow: 0 0 4px var(--badge-glow); opacity: 0.85; }
-          50%       { box-shadow: 0 0 10px var(--badge-glow); opacity: 1; }
+        @keyframes sp-badge-pulse-0 {
+          0%, 100% { box-shadow: 0 0 4px rgba(78,205,196,0.4);  opacity: 0.85; }
+          50%       { box-shadow: 0 0 10px rgba(78,205,196,0.4); opacity: 1; }
         }
-        .sp-orbit-badge { animation: sp-badge-pulse 2.8s ease-in-out infinite; }
-        .sp-orbit-badge:nth-child(odd)  { animation-delay: -1.4s; }
+        @keyframes sp-badge-pulse-1 {
+          0%, 100% { box-shadow: 0 0 4px rgba(240,98,146,0.35);  opacity: 0.85; }
+          50%       { box-shadow: 0 0 10px rgba(240,98,146,0.35); opacity: 1; }
+        }
+        @keyframes sp-badge-pulse-2 {
+          0%, 100% { box-shadow: 0 0 4px rgba(255,179,71,0.3);  opacity: 0.85; }
+          50%       { box-shadow: 0 0 10px rgba(255,179,71,0.3); opacity: 1; }
+        }
+        .sp-orbit-badge-0 { animation: sp-badge-pulse-0 2.8s ease-in-out infinite; }
+        .sp-orbit-badge-1 { animation: sp-badge-pulse-1 2.8s ease-in-out infinite; }
+        .sp-orbit-badge-2 { animation: sp-badge-pulse-2 2.8s ease-in-out infinite; }
+        .sp-orbit-badge-0:nth-child(odd),
+        .sp-orbit-badge-1:nth-child(odd),
+        .sp-orbit-badge-2:nth-child(odd) { animation-delay: -1.4s; }
         @keyframes sp-center-pulse {
           0%, 100% { text-shadow: 0 0 6px rgba(78,205,196,0.25), 0 0 14px rgba(78,205,196,0.1); }
           50%       { text-shadow: 0 0 10px rgba(78,205,196,0.4), 0 0 22px rgba(78,205,196,0.18); }
@@ -393,9 +405,9 @@ export default function Skills() {
               {STACK.map((item, i) => {
                 const ring = i < 6 ? 0 : i < 12 ? 1 : 2;
                 const ringStyles = [
-                  { bg: "rgba(8,28,28,0.92)", color: "#4ecdc4", border: "1px solid rgba(78,205,196,0.45)", glow: "rgba(78,205,196,0.4)" },
-                  { bg: "rgba(28,8,18,0.92)", color: "#f06292", border: "1px solid rgba(240,98,146,0.4)",  glow: "rgba(240,98,146,0.35)" },
-                  { bg: "rgba(28,18,6,0.92)",  color: "#ffb347", border: "1px solid rgba(255,179,71,0.38)", glow: "rgba(255,179,71,0.3)" },
+                  { bg: "rgba(8,28,28,0.92)",  color: "#4ecdc4", border: "1px solid rgba(78,205,196,0.45)" },
+                  { bg: "rgba(28,8,18,0.92)",  color: "#f06292", border: "1px solid rgba(240,98,146,0.4)"  },
+                  { bg: "rgba(28,18,6,0.92)",  color: "#ffb347", border: "1px solid rgba(255,179,71,0.38)" },
                 ];
                 const rs = ringStyles[ring];
                 const Icon = STACK_ICONS[item];
@@ -403,7 +415,7 @@ export default function Skills() {
                   <div
                     key={item}
                     ref={el => { badgeRefs.current[i] = el; }}
-                    className="sp-orbit-badge"
+                    className={`sp-orbit-badge-${ring}`}
                     title={item}
                     style={{
                       position: "absolute",
@@ -417,7 +429,6 @@ export default function Skills() {
                       color: rs.color,
                       zIndex: 2,
                       pointerEvents: "none",
-                      ["--badge-glow" as string]: rs.glow,
                     }}
                   >
                     {Icon && <Icon size={18} />}

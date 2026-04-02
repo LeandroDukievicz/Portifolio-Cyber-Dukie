@@ -407,7 +407,7 @@ export default function Skills() {
                       ["--badge-glow" as string]: rs.glow,
                     }}
                   >
-                    {Icon && <Icon size={15} />}
+                    {Icon && <Icon size={18} />}
                   </div>
                 );
               })}

@@ -143,12 +143,7 @@ export default function Skills() {
           font-weight: 400;
           margin-right: 6px;
         }
-        .sp-col-divider > *:not(:last-child) {
-          border-right: 1px solid rgba(255,255,255,0.05);
-        }
-        .sp-row-divider {
-          border-top: 1px solid rgba(255,255,255,0.05);
-        }
+
         @keyframes sp-badge-pulse {
           0%, 100% { box-shadow: 0 0 4px var(--badge-glow); opacity: 0.85; }
           50%       { box-shadow: 0 0 10px var(--badge-glow); opacity: 1; }
@@ -220,10 +215,10 @@ export default function Skills() {
           </div>
 
           {/* Row 1 — 4 specialty cards */}
-          <div className="sp-col-divider" style={{
+          <div style={{
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
-            gap: 0,
+            gap: 8,
             flexShrink: 0,
           }}>
             {s.specialties.map(({ badge, title, desc, tags }, si) => {
@@ -240,11 +235,17 @@ export default function Skills() {
                 key={title}
                 className="sp-card-bar"
                 style={{
+                  background: `linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(${rgbMap[accent]},0.08) 100%)`,
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: 8,
                   padding: "0.8rem 1rem",
                   position: "relative",
                   overflow: "hidden",
                   display: "flex",
                   flexDirection: "column",
+                  backdropFilter: "blur(12px) saturate(150%)",
+                  WebkitBackdropFilter: "blur(12px) saturate(150%)",
+                  boxShadow: `0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px ${accent}11`,
                 }}
               >
                 <div style={{
@@ -274,16 +275,22 @@ export default function Skills() {
           </div>
 
           {/* Row 2 — Principles + Stack */}
-          <div className="sp-col-divider sp-row-divider" style={{
+          <div style={{
             display: "grid",
             gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-            gap: 0,
+            gap: 8,
             flex: 1,
             minHeight: 0,
           }}>
             {/* Principles */}
             <div style={{
+              background: "linear-gradient(135deg, rgba(10,21,32,0.55) 0%, rgba(78,205,196,0.06) 100%)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: 8,
               padding: "0.8rem 1rem",
+              backdropFilter: "blur(12px) saturate(150%)",
+              WebkitBackdropFilter: "blur(12px) saturate(150%)",
+              boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(78,205,196,0.07)",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
@@ -317,8 +324,14 @@ export default function Skills() {
             <div
               ref={stackCardRef}
               style={{
+                background: "linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(78,205,196,0.04) 100%)",
+                border: "1px solid rgba(255,255,255,0.07)",
+                borderRadius: 8,
                 overflow: "hidden",
                 position: "relative",
+                backdropFilter: "blur(12px) saturate(150%)",
+                WebkitBackdropFilter: "blur(12px) saturate(150%)",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
               }}
             >
               {/* SVG connecting lines */}

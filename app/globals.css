@@ -27,9 +27,6 @@ html[data-blog-theme="light"] {
   50%       { transform: translateY(-14px); }
 }
 
-@keyframes hex-dash {
-  to { stroke-dashoffset: -288; }
-}
 
 @keyframes hex-color-pulse {
   0%   { stroke: #00EAFF; }
@@ -51,11 +48,6 @@ html[data-blog-theme="light"] {
   50%       { opacity: 1; }
 }
 
-@keyframes holo-sweep {
-  0%   { top: -10%; opacity: 0.7; }
-  80%  { top: 110%; opacity: 0.7; }
-  100% { top: 110%; opacity: 0; }
-}
 
 @keyframes hud-blink {
   0%, 80%, 100% { opacity: 0.75; }

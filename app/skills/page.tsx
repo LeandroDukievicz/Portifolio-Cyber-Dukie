@@ -70,9 +70,14 @@ export default function Skills() {
   const { t } = useLanguage();
   const s = t.skills;
   const [isMobile, setIsMobile] = useState(false);
+  // RESPONSIVO: breakpoint extra para telas muito pequenas (< 500px)
+  const [isSmall, setIsSmall] = useState(false);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
+    const check = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsSmall(window.innerWidth < 500);
+    };
     check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
@@ -213,9 +218,11 @@ export default function Skills() {
           display: "flex",
           flexDirection: "column",
           gap: 8,
-          padding: isMobile ? "10px 10px" : "12px 16px",
+          padding: isMobile ? "8px 8px" : "12px 16px",
           color: "#c8d8e8",
-          overflow: "hidden",
+          // RESPONSIVO: scroll vertical em mobile para evitar clipping silencioso de conteúdo
+          overflowY: isMobile ? "auto" : "hidden",
+          overflowX: "hidden",
         }}>
 
           {/* Section label — especializações */}
@@ -230,8 +237,9 @@ export default function Skills() {
           {/* Row 1 — 4 specialty cards */}
           <div style={{
             display: "grid",
-            gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
-            gap: 8,
+            // RESPONSIVO: 1 coluna em telas muito pequenas, 2 em mobile, 4 em desktop
+            gridTemplateColumns: isSmall ? "1fr" : isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
+            gap: isSmall ? 6 : 8,
             flexShrink: 0,
           }}>
             {s.specialties.map(({ badge, title, desc, tags }, si) => {
@@ -250,8 +258,8 @@ export default function Skills() {
                 style={{
                   background: `linear-gradient(135deg, rgba(13,21,32,0.55) 0%, rgba(${rgbMap[accent]},0.08) 100%)`,
                   border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 8,
-                  padding: "1.05rem 1.3rem",
+                  borderRadius: 8,                  // RESPONSIVO: padding reduzido em mobile para evitar overflow horizontal
+                  padding: isMobile ? "0.6rem 0.75rem" : "1.05rem 1.3rem",
                   position: "relative",
                   overflow: "hidden",
                   display: "flex",
@@ -263,18 +271,25 @@ export default function Skills() {
               >
                 <div style={{
                   fontFamily: "'Syne', 'JetBrains Mono', sans-serif",
-                  fontSize: 18, fontWeight: 700, color: "#e0f0f8", marginBottom: 8,
+                  // RESPONSIVO: título menor em mobile (era 18px — muito grande para col de ~120px)
+                  fontSize: isMobile ? 13 : 18, fontWeight: 700, color: "#e0f0f8", marginBottom: isMobile ? 4 : 8,
                   flexShrink: 0,
                 }}>
                   {title}
                 </div>
-                <div style={{ fontSize: 14, color: "#4a7a8a", lineHeight: 1.55, marginBottom: 13, flex: 1 }}>
-                  {desc}
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 5, flexShrink: 0 }}>
+                {/* RESPONSIVO: descrição oculta em telas muito pequenas para preservar espaço */}
+                {!isSmall && (
+                  <div style={{ fontSize: isMobile ? 11 : 14, color: "#4a7a8a", lineHeight: 1.5, marginBottom: isMobile ? 6 : 13, flex: 1 }}>
+                    {desc}
+                  </div>
+                )}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: isMobile ? 3 : 5, flexShrink: 0 }}>
                   {tags.map((label, ti) => (
                     <span key={label} style={{
-                      fontSize: 13, padding: "3px 9px", borderRadius: 3,
+                      // RESPONSIVO: tag menor em mobile para caber na coluna estreita
+                      fontSize: isMobile ? 10 : 13,
+                      padding: isMobile ? "2px 5px" : "3px 9px",
+                      borderRadius: 3,
                       letterSpacing: "0.04em",
                       background: "#0d1e2a", color: "#4ecdc4", border: "1px solid rgba(78,205,196,0.2)",
                     }}>
@@ -345,6 +360,8 @@ export default function Skills() {
                 backdropFilter: "blur(12px) saturate(150%)",
                 WebkitBackdropFilter: "blur(12px) saturate(150%)",
                 boxShadow: "0 4px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05)",
+                // RESPONSIVO: altura mínima em mobile para o orbital não colapsar em coluna única
+                minHeight: isMobile ? 180 : undefined,
               }}
             >
               {/* SVG connecting lines */}

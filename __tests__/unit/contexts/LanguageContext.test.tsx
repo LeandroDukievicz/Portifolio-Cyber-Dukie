@@ -39,9 +39,9 @@ describe("useLanguage — dentro do provider", () => {
     expect(result.current.lang).toBe("pt");
   });
 
-  it("t.subtitle retorna 'Desenvolvedor Front-End' em PT", () => {
+  it("t.subtitle retorna 'Desenvolvedor Full Stack' em PT", () => {
     const { result } = renderHook(() => useLanguage(), { wrapper });
-    expect(result.current.t.subtitle).toBe("Desenvolvedor Front-End");
+    expect(result.current.t.subtitle).toBe("Desenvolvedor Full Stack");
   });
 
   it("toggle muda de PT para EN", () => {
@@ -57,10 +57,10 @@ describe("useLanguage — dentro do provider", () => {
     expect(result.current.lang).toBe("pt");
   });
 
-  it("t.subtitle retorna 'Front-End Developer' em EN", () => {
+  it("t.subtitle retorna 'Full Stack Developer' em EN", () => {
     const { result } = renderHook(() => useLanguage(), { wrapper });
     act(() => result.current.toggle()); // PT → EN
-    expect(result.current.t.subtitle).toBe("Front-End Developer");
+    expect(result.current.t.subtitle).toBe("Full Stack Developer");
   });
 
   it("ctaHire muda com o idioma", () => {

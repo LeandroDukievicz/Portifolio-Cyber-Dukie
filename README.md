@@ -73,7 +73,7 @@ Acesse [http://localhost:3000](http://localhost:3000).
 
 ## Autor
 
-**Leandro Dukievicz** — Desenvolvedor Front-End
+**Leandro Dukievicz** — Desenvolvedor Full Stack
 
 ## Licença
 

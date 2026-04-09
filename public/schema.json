@@ -18,9 +18,9 @@
       {
         "@context": "https://schema.org",
         "@type": "WebPage",
-        "name": "Leandro Dukiévicz — Desenvolvedor Front-End",
+        "name": "Leandro Dukiévicz — Desenvolvedor Full Stack",
         "url": "https://devleandro.com.br",
-        "description": "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis."
+        "description": "Portfólio de Leandro Dukiévicz, desenvolvedor Full Stack especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis."
       }
     ]
   }

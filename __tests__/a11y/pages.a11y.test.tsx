@@ -395,7 +395,7 @@ describe("A11y — Estrutura semântica da página", () => {
     const { container } = render(
       <main>
         <h1>Leandro Dukievicz</h1>
-        <p>Desenvolvedor Front-End</p>
+        <p>Desenvolvedor Full Stack</p>
       </main>
     );
     expect(container.querySelector("h1")).toBeInTheDocument();

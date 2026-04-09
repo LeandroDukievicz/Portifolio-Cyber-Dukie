@@ -23,11 +23,11 @@ const BASE_URL = "https://devleandro.com.br";
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "Leandro Dukiévicz — Desenvolvedor Front-End",
+    default: "Leandro Dukiévicz — Desenvolvedor Full Stack",
     template: "%s | Leandro Dukiévicz",
   },
-  description: "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.",
-  keywords: ["desenvolvedor front-end", "React", "Next.js", "TypeScript", "portfólio", "Maringá", "Paraná", "Brasil"],
+  description: "Portfólio de Leandro Dukiévicz, desenvolvedor Full Stack especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.",
+  keywords: ["desenvolvedor full stack", "React", "Next.js", "TypeScript", "portfólio", "Maringá", "Paraná", "Brasil"],
   authors: [{ name: "Leandro Dukiévicz", url: BASE_URL }],
   creator: "Leandro Dukiévicz",
   robots: { index: true, follow: true },
@@ -35,15 +35,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: BASE_URL,
-    title: "Leandro Dukiévicz — Desenvolvedor Front-End",
-    description: "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript.",
+    title: "Leandro Dukiévicz — Desenvolvedor Full Stack",
+    description: "Portfólio de Leandro Dukiévicz, desenvolvedor Full Stack especializado em React, Next.js e TypeScript.",
     siteName: "Portfólio Leandro Dukiévicz",
-    images: [{ url: "/images/foto-1.webp", width: 476, height: 476, alt: "Leandro Dukiévicz — Desenvolvedor Front-End" }],
+    images: [{ url: "/images/foto-1.webp", width: 476, height: 476, alt: "Leandro Dukiévicz — Desenvolvedor Full Stack" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Leandro Dukiévicz — Desenvolvedor Front-End",
-    description: "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript.",
+    title: "Leandro Dukiévicz — Desenvolvedor Full Stack",
+    description: "Portfólio de Leandro Dukiévicz, desenvolvedor Full Stack especializado em React, Next.js e TypeScript.",
     images: ["/images/foto-1.webp"],
   },
 };

@@ -7,7 +7,7 @@ export type Lang = "pt" | "en";
 export const translations = {
   pt: {
     portfolioTitle: "Portfólio v1.1.0",
-    subtitle: "Desenvolvedor Front-End",
+    subtitle: "Desenvolvedor Full Stack",
     bio: "Sou aficionado em tecnologia no geral, desenvolvo interfaces que unem elegância e intuitividade, sendo modernas o bastante para impressionar mas simples o suficiente para desaparecer. Estou em constante evolução no aprendizado e aperfeiçoamento, buscando sempre melhorar performance, fluidez e com muita atenção a todos os detalhes, acredito que a melhor experiência é aquela onde o usuário nem percebe que está tendo !",
     ctaHire: "Entrar em Contato",
     ctaCV: "Baixar Currículo",
@@ -26,7 +26,7 @@ export const translations = {
         { kind: "input",  text: "whoami" },
         { kind: "output", text: "Leandro Dukievicz" },
         { kind: "input",  text: "cat sobre.txt" },
-        { kind: "output", text: "Front End - Transformando cafeína em interfaces desde 2021" },
+        { kind: "output", text: "Full Stack - Transformando cafeína em interfaces desde 2021" },
         { kind: "input",  text: "ls skills/" },
         { kind: "output", text: "React  Next.js  TypeScript  Figma  Node  ..." },
         { kind: "input",  text: "./status.sh" },
@@ -82,7 +82,7 @@ export const translations = {
       modalMessage: "Fico muito feliz com seu interesse.\nEstou à inteira disposição para conversarmos\npessoalmente — será um prazer!",
       modalClose: "Fechar",
     },
-    marquee: "Bem vindo ao meu portifólio | Leandro Dukievicz | Dev Front End \u00a0\u00a0\u00a0",
+    marquee: "Bem vindo ao meu portifólio | Leandro Dukievicz | Dev Full Stack \u00a0\u00a0\u00a0",
     sobre: {
       windowTitle: "O que eu faço.txt — leandro-dukievicz",
       heading: "Sobre",
@@ -235,7 +235,7 @@ export const translations = {
   },
   en: {
     portfolioTitle: "Portfolio v1.1.0",
-    subtitle: "Front-End Developer",
+    subtitle: "Full Stack Developer",
     bio: "I am passionate about Technology in general, constantly studying and advancing for continuous improvement in developing interfaces that are elegant, easy to use, intuitive, and highly modern. Always striving to deliver better performance, details, and fluidity — because I believe the best interfaces are those that disappear for the end user, leaving only the experience.",
     ctaHire: "Get in Touch",
     ctaCV: "Download CV",
@@ -254,7 +254,7 @@ export const translations = {
         { kind: "input",  text: "whoami" },
         { kind: "output", text: "Leandro Dukievicz" },
         { kind: "input",  text: "cat about.txt" },
-        { kind: "output", text: "Front End - Turning caffeine into interfaces since 2021" },
+        { kind: "output", text: "Full Stack - Turning caffeine into interfaces since 2021" },
         { kind: "input",  text: "ls skills/" },
         { kind: "output", text: "React  Next.js  TypeScript  Figma  Node  ..." },
         { kind: "input",  text: "./status.sh" },
@@ -310,7 +310,7 @@ export const translations = {
       modalMessage: "I'm very glad for your interest.\nI'm fully available to chat\nin person — it will be a pleasure!",
       modalClose: "Close",
     },
-    marquee: "Welcome to my portfolio | Leandro Dukievicz | Front End Dev \u00a0\u00a0\u00a0",
+    marquee: "Welcome to my portfolio | Leandro Dukievicz | Full Stack Dev \u00a0\u00a0\u00a0",
     sobre: {
       windowTitle: "what-i-do.txt — leandro-dukievicz",
       heading: "About",

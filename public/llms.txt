@@ -7,8 +7,8 @@ optimized for consumption by Large Language Models (LLMs) and AI assistants.
 
 ## Pages
 
-- [Leandro Dukiévicz — Desenvolvedor Front-End](https://devleandro.com.br)
-  Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.
+- [Leandro Dukiévicz — Desenvolvedor Full Stack](https://devleandro.com.br)
+  Portfólio de Leandro Dukiévicz, desenvolvedor Full Stack especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.
 
 ## Quick Links
 

@@ -236,7 +236,7 @@ test.describe("Internacionalização (PT/EN)", () => {
     // Verificar que está em PT por padrão
     // Aguardar o subtitle aparecer (tem delay de animação)
     await expect(
-      page.getByText(/Desenvolvedor Front-End/i)
+      page.getByText(/Desenvolvedor Full Stack/i)
     ).toBeVisible({ timeout: 15000 });
 
     // Clicar no botão de toggle de idioma
@@ -246,7 +246,7 @@ test.describe("Internacionalização (PT/EN)", () => {
 
     // Aguardar mudança para EN
     await expect(
-      page.getByText(/Front-End Developer/i)
+      page.getByText(/Full Stack Developer/i)
     ).toBeVisible({ timeout: 10000 });
   });
 });

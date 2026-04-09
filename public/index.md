@@ -1,14 +1,14 @@
 ---
-title: "Leandro Dukiévicz — Desenvolvedor Front-End"
-description: "Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis."
+title: "Leandro Dukiévicz — Desenvolvedor Full Stack"
+description: "Portfólio de Leandro Dukiévicz, desenvolvedor Full Stack especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis."
 url: https://devleandro.com.br
 source: https://devleandro.com.br
 generated_by: aeo.js
 ---
 
-# Leandro Dukiévicz — Desenvolvedor Front-End
+# Leandro Dukiévicz — Desenvolvedor Full Stack
 
-Portfólio de Leandro Dukiévicz, desenvolvedor Front-End especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.
+Portfólio de Leandro Dukiévicz, desenvolvedor Full Stack especializado em React, Next.js e TypeScript. Interfaces modernas, performáticas e acessíveis.
 
 ## Leandro
 Dukievicz

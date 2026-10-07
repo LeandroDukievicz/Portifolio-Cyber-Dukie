@@ -168,6 +168,11 @@ export const translations = {
           subtitle: "Site institucional",
           description: "Site da Dukie Tech, empresa de desenvolvimento sob medida. Apresenta serviços de sites, sistemas web, aplicativos e IA para negócios em uma interface responsiva com visual cyberpunk, animações, carrossel de serviços, FAQ e formulário de orçamento integrado ao e-mail.",
         },
+        {
+          title: "WatchAI — Monitor de Sessões de IA",
+          subtitle: "Aplicativo TUI",
+          description: "Monitor de agentes de IA no terminal. Detecta sessões locais de Claude Code, Codex, Gemini CLI e outros, reúne em uma tela quem está trabalhando, quem terminou e quem precisa de atenção. Mostra atividade e tempo por sessão, oferece temas visuais e funciona sem chaves ou integrações com APIs dos agentes.",
+        },
       ],
     },
     contato: {
@@ -420,6 +425,11 @@ export const translations = {
           title: "Dukie Tech — Custom Software",
           subtitle: "Business website",
           description: "Website for Dukie Tech, a custom software development company. It presents websites, web systems, mobile apps, and AI services for businesses through a responsive cyberpunk interface with animations, a services carousel, FAQ, and an email-connected quote form.",
+        },
+        {
+          title: "WatchAI — AI Session Monitor",
+          subtitle: "TUI application",
+          description: "Terminal monitor for AI agents. It detects local Claude Code, Codex, Gemini CLI, and other sessions, showing who is working, who has finished, and who needs attention in one view. It displays activity and elapsed time per session, offers visual themes, and works without agent API keys or integrations.",
         },
       ],
     },

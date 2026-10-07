@@ -39,7 +39,7 @@ const STATIC: (StaticProject | null)[] = [
   { tags: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "NextAuth"], image: "/images/projetos/dashboard.webp", imageFit: "contain" },
   { tags: ["Astro", "TypeScript", "Tailwind CSS", "SSR"], image: "/images/projetos/blog-devs-a-deriva.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/devs-a-deriva", "https://devsaderiva.com.br/"] },
   { tags: ["Python", "RSS/Atom", "SQLite", "Linux", "Snap"], image: "/images/projetos/clinews.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/clinews", "https://leandrodukievicz.github.io/clinews/", "https://snapcraft.io/clinews"] },
-  null,
+  { tags: ["Python", "Textual", "Telethon", "Telegram", "Snap"], image: "/images/projetos/anchor-downloader.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/anchor-downloader", "https://leandrodukievicz.github.io/anchor-downloader/", "https://snapcraft.io/anchor-downloader"] },
   null,
 ];
 

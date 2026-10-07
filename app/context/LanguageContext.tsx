@@ -173,6 +173,11 @@ export const translations = {
           subtitle: "Aplicativo TUI",
           description: "Monitor de agentes de IA no terminal. Detecta sessões locais de Claude Code, Codex, Gemini CLI e outros, reúne em uma tela quem está trabalhando, quem terminou e quem precisa de atenção. Mostra atividade e tempo por sessão, oferece temas visuais e funciona sem chaves ou integrações com APIs dos agentes.",
         },
+        {
+          title: "DukieList — Tarefas no Terminal",
+          subtitle: "Aplicativo TUI",
+          description: "Lista de tarefas para terminal com visual cyberpunk, feita em Python e Textual. Oferece visões por dia, semana e mês, criação e edição com prioridades e categorias, filtros, progresso de conclusão e armazenamento local em SQLite. Inclui navegação pelo teclado, previsão do tempo e sincronização com Trello.",
+        },
       ],
     },
     contato: {
@@ -430,6 +435,11 @@ export const translations = {
           title: "WatchAI — AI Session Monitor",
           subtitle: "TUI application",
           description: "Terminal monitor for AI agents. It detects local Claude Code, Codex, Gemini CLI, and other sessions, showing who is working, who has finished, and who needs attention in one view. It displays activity and elapsed time per session, offers visual themes, and works without agent API keys or integrations.",
+        },
+        {
+          title: "DukieList — Tasks in the Terminal",
+          subtitle: "TUI application",
+          description: "Cyberpunk-styled terminal task manager built with Python and Textual. It offers daily, weekly, and monthly views, task creation and editing with priorities and categories, filters, completion progress, and local SQLite storage. It also supports keyboard navigation, weather forecasts, and Trello synchronization.",
         },
       ],
     },

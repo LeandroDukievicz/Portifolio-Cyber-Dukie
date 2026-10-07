@@ -43,6 +43,7 @@ const STATIC: (StaticProject | null)[] = [
   { tags: ["Python", "Textual", "Telethon", "Telegram", "Snap"], image: "/images/projetos/anchor-downloader.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/anchor-downloader", "https://leandrodukievicz.github.io/anchor-downloader/", "https://snapcraft.io/anchor-downloader"] },
   { tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"], image: "/images/projetos/techdukie.webp", projectHref: "https://techdukie.com.br/" },
   { tags: ["Python", "Textual", "psutil", "TUI", "AI"], image: "/images/projetos/watchai.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/WatchAI", "https://leandrodukievicz.github.io/WatchAI/"] },
+  { tags: ["Python", "Textual", "SQLite", "TUI", "Trello"], image: "/images/projetos/dukielist.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/dukielist"] },
 ];
 
 const TOTAL_CARDS = STATIC.length;
@@ -545,7 +546,7 @@ export default function Projetos() {
         </div>
 
         {/* Dots */}
-        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: isMobile ? 6 : 10, alignItems: "center" }}>
           {Array.from({ length: TOTAL_CARDS }).map((_, i) => {
             const isActive = i === current;
             return (

@@ -25,7 +25,7 @@ type StaticProject = {
   tags: string[];
   image?: string;
   imageFit?: "cover" | "contain";
-  ctaHrefs?: [string, string?];
+  ctaHrefs?: [string, string?, string?];
   soon?: boolean;
 };
 
@@ -38,7 +38,7 @@ const STATIC: (StaticProject | null)[] = [
   { tags: ["Chrome", "Manifest V3", "HTML5", "CSS3", "JavaScript"], image: "/images/projetos/extensao-cyberpunk.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/extensao-cyberpunk-chrome"] },
   { tags: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "NextAuth"], image: "/images/projetos/dashboard.webp", imageFit: "contain" },
   { tags: ["Astro", "TypeScript", "Tailwind CSS", "SSR"], image: "/images/projetos/blog-devs-a-deriva.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/devs-a-deriva", "https://devsaderiva.com.br/"] },
-  null,
+  { tags: ["Python", "RSS/Atom", "SQLite", "Linux", "Snap"], image: "/images/projetos/clinews.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/clinews", "https://leandrodukievicz.github.io/clinews/", "https://snapcraft.io/clinews"] },
   null,
   null,
 ];
@@ -86,6 +86,7 @@ export default function Projetos() {
       ctas: s.ctaHrefs ? [
         { label: p.ctaDetails, href: s.ctaHrefs[0], icon: "github" as const },
         ...(s.ctaHrefs[1] ? [{ label: p.ctaProject, href: s.ctaHrefs[1], icon: "link" as const }] : []),
+        ...(s.ctaHrefs[2] ? [{ label: "Snap Store", href: s.ctaHrefs[2], icon: "link" as const }] : []),
       ] : undefined,
     };
   });
@@ -437,7 +438,7 @@ export default function Projetos() {
                         </div>
                         {/* CTAs */}
                         {project.ctas && (
-                          <div style={{ display: "flex", justifyContent: "space-between", marginTop: isMobile ? 2 : 6 }}>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: isMobile ? 6 : 8, justifyContent: "space-between", marginTop: isMobile ? 2 : 6 }}>
                             {project.ctas.map(cta => (
                               <a
                                 key={cta.href}
@@ -447,7 +448,7 @@ export default function Projetos() {
                                 onClick={e => e.stopPropagation()}
                                 style={{
                                   display: "inline-flex", alignItems: "center", gap: 7,
-                                  padding: "8px 16px", borderRadius: 8,
+                                  padding: isMobile ? "7px 10px" : "8px 16px", borderRadius: 8,
                                   fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase",
                                   fontFamily: "'JetBrains Mono', monospace",
                                   color: "#fff",

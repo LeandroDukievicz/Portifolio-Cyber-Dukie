@@ -138,6 +138,11 @@ export const translations = {
           subtitle: "Front-end",
           description: "Landing page completa de uma barbearia com visual escuro e elegante, apresenta todas as seções típicas de um negócio local: hero com horários e endereço, seção sobre com história da empresa, listagem de serviços, formulário de agendamento e galeria de fotos, rodapé com localização no mapa.",
         },
+        {
+          title: "Extensão Cyberpunk — Nova Aba",
+          subtitle: "Extensão Chrome",
+          description: "Extensão que transforma a Nova Aba do Chrome em um dashboard cyberpunk com relógio neon, saudação personalizada e atalhos editáveis. Permite ajustar cores, imagem de fundo e tamanho dos cards, com configurações salvas no navegador.",
+        },
         { title: "", subtitle: "", description: "", soonLabel: "Dashboard de Controle" },
         { title: "", subtitle: "", description: "", soonLabel: "Blog" },
         { title: "", subtitle: "", description: "" },
@@ -365,6 +370,11 @@ export const translations = {
           title: "Barber Shop — Institutional",
           subtitle: "Front-end",
           description: "Complete landing page for a barbershop with a dark and elegant look, featuring all typical sections of a local business: hero with hours and address, about section with company history, services listing, scheduling form, photo gallery, and footer with map location.",
+        },
+        {
+          title: "Cyberpunk Extension — New Tab",
+          subtitle: "Chrome Extension",
+          description: "Chrome extension that turns the New Tab page into a cyberpunk dashboard with a neon clock, personalized greeting, and editable shortcuts. Colors, background image, and card size can be customized, with settings saved in the browser.",
         },
         { title: "", subtitle: "", description: "", soonLabel: "Control Dashboard" },
         { title: "", subtitle: "", description: "", soonLabel: "Blog" },

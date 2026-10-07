@@ -24,7 +24,7 @@ const QUESTION_MARKS = [
 type StaticProject = {
   tags: string[];
   image?: string;
-  ctaHrefs?: [string, string];
+  ctaHrefs?: [string, string?];
   soon?: boolean;
 };
 
@@ -34,6 +34,7 @@ const STATIC: (StaticProject | null)[] = [
   { tags: ["HTML5", "CSS3", "Bootstrap", "CDN", "Vercel"], image: "/images/projetos/artes-urbanas.webp",   ctaHrefs: ["https://github.com/LeandroDukievicz/bootstrap-urban-arts", "https://artesurbanas.vercel.app/"] },
   { tags: ["HTML5", "CSS3", "Bootstrap 5", "Vercel"],      image: "/images/projetos/imovi.webp",           ctaHrefs: ["https://github.com/LeandroDukievicz/bootstrap-imovi", "https://bootstrap-imovi.vercel.app/"] },
   { tags: ["HTML5", "CSS3", "Forms", "Vercel"],            image: "/images/projetos/barbershop.webp",      ctaHrefs: ["https://github.com/LeandroDukievicz/BarberShop", "https://barberhop-dukievicz.vercel.app/#services"] },
+  { tags: ["Chrome", "Manifest V3", "HTML5", "CSS3", "JavaScript"], image: "/images/projetos/extensao-cyberpunk.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/extensao-cyberpunk-chrome"] },
   { tags: [], soon: true, image: "/images/projetos/dashboard.webp" },
   { tags: [], soon: true, image: "/images/projetos/helmet.webp" },
   null,
@@ -82,7 +83,7 @@ export default function Projetos() {
       soonLabel:   tr && "soonLabel" in tr ? (tr as { soonLabel?: string }).soonLabel : undefined,
       ctas: s.ctaHrefs ? [
         { label: p.ctaDetails, href: s.ctaHrefs[0], icon: "github" as const },
-        { label: p.ctaProject, href: s.ctaHrefs[1], icon: "link"   as const },
+        ...(s.ctaHrefs[1] ? [{ label: p.ctaProject, href: s.ctaHrefs[1], icon: "link" as const }] : []),
       ] : undefined,
     };
   });

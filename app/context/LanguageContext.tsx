@@ -146,8 +146,7 @@ export const translations = {
         {
           title: "LD Studio — Dashboard do Blog",
           subtitle: "Painel administrativo",
-          description: "Painel de gestão do Devs à Deriva. Reúne publicação de posts, categorias, moderação de comentários, membros, newsletter e métricas em uma interface com autenticação e controle de permissões.",
-          projectCtaLabel: "Acessar Painel",
+          description: "Painel administrativo do Devs à Deriva para criar, editar e agendar posts; organizar categorias; moderar comentários; gerenciar membros e permissões; e preparar a newsletter. Mostra estatísticas de visitantes, desempenho dos conteúdos e uso do armazenamento, além de reunir ferramentas de SEO e autenticação em uma interface para toda a operação editorial.",
         },
         {
           title: "Devs à Deriva — Blog",
@@ -388,8 +387,7 @@ export const translations = {
         {
           title: "LD Studio — Blog Dashboard",
           subtitle: "Admin dashboard",
-          description: "Management dashboard for Devs à Deriva. Brings together post publishing, categories, comment moderation, members, newsletters, and metrics in an interface with authentication and permission controls.",
-          projectCtaLabel: "Open Dashboard",
+          description: "Admin dashboard for Devs à Deriva to create, edit, and schedule posts; organize categories; moderate comments; manage members and permissions; and prepare the newsletter. It shows visitor statistics, content performance, and storage usage, while bringing SEO tools and authentication together in one interface for the blog's editorial workflow.",
         },
         {
           title: "Devs à Deriva — Blog",

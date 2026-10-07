@@ -26,6 +26,7 @@ type StaticProject = {
   image?: string;
   imageFit?: "cover" | "contain";
   ctaHrefs?: [string, string?, string?];
+  projectHref?: string;
   soon?: boolean;
 };
 
@@ -40,7 +41,7 @@ const STATIC: (StaticProject | null)[] = [
   { tags: ["Astro", "TypeScript", "Tailwind CSS", "SSR"], image: "/images/projetos/blog-devs-a-deriva.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/devs-a-deriva", "https://devsaderiva.com.br/"] },
   { tags: ["Python", "RSS/Atom", "SQLite", "Linux", "Snap"], image: "/images/projetos/clinews.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/clinews", "https://leandrodukievicz.github.io/clinews/", "https://snapcraft.io/clinews"] },
   { tags: ["Python", "Textual", "Telethon", "Telegram", "Snap"], image: "/images/projetos/anchor-downloader.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/anchor-downloader", "https://leandrodukievicz.github.io/anchor-downloader/", "https://snapcraft.io/anchor-downloader"] },
-  null,
+  { tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"], image: "/images/projetos/techdukie.webp", projectHref: "https://techdukie.com.br/" },
 ];
 
 const TOTAL_CARDS = STATIC.length;
@@ -74,6 +75,8 @@ export default function Projetos() {
   const PROJECTS = STATIC.map((s, i) => {
     if (!s) return null;
     const tr = p.items[i];
+    const projectHref = s.projectHref ?? s.ctaHrefs?.[1];
+    const storeHref = s.ctaHrefs?.[2];
     return {
       title:       tr?.title ?? "",
       subtitle:    tr?.subtitle ?? "",
@@ -83,10 +86,10 @@ export default function Projetos() {
       imageFit:    s.imageFit,
       soon:        s.soon,
       soonLabel:   tr && "soonLabel" in tr ? (tr as { soonLabel?: string }).soonLabel : undefined,
-      ctas: s.ctaHrefs ? [
-        { label: p.ctaDetails, href: s.ctaHrefs[0], icon: "github" as const },
-        ...(s.ctaHrefs[1] ? [{ label: p.ctaProject, href: s.ctaHrefs[1], icon: "link" as const }] : []),
-        ...(s.ctaHrefs[2] ? [{ label: "Snap Store", href: s.ctaHrefs[2], icon: "link" as const }] : []),
+      ctas: s.ctaHrefs || projectHref ? [
+        ...(s.ctaHrefs ? [{ label: p.ctaDetails, href: s.ctaHrefs[0], icon: "github" as const }] : []),
+        ...(projectHref ? [{ label: p.ctaProject, href: projectHref, icon: "link" as const }] : []),
+        ...(storeHref ? [{ label: "Snap Store", href: storeHref, icon: "link" as const }] : []),
       ] : undefined,
     };
   });
@@ -592,7 +595,7 @@ export default function Projetos() {
           __html: JSON.stringify(buildPageSchema({
             type: "CollectionPage",
             name: "Projetos — Leandro Dukiévicz",
-            description: "Coleção de projetos desenvolvidos por Leandro Dukiévicz: e-commerce front-end com SASS, sites institucionais com Bootstrap, landing pages e projetos em desenvolvimento com React e Next.js.",
+            description: "Coleção de projetos desenvolvidos por Leandro Dukiévicz: sites institucionais, blog, dashboard editorial, extensão de navegador e aplicativos para terminal.",
             url: "https://devleandro.com.br/projetos",
           }))
         }}

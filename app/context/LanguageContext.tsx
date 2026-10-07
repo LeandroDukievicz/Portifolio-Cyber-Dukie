@@ -163,7 +163,11 @@ export const translations = {
           subtitle: "Aplicativo TUI",
           description: "Gerenciador de downloads do Telegram para Linux, com interface de terminal em Python e Textual. Organiza arquivos por tipo, controla filas e downloads paralelos, retoma transferências interrompidas e mostra velocidade, tempo estimado e progresso em tempo real. Publicado na Snap Store.",
         },
-        { title: "", subtitle: "", description: "" },
+        {
+          title: "Dukie Tech — Software sob Medida",
+          subtitle: "Site institucional",
+          description: "Site da Dukie Tech, empresa de desenvolvimento sob medida. Apresenta serviços de sites, sistemas web, aplicativos e IA para negócios em uma interface responsiva com visual cyberpunk, animações, carrossel de serviços, FAQ e formulário de orçamento integrado ao e-mail.",
+        },
       ],
     },
     contato: {
@@ -412,7 +416,11 @@ export const translations = {
           subtitle: "TUI application",
           description: "Telegram download manager for Linux with a Python and Textual terminal interface. Organizes files by type, manages queues and parallel downloads, resumes interrupted transfers, and shows speed, estimated time, and progress in real time. Published on the Snap Store.",
         },
-        { title: "", subtitle: "", description: "" },
+        {
+          title: "Dukie Tech — Custom Software",
+          subtitle: "Business website",
+          description: "Website for Dukie Tech, a custom software development company. It presents websites, web systems, mobile apps, and AI services for businesses through a responsive cyberpunk interface with animations, a services carousel, FAQ, and an email-connected quote form.",
+        },
       ],
     },
     contato: {

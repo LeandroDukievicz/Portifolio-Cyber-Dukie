@@ -25,6 +25,7 @@ type StaticProject = {
   tags: string[];
   image?: string;
   ctaHrefs?: [string, string?];
+  projectHref?: string;
   soon?: boolean;
 };
 
@@ -35,8 +36,8 @@ const STATIC: (StaticProject | null)[] = [
   { tags: ["HTML5", "CSS3", "Bootstrap 5", "Vercel"],      image: "/images/projetos/imovi.webp",           ctaHrefs: ["https://github.com/LeandroDukievicz/bootstrap-imovi", "https://bootstrap-imovi.vercel.app/"] },
   { tags: ["HTML5", "CSS3", "Forms", "Vercel"],            image: "/images/projetos/barbershop.webp",      ctaHrefs: ["https://github.com/LeandroDukievicz/BarberShop", "https://barberhop-dukievicz.vercel.app/#services"] },
   { tags: ["Chrome", "Manifest V3", "HTML5", "CSS3", "JavaScript"], image: "/images/projetos/extensao-cyberpunk.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/extensao-cyberpunk-chrome"] },
-  { tags: [], soon: true, image: "/images/projetos/dashboard.webp" },
-  { tags: [], soon: true, image: "/images/projetos/helmet.webp" },
+  { tags: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "NextAuth"], image: "/images/projetos/dashboard.webp", projectHref: "https://dashboard.devsaderiva.com.br/" },
+  { tags: ["Astro", "TypeScript", "Tailwind CSS", "SSR"], image: "/images/projetos/blog-devs-a-deriva.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/devs-a-deriva", "https://devsaderiva.com.br/"] },
   null,
   null,
   null,
@@ -73,6 +74,8 @@ export default function Projetos() {
   const PROJECTS = STATIC.map((s, i) => {
     if (!s) return null;
     const tr = p.items[i];
+    const projectHref = s.projectHref ?? s.ctaHrefs?.[1];
+    const projectCtaLabel = tr && "projectCtaLabel" in tr ? tr.projectCtaLabel : p.ctaProject;
     return {
       title:       tr?.title ?? "",
       subtitle:    tr?.subtitle ?? "",
@@ -81,9 +84,9 @@ export default function Projetos() {
       image:       s.image,
       soon:        s.soon,
       soonLabel:   tr && "soonLabel" in tr ? (tr as { soonLabel?: string }).soonLabel : undefined,
-      ctas: s.ctaHrefs ? [
-        { label: p.ctaDetails, href: s.ctaHrefs[0], icon: "github" as const },
-        ...(s.ctaHrefs[1] ? [{ label: p.ctaProject, href: s.ctaHrefs[1], icon: "link" as const }] : []),
+      ctas: s.ctaHrefs || projectHref ? [
+        ...(s.ctaHrefs ? [{ label: p.ctaDetails, href: s.ctaHrefs[0], icon: "github" as const }] : []),
+        ...(projectHref ? [{ label: projectCtaLabel, href: projectHref, icon: "link" as const }] : []),
       ] : undefined,
     };
   });

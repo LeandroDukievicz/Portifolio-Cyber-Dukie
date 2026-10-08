@@ -387,7 +387,7 @@ export default function Projetos() {
                     <>
                       {/* Imagem */}
                       {project.image && (
-                        <div style={{ position: "relative", width: "100%", height: isMobile ? Math.round(cardH * 0.35) : isTablet ? 155 : 185, flexShrink: 0 }}>
+                        <div style={{ position: "relative", width: "100%", height: isMobile ? Math.round(cardH * (window.innerHeight < 760 ? 0.24 : 0.35)) : isTablet ? 155 : 185, flexShrink: 0 }}>
                           <Image
                             src={project.image}
                             alt={project.title}
@@ -404,7 +404,7 @@ export default function Projetos() {
 
                       {/* Info */}
                       <div style={{
-                        flex: 1, display: "flex", flexDirection: "column",
+                        flex: 1, minHeight: 0, overflowY: isMobile ? "auto" : "visible", display: "flex", flexDirection: "column",
                         padding: isMobile ? "10px 14px 14px" : "18px 24px 28px",
                         gap: isMobile ? 7 : 10,
                         fontFamily: "'JetBrains Mono', 'Fira Code', monospace",

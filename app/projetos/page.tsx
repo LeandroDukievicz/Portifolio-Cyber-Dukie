@@ -27,6 +27,7 @@ type StaticProject = {
   imageFit?: "cover" | "contain";
   ctaHrefs?: [string, string?, string?];
   projectHref?: string;
+  projectLabel?: string;
   soon?: boolean;
 };
 
@@ -36,7 +37,7 @@ const STATIC: (StaticProject | null)[] = [
   { tags: ["HTML5", "CSS3", "Bootstrap", "CDN", "Vercel"], image: "/images/projetos/artes-urbanas.webp",   ctaHrefs: ["https://github.com/LeandroDukievicz/bootstrap-urban-arts", "https://artesurbanas.vercel.app/"] },
   { tags: ["HTML5", "CSS3", "Bootstrap 5", "Vercel"],      image: "/images/projetos/imovi.webp",           ctaHrefs: ["https://github.com/LeandroDukievicz/bootstrap-imovi", "https://bootstrap-imovi.vercel.app/"] },
   { tags: ["HTML5", "CSS3", "Forms", "Vercel"],            image: "/images/projetos/barbershop.webp",      ctaHrefs: ["https://github.com/LeandroDukievicz/BarberShop", "https://barberhop-dukievicz.vercel.app/#services"] },
-  { tags: ["Chrome", "Manifest V3", "HTML5", "CSS3", "JavaScript"], image: "/images/projetos/extensao-cyberpunk.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/extensao-cyberpunk-chrome"] },
+  { tags: ["Chrome", "Manifest V3", "JavaScript"], image: "/images/projetos/extensao-cyberpunk.webp", projectHref: "https://chromewebstore.google.com/detail/extens%C3%A3o-cyberpunk/mldllnklacfbealelimhplobgbhchlkp", projectLabel: "Chrome Web Store" },
   { tags: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "NextAuth"], image: "/images/projetos/dashboard.webp", imageFit: "contain" },
   { tags: ["Astro", "TypeScript", "Tailwind CSS", "SSR"], image: "/images/projetos/blog-devs-a-deriva.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/devs-a-deriva", "https://devsaderiva.com.br/"] },
   { tags: ["Python", "RSS/Atom", "SQLite", "Linux", "Snap"], image: "/images/projetos/clinews.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/clinews", "https://leandrodukievicz.github.io/clinews/", "https://snapcraft.io/clinews"] },
@@ -90,7 +91,7 @@ export default function Projetos() {
       soonLabel:   tr && "soonLabel" in tr ? (tr as { soonLabel?: string }).soonLabel : undefined,
       ctas: s.ctaHrefs || projectHref ? [
         ...(s.ctaHrefs ? [{ label: p.ctaDetails, href: s.ctaHrefs[0], icon: "github" as const }] : []),
-        ...(projectHref ? [{ label: p.ctaProject, href: projectHref, icon: "link" as const }] : []),
+        ...(projectHref ? [{ label: s.projectLabel ?? p.ctaProject, href: projectHref, icon: "link" as const }] : []),
         ...(storeHref ? [{ label: "Snap Store", href: storeHref, icon: "link" as const }] : []),
       ] : undefined,
     };
@@ -102,7 +103,8 @@ export default function Projetos() {
   const [paused, setPaused]     = useState(false);
   const animating               = useRef(false);
   const currentRef              = useRef(current);
-  currentRef.current            = current;
+
+  useEffect(() => { currentRef.current = current; }, [current]);
 
   useEffect(() => {
     const check = () => {

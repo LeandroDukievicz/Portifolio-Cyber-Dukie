@@ -140,8 +140,8 @@ export const translations = {
         },
         {
           title: "Extensão Cyberpunk — Nova Aba",
-          subtitle: "Extensão Chrome",
-          description: "Extensão que transforma a Nova Aba do Chrome em um dashboard cyberpunk com relógio neon, saudação personalizada e atalhos editáveis. Permite ajustar cores, imagem de fundo e tamanho dos cards, com configurações salvas no navegador.",
+          subtitle: "Extensão Chrome · Publicada",
+          description: "Transforma a Nova Aba em um painel cyberpunk com relógio neon, saudação dinâmica e atalhos que você pode organizar. Permite personalizar cores, imagem de fundo e cards; sincroniza as preferências pelo Chrome e funciona offline.",
         },
         {
           title: "LD Studio — Dashboard do Blog",
@@ -403,8 +403,8 @@ export const translations = {
         },
         {
           title: "Cyberpunk Extension — New Tab",
-          subtitle: "Chrome Extension",
-          description: "Chrome extension that turns the New Tab page into a cyberpunk dashboard with a neon clock, personalized greeting, and editable shortcuts. Colors, background image, and card size can be customized, with settings saved in the browser.",
+          subtitle: "Chrome Extension · Published",
+          description: "Turns the New Tab page into a cyberpunk dashboard with a neon clock, dynamic greeting, and shortcuts you can organize. Customize colors, background image, and cards; sync preferences through Chrome and use it offline.",
         },
         {
           title: "LD Studio — Blog Dashboard",

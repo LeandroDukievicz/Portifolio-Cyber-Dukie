@@ -178,6 +178,11 @@ export const translations = {
           subtitle: "Aplicativo TUI",
           description: "Lista de tarefas para terminal com visual cyberpunk, feita em Python e Textual. Oferece visões por dia, semana e mês, criação e edição com prioridades e categorias, filtros, progresso de conclusão e armazenamento local em SQLite. Inclui navegação pelo teclado, previsão do tempo e sincronização com Trello.",
         },
+        {
+          title: "ControlFanRGB — RGB e Refrigeração",
+          subtitle: "Aplicativo Linux",
+          description: "Aplicativo para o Predator PH315-54 que controla as quatro zonas RGB do teclado e a refrigeração. Reúne temas, efeitos de firmware e software, pintura tecla a tecla, modo turbo e leitura de RPM em uma interface GTK4/libadwaita com daemon D-Bus. Turbo e RPM exigem o módulo facer modificado.",
+        },
       ],
     },
     contato: {
@@ -440,6 +445,11 @@ export const translations = {
           title: "DukieList — Tasks in the Terminal",
           subtitle: "TUI application",
           description: "Cyberpunk-styled terminal task manager built with Python and Textual. It offers daily, weekly, and monthly views, task creation and editing with priorities and categories, filters, completion progress, and local SQLite storage. It also supports keyboard navigation, weather forecasts, and Trello synchronization.",
+        },
+        {
+          title: "ControlFanRGB — RGB and Cooling",
+          subtitle: "Linux application",
+          description: "An app for the Predator PH315-54 that controls the keyboard's four RGB zones and cooling. It combines themes, firmware and software effects, per-key painting, turbo mode, and fan RPM readings in a GTK4/libadwaita interface backed by a D-Bus daemon. Turbo and RPM require a modified facer kernel module.",
         },
       ],
     },

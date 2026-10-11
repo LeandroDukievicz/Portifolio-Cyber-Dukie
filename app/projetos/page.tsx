@@ -45,6 +45,7 @@ const STATIC: (StaticProject | null)[] = [
   { tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"], image: "/images/projetos/techdukie.webp", projectHref: "https://techdukie.com.br/" },
   { tags: ["Python", "Textual", "psutil", "TUI", "AI"], image: "/images/projetos/watchai.webp", ctaHrefs: ["https://github.com/LeandroDukievicz/WatchAI", "https://leandrodukievicz.github.io/WatchAI/"] },
   { tags: ["Python", "Textual", "SQLite", "TUI", "Trello"], image: "/images/projetos/dukielist.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/dukielist"] },
+  { tags: ["Python", "GTK4", "libadwaita", "D-Bus", "Linux"], image: "/images/projetos/controlfanrgb.webp", imageFit: "contain", ctaHrefs: ["https://github.com/LeandroDukievicz/ControlFanRGB"] },
 ];
 
 const TOTAL_CARDS = STATIC.length;
